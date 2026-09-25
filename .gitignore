@@ -2,3 +2,4 @@ assets/_*
 build/_*
 **/*.tmp
 Thumbs.db
+linkedin/prepared_post_preview.png
