@@ -17,6 +17,6 @@ Inside "The SOC SLA Reality":
 
 Meeting the SLA doesn't always mean the investigation was good. Breaching the SLA doesn't always mean the SOC failed. Both statements are true, and this paper tries to explain why — with real research (NIST, CISA, FIRST, SANS, and named vendor documentation from Microsoft, IBM/QRadar, Google SecOps, ServiceNow, CrowdStrike, and others), ten illustrative case studies, and no invented "industry standard" numbers.
 
-Full paper (with sources) attached.
+Full paper (with sources) attached. Source, figures, and full build pipeline are open on GitHub: https://github.com/neshboy/soc-sla-reality
 
 #SOC #CyberSecurity #SecurityOperations #IncidentResponse #SIEM #DetectionEngineering
