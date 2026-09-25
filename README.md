@@ -45,6 +45,12 @@ build/                           Assembly + PDF + QA rasterization scripts
 linkedin/                        Caption and carousel assets
 ```
 
+## Preview
+
+| Book vs. reality | SLA gaming | Manager dashboard |
+|---|---|---|
+| ![Book vs reality](assets/screenshots/key_pages/02-book-vs-217am.png) | ![SLA gaming](assets/screenshots/key_pages/04-sla-gaming.png) | ![Manager dashboard](assets/screenshots/key_pages/05-manager-dashboard.png) |
+
 ## Download
 
 [SOC_SLA_Reality_neshboy.pdf](SOC_SLA_Reality_neshboy.pdf)
