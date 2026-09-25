@@ -1,0 +1,53 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section-unforced">
+
+<span class="kicker">The Communication Layer</span>
+<h2 class="h2">Customer Communication</h2>
+
+<p class="lede">An SLA and a customer's peace of mind are measured by different instruments: a ticket can be acknowledged in minutes, clock stopped, contract met, while the customer hears nothing for two hours and gets only an incident number. The SLA was met; the relationship still took damage.</p>
+
+<h3 class="h3">13.1 Four Moments, Easily Conflated</h3>
+<p>"Keeping the customer informed" is one obligation in name but four in practice: an <strong>initial notification</strong>, an ongoing <strong>status-update cadence</strong>, <strong>major-incident communications</strong> once a severity threshold is crossed, and a retrospective <strong>closure summary</strong>.</p>
+
+<table class="clean">
+<tr><th>Moment</th><th>Communicates</th><th>Timing</th><th>Conflation failure</th></tr>
+<tr><td>Initial notification</td><td>"On it"</td><td>Ack clock</td><td>Read as "handled"</td></tr>
+<tr><td>Status-update cadence</td><td>State, next contact</td><td>SOC commitment</td><td>Ack treated as sufficient</td></tr>
+<tr><td>Major-incident comms</td><td>Wider updates</td><td>Declaration</td><td>Cadence left routine</td></tr>
+<tr><td>Closure summary</td><td>What happened, changes</td><td>Ticket closure</td><td>Mistaken for first update</td></tr>
+</table>
+
+<div class="callout illustrative"><span class="callout-label">Illustrative — not a documented incident</span>The two-hour scenario is composite; the pattern is common.</div>
+
+<h3 class="h3">13.2 Lead With Status, Not With Clock Language</h3>
+<p>A status update's opening line does most of the work: "within SLA" reassures the audit trail, not the customer; leading with status and a next-update time does, without asking for blind trust.</p>
+
+<div class="split">
+  <div class="side book">
+    <h4>Clock-Compliance Framing</h4>
+    <ul>
+      <li>"Acknowledged at 09:02, within window."</li>
+    </ul>
+  </div>
+  <div class="side reality">
+    <h4>Status-Forward Framing</h4>
+    <ul>
+      <li>"09:02 — investigating. Next update 09:30."</li>
+    </ul>
+  </div>
+</div>
+
+<p>Neither takes longer to write; the left answers the auditor, the right the customer.</p>
+
+<h3 class="h3">13.3 "Acknowledged" Is Not "Resolved"</h3>
+<p>A technically-met SLA often damages a relationship when a fast acknowledgment reads as proof the problem is already fixed, since nothing distinguished "responded" from "resolved" (Section 3). The fix: state plainly, every time, which has happened and which hasn't — left implicit, the gap defaults to blame on the SOC.</p>
+
+<div class="callout warning"><span class="callout-label">The gap that ages worst</span>A customer never told the difference experiences the correction as being misled, even though nothing said was false.</div>
+
+<h3 class="h3">13.4 When the Delay Is the Customer's</h3>
+<p>Communication runs both ways: the neglected direction is documenting delay the customer caused (Case Study 3; Section 9). An unanswered validation request belongs in the same audit trail as any clock pause — timestamped, surfaced proactively, not raised only later. The update and the record can be the same line: "waiting on your confirmation" serves both.</p>
+
+<p>None of this needs new tooling — just treating the message as a work product judged by whether the reader understood their situation, not whether a timer was respected.</p>
+
+</div></div></body></html>

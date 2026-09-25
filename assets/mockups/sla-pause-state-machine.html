@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; width:1500px; background:var(--l-surface); }
+  .wrap{ padding:46px 50px 50px; }
+
+  .hd .kicker{ color:var(--c1-blue); }
+  .hd .title-row{ display:flex; align-items:baseline; gap:10px; margin-top:7px; }
+  .hd h2{ font-size:22px; font-weight:800; letter-spacing:-.01em; color:var(--l-ink); margin:0; }
+  .hd .sub{ font-size:11.3px; line-height:1.55; color:var(--l-ink-2); max-width:1020px; margin-top:8px; }
+
+  .diagram-frame{
+    margin-top:26px; background:#ffffff; border:1px solid var(--l-grid); border-radius:10px;
+    padding:14px 18px 6px;
+  }
+  svg{ display:block; }
+
+  /* ---- SVG typography ---- */
+  .st-main{ font-family:var(--font); font-weight:800; text-anchor:middle; }
+  .st-sub{ font-family:var(--font); font-weight:600; text-anchor:middle; }
+  .tr-label{ font-family:var(--font); font-weight:700; font-size:12px; fill:var(--l-ink-2); }
+  .tr-label tspan{ font-weight:700; }
+  .branch-cap{ font-family:var(--font); font-weight:700; font-size:9.6px; letter-spacing:.06em; fill:var(--l-ink-muted); text-anchor:middle; text-transform:uppercase; }
+
+  .tbl-head{ display:flex; align-items:baseline; justify-content:space-between; margin-top:30px; margin-bottom:2px; }
+  .tbl-head .tbl-kicker{ font-size:9.8px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--l-ink-muted); }
+  .tbl-head .tbl-tag{ font-size:9.5px; color:var(--l-ink-muted); }
+  table.clean td.mono, table.clean td.mono{ font-family:var(--mono); font-size:9.4px; letter-spacing:.01em; white-space:nowrap; }
+  table.clean td.state-running{ color:var(--c1-blue); font-weight:700; }
+  table.clean td.state-paused{ color:#8a6200; font-weight:700; }
+  table.clean td.state-met{ color:var(--s-good); font-weight:700; }
+  table.clean td.reason-dash{ color:var(--l-ink-muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="kicker">FIGURE — SLA CLOCK LIFECYCLE</div>
+    <div class="title-row">
+      <h2>The SLA Clock&rsquo;s Lifecycle</h2>
+      <span class="illustrative-tag">ILLUSTRATIVE</span>
+    </div>
+    <div class="sub">A pause suspends the SLA clock without breaching it &mdash; every pause and resume is timestamped and reason-coded, so the audit trail shows exactly when the clock was, and wasn&rsquo;t, running.</div>
+  </div>
+
+  <div class="diagram-frame">
+    <svg width="1400" height="430" viewBox="0 0 1400 430" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#52514e"/>
+        </marker>
+      </defs>
+
+      <!-- ============ CONNECTORS (drawn first, under boxes) ============ -->
+
+      <!-- RUNNING -> PAUSED -->
+      <path d="M70,245 L70,90" fill="none" stroke="#52514e" stroke-width="1.8" marker-end="url(#arrow)"/>
+      <!-- PAUSED -> RUNNING -->
+      <path d="M150,90 L150,245" fill="none" stroke="#52514e" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+      <!-- RUNNING -> branch vertex -->
+      <path d="M200,280 L556,280" fill="none" stroke="#52514e" stroke-width="1.8"/>
+      <circle cx="560" cy="280" r="4.5" fill="#52514e"/>
+
+      <!-- branch vertex -> MET / BREACHED -->
+      <path d="M560,280 L650,198" fill="none" stroke="#52514e" stroke-width="1.8" marker-end="url(#arrow)"/>
+      <path d="M560,280 L650,384" fill="none" stroke="#52514e" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+      <!-- MET / BREACHED -> CLOSED -->
+      <path d="M810,198 L980,264" fill="none" stroke="#52514e" stroke-width="1.8" marker-end="url(#arrow)"/>
+      <path d="M810,384 L980,296" fill="none" stroke="#52514e" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+      <text x="560" y="248" class="branch-cap">SLA outcome</text>
+
+      <!-- ============ TRANSITION LABELS ============ -->
+      <text x="222" y="112" class="tr-label">
+        <tspan x="222" dy="0">waiting on customer / third party</tspan>
+        <tspan x="222" dy="15">&mdash; reason logged</tspan>
+      </text>
+      <text x="222" y="212" class="tr-label">dependency cleared, resumed</text>
+
+      <!-- ============ STATES ============ -->
+
+      <!-- PAUSED -->
+      <rect x="20" y="20" width="180" height="70" rx="12" fill="var(--s-warning)"/>
+      <text x="110" y="52" class="st-main" font-size="17" fill="#0b0b0b">PAUSED</text>
+      <text x="110" y="70" class="st-sub" font-size="9.6" fill="#52514e">clock stopped</text>
+
+      <!-- RUNNING -->
+      <rect x="20" y="245" width="180" height="70" rx="12" fill="var(--c1-blue)"/>
+      <text x="110" y="277" class="st-main" font-size="17" fill="#ffffff">RUNNING</text>
+      <text x="110" y="295" class="st-sub" font-size="9.6" fill="rgba(255,255,255,0.82)">SLA clock active</text>
+
+      <!-- MET -->
+      <rect x="650" y="170" width="160" height="56" rx="10" fill="var(--s-good)"/>
+      <text x="730" y="196" class="st-main" font-size="15" fill="#ffffff">MET</text>
+      <text x="730" y="212" class="st-sub" font-size="9" fill="rgba(255,255,255,0.85)">within SLA target</text>
+
+      <!-- BREACHED -->
+      <rect x="650" y="356" width="160" height="56" rx="10" fill="var(--s-critical)"/>
+      <text x="730" y="382" class="st-main" font-size="15" fill="#ffffff">BREACHED</text>
+      <text x="730" y="398" class="st-sub" font-size="9" fill="rgba(255,255,255,0.85)">target exceeded</text>
+
+      <!-- CLOSED (terminal, double outline) -->
+      <rect x="972" y="237" width="196" height="86" rx="14" fill="none" stroke="#c3c2b7" stroke-width="1.4"/>
+      <rect x="980" y="245" width="180" height="70" rx="11" fill="#1a1a19"/>
+      <text x="1070" y="277" class="st-main" font-size="17" fill="#ffffff">CLOSED</text>
+      <text x="1070" y="295" class="st-sub" font-size="9.6" fill="rgba(255,255,255,0.72)">case finalized</text>
+
+    </svg>
+  </div>
+
+  <div class="tbl-head">
+    <div class="tbl-kicker">Audit Trail &mdash; Example Case Log</div>
+    <div class="tbl-tag">Every pause / resume event is timestamped, attributed, and reason-coded</div>
+  </div>
+  <table class="clean">
+    <thead>
+      <tr><th>Timestamp</th><th>Event</th><th>Clock State</th><th>Actor</th><th>Reason</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">02:14</td><td>Ack</td><td class="state-running">Running</td><td>J.Tan</td><td class="reason-dash">&mdash;</td>
+      </tr>
+      <tr>
+        <td class="mono">02:19</td><td>Triage start</td><td class="state-running">Running</td><td>J.Tan</td><td class="reason-dash">&mdash;</td>
+      </tr>
+      <tr>
+        <td class="mono">02:24</td><td>Pause</td><td class="state-paused">Paused</td><td>J.Tan</td><td>Awaiting customer AD admin confirmation</td>
+      </tr>
+      <tr>
+        <td class="mono">04:02</td><td>Resume</td><td class="state-running">Running</td><td>J.Tan</td><td>Customer responded</td>
+      </tr>
+      <tr>
+        <td class="mono">04:31</td><td>Contained / Closed</td><td class="state-met">Met</td><td>J.Tan</td><td>Root cause confirmed</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+</body></html>

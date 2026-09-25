@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<p>Not every SLA breach starts with the incident that breaches it. Sometimes it starts hours earlier, with an untuned rule quietly consuming the shift's real resource: analyst attention.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">Case 06</div>
+      <h3>False Positive Consumes the Budget<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+  </div>
+  <div class="case-meta">
+    <div><b>Trigger Rule</b>Outbound-connection correlation rule ("beaconing")</div>
+    <div><b>Shift Volume</b>637 alerts, one rule, one shift</div>
+    <div><b>Root Cause</b>No exclusion for periodic traffic (backups, EDR, patch)</div>
+    <div><b>Concurrent Incident</b>P2 auth anomaly queued mid-triage</div>
+  </div>
+  <div class="case-body">
+    <p>The rule flagged regular outbound connections as beaconing, with no allowlist for traffic every endpoint already generates — backups, EDR heartbeats, patch check-ins. It closed 637 such alerts, competing with a concurrent P2 authentication anomaly that needed human review — and nearly breached its own SLA because the noisy rule had already spent the budget it needed.</p>
+  </div>
+</div>
+
+<h3 class="h3">Disposition Tracking Is the Feedback Loop, Not an Afterthought</h3>
+<p>Disposition tracking is a documented SIEM/SOAR discipline: Microsoft Sentinel requires every closed incident to carry one of five classifications — separating wrong logic from wrong data and from expected activity. This shift's 637 closures:</p>
+
+<table class="clean">
+<thead>
+<tr><th>Closure Category</th><th>Alerts</th><th>Share</th><th>What It Means</th></tr>
+</thead>
+<tbody>
+<tr><td>True Positive</td><td>3</td><td>0.5%</td><td>Correctly escalated</td></tr>
+<tr><td>Benign Positive – Expected</td><td>22</td><td>3.5%</td><td>Known and authorized</td></tr>
+<tr><td>False Positive – Incorrect Logic</td><td>391</td><td>61.4%</td><td>The rule's criteria are the defect</td></tr>
+<tr><td>False Positive – Inaccurate Data</td><td>118</td><td>18.5%</td><td>Data/enrichment defect</td></tr>
+<tr><td>Undetermined</td><td>103</td><td>16.2%</td><td>No conclusive evidence</td></tr>
+</tbody>
+</table>
+<p class="muted">A synthetic composite for illustration, not measured data from any real SOC or Sentinel deployment.</p>
+
+<p>Six in ten closures are "Incorrect Logic": a tuning failure, not a triage one.</p>
+
+<h3 class="h3">Tuning Is a Detection-Engineering Problem</h3>
+<p>The fix isn't exotic: IBM QRadar documents building blocks and reference sets natively — exclusion logic lives in a building block, and hosts to exclude live in a reference set, updated without rewriting the rule. Add this to the set the rule already consults, and the load disappears. That exclusion should be scoped to specific verified hosts or IPs rather than a generic traffic category, reviewed on a fixed cadence, and checked for volume and timing drift — ongoing detection-engineering maintenance, not a one-time fix, since attackers can time C2 or beaconing traffic to mimic allowlisted periodic maintenance windows.</p>
+<p>SLA and detection-quality metrics are one dataset: alone, the SLA report shows a P2 that barely made its clock; alongside the disposition breakdown, it shows a rule burning analyst attention on a defect engineering could have fixed first — attention that could have gone to real triage instead.</p>
+
+<div class="quote-block">
+  <p>Excellent SLA compliance with a terrible false-positive rate isn't success — it's drowning efficiently.</p>
+</div>
+
+<div class="callout note">
+  <span class="callout-label">Takeaway</span>
+  A high "Incorrect Alert Logic" share signals detection engineering, not analyst coaching.
+</div>
+
+</div></body></html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+body{margin:0;}
+.hb-wrap{ width:1500px; background:var(--l-page); padding:48px 44px 38px; }
+
+.hb-eyebrow{ margin-bottom:20px; max-width:1080px; }
+.hb-eyebrow .lede-line{ font-size:12.5pt; color:var(--l-ink-2); line-height:1.5; margin-top:8px; }
+
+.case{ margin:0; }
+.case-num.hb-tagline{ color:var(--c2-orange-d); }
+
+.hb-meta{ display:flex; justify-content:space-between; align-items:center; padding:13px 26px; background:#f1f1ee; border-bottom:1px solid var(--l-grid); }
+.hb-meta .side{ font-size:10.3pt; font-weight:800; letter-spacing:.02em; flex:1; }
+.hb-meta .side.outgoing{ color:var(--c1-blue); }
+.hb-meta .side.incoming{ color:var(--c2-orange-d); text-align:right; }
+.hb-meta .side .sub{ font-weight:600; color:var(--l-ink-muted); font-size:8.8pt; text-transform:none; letter-spacing:0; margin-left:5px; }
+.hb-meta .center{ flex:0 0 auto; text-align:center; font-size:8.4pt; color:var(--l-ink-muted); text-transform:uppercase; letter-spacing:.05em; font-weight:700; padding:0 22px; display:flex; align-items:center; gap:8px; white-space:nowrap; }
+
+.hb-body{ display:flex; gap:24px; padding:22px 26px 8px; }
+.hb-rail{ width:5px; border-radius:5px; flex-shrink:0;
+  background:linear-gradient(to bottom, var(--c1-blue) 0%, var(--c1-blue) 38%, var(--c2-orange) 62%, var(--c2-orange) 100%); }
+.hb-fields{ flex:1; min-width:0; }
+
+.field-row{ display:flex; gap:24px; padding:17px 0; border-bottom:1px dashed var(--l-grid); }
+.field-row:last-child{ border-bottom:none; padding-bottom:2px; }
+.field-label{ width:172px; flex-shrink:0; font-size:8.4pt; text-transform:uppercase; letter-spacing:.05em; color:var(--l-ink-muted); font-weight:700; padding-top:2px; }
+.field-content{ flex:1; min-width:0; font-size:9.8pt; line-height:1.62; color:var(--l-ink); }
+
+.tl-item{ display:flex; gap:10px; align-items:baseline; margin-bottom:5px; }
+.tl-item:last-child{ margin-bottom:0; }
+.tl-time{ font-family:var(--mono); font-size:8.6pt; color:var(--l-ink-muted); width:44px; flex-shrink:0; }
+
+.tagrow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.tag-item{ display:inline-flex; align-items:center; }
+
+.mark{ display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px;
+  border-radius:50%; font-size:7.6pt; font-weight:800; color:#fff; margin-left:6px; vertical-align:middle; }
+.mark.a{ background:var(--c1-blue); }
+.mark.b{ background:var(--c2-orange); }
+
+.hb-legend{ display:flex; justify-content:center; gap:34px; padding-top:22px; font-size:8.8pt; color:var(--l-ink-muted); }
+.hb-legend span.item{ display:inline-flex; align-items:center; }
+.hb-legend .mark{ margin-left:0; margin-right:7px; }
+</style>
+</head>
+<body>
+<div class="hb-wrap">
+
+  <div class="hb-eyebrow">
+    <span class="kicker">Shift Handover</span>
+    <span class="illustrative-tag">Illustrative</span>
+    <div class="lede-line">One case file carries across the 06:00 boundary — Analyst B doesn't open a new record, they add the next note to the same one.</div>
+  </div>
+
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-num hb-tagline">Continuity of record, not a transfer of paperwork</div>
+        <h3>Case HG-4471 &nbsp;·&nbsp; Phishing &rarr; Lateral Movement</h3>
+      </div>
+    </div>
+
+    <div class="hb-meta">
+      <div class="side outgoing">OUTGOING — Analyst A <span class="sub">(ends shift 06:00)</span></div>
+      <div class="center"><span class="pill p2">P2</span> Shared case record — 06:00 boundary</div>
+      <div class="side incoming">INCOMING — Analyst B <span class="sub">(starts shift 06:00)</span></div>
+    </div>
+
+    <div class="hb-body">
+      <div class="hb-rail"></div>
+      <div class="hb-fields">
+
+        <div class="field-row">
+          <div class="field-label">Case notes summary</div>
+          <div class="field-content">
+            Suspected phishing led to credential reuse and lateral movement toward build infrastructure. Contained to two hosts; scope check in progress.<span class="mark a">A</span><br/>
+            Addendum — build-agent-07 re-scanned clean; holding isolation pending one more review pass.<span class="mark b">B</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Timeline</div>
+          <div class="field-content">
+            <div class="tl-item"><span class="tl-time">03:12</span><span>Phishing email confirmed malicious, alert triaged</span><span class="mark a">A</span></div>
+            <div class="tl-item"><span class="tl-time">04:47</span><span>Credential reuse detected on WKSTN-4471, host isolated</span><span class="mark a">A</span></div>
+            <div class="tl-item"><span class="tl-time">05:58</span><span>build-agent-07 re-scanned during handover review — clean</span><span class="mark b">B</span></div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">IOCs</div>
+          <div class="field-content tagrow">
+            <span class="tag-item"><span class="tag">sha256:9f2a&hellip;c71d</span><span class="mark a">A</span></span>
+            <span class="tag-item"><span class="tag">185.212.44.19</span><span class="mark a">A</span></span>
+            <span class="tag-item"><span class="tag">mail-secure-update[.]net</span><span class="mark b">B</span></span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Affected assets</div>
+          <div class="field-content tagrow">
+            <span class="tag-item"><span class="tag">WKSTN-4471</span><span class="mark a">A</span></span>
+            <span class="tag-item"><span class="tag">FILESRV-02</span><span class="mark a">A</span></span>
+            <span class="tag-item"><span class="tag">build-agent-07</span><span class="mark b">B</span></span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Open questions</div>
+          <div class="field-content">
+            Is the phishing sender part of a known cluster? — still open<span class="mark a">A</span><br/>
+            Did build-agent-07 write any artifacts before isolation? — checking now<span class="mark b">B</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Next action</div>
+          <div class="field-content">
+            Pull build-agent-07 process history for the isolation window; escalate to IR if artifacts are found.<span class="mark b">B</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">SLA remaining</div>
+          <div class="field-content">
+            <div class="stat-tile" style="display:flex;align-items:center;justify-content:space-between;padding:13px 18px;">
+              <div>
+                <div class="label">Time to P2 resolution target</div>
+                <div class="value">2h 14m</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="delta" style="color:var(--d-ink-muted);font-weight:600;">Clock started 03:12 — runs through the 06:00 boundary</div>
+                <div style="margin-top:7px;">
+                  <span class="mark a" style="margin-left:0;margin-right:5px;">A</span><span class="mark b">B</span>
+                  <span style="font-size:7.7pt;color:var(--d-ink-muted);letter-spacing:.04em;text-transform:uppercase;font-weight:700;margin-left:6px;">shared accountability</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="hb-legend">
+    <span class="item"><span class="mark a">A</span>Added or confirmed by the outgoing analyst</span>
+    <span class="item"><span class="mark b">B</span>Added or confirmed by the incoming analyst</span>
+  </div>
+
+</div>
+</body></html>

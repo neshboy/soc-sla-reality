@@ -1,0 +1,57 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<p>The SLA clock assumes one incident at a time. It has no term for three P1s landing in one shift against two qualified leads — whether the SOC practices incident command or reverts to first-come-first-served depends on writing that call down.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">Case 09</div>
+      <h3>Three P1s, Two Analysts</h3>
+    </div>
+    <span class="illustrative-tag">ILLUSTRATIVE</span>
+  </div>
+  <div class="case-meta">
+    <div><b>Scenario</b>Three concurrent P1 declarations, one shift</div>
+    <div><b>Domains</b>Identity · Endpoint · Cloud IAM</div>
+    <div><b>Constraint</b>Two analysts qualified to lead a P1</div>
+    <div><b>Mechanism</b>Incident commander triages the triage</div>
+  </div>
+  <div class="case-body">
+
+    <p>Within eleven minutes, three detections cross the P1 threshold: domain-controller lateral movement, file-server ransomware encryption, and an anomalous IAM role creation in production AWS. All three page P1; only two analysts on shift are qualified to lead one.</p>
+
+    <div class="figure">
+      <img src="../../assets/mockups/p1-resource-allocation.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.5</span><span class="figtext">Illustrative, synthetic snapshot of the coverage gap: two qualified analysts against three P1s spanning identity, endpoint, and cloud IAM.</span></div>
+    </div>
+
+    <p>The trap: whoever is free grabs the loudest or first-paged ticket, and the other two wait by accident, not decision. An incident commander exists to interrupt that — triaging the triage before assigning anyone. That role has to come from somewhere other than the two scarce leads: the shift lead, a role distinct from the two analysts qualified to run a P1, carries it, since spending one of only two qualified leads on pure coordination is the shortage repeating itself one level up.</p>
+
+    <p>That assessment reorders everything here. The file-server host was already isolated by automated containment — one host, contained. The IAM change traces to a stale-credential automation account, fully reconstructable from logs. The domain-controller movement has no such ceiling — success compromises every credential trusting that domain, so it gets the primary analyst's full attention while the second triages ransomware in parallel and the IAM finding goes to cloud platform.</p>
+
+    <table class="clean">
+      <tr><th>Incident</th><th>Domain</th><th>Confirmed impact / blast radius</th><th>Disposition</th></tr>
+      <tr><td>Lateral movement, domain controller</td><td>Identity</td><td>Unbounded if successful</td><td>Primary analyst</td></tr>
+      <tr><td>Ransomware encryption, file server</td><td>Endpoint</td><td>Isolated by automation</td><td>Second analyst, parallel</td></tr>
+      <tr><td>Anomalous IAM role creation</td><td>Cloud IAM</td><td>Stale credential, logged</td><td>Cloud platform team</td></tr>
+    </table>
+    <p class="muted">Illustrative reconstruction of the incident commander's assessment, not a specific customer engagement.</p>
+
+    <p>Reassignment draws on more than the two free leads: lower-priority queue work pauses, its owner pulled into overflow for evidence collection. Each incident also gets the team that owns its domain — AD engineering, EDR, cloud platform.</p>
+
+    <div class="figure">
+      <img src="../../assets/mockups/sla-war-room.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.6</span><span class="figtext">Illustrative, synthetic excerpt of a duty manager's live decision log — reassignments and each incident's SLA clock timestamped as they happen, from a scenario distinct from Figure 6.5.</span></div>
+    </div>
+
+    <p>The artifact that makes this defensible is a decision log kept live: what was reassigned, when, on whose authority, and which incident was left with less coverage and why.</p>
+
+    <div class="callout note">
+      <span class="callout-label">Takeaway</span>
+      Contractual SLA math assumes independent, uncontended clocks. Operational reality is a shared, finite pool that three P1s can exhaust at once. Someone must make an explicit, evidence-based call about which clock gets less attention, and why.
+    </div>
+
+  </div>
+</div>
+
+</div></body></html>

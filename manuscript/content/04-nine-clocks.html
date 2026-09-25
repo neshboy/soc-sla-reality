@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+<div class="section">
+<span class="kicker">The Clock Stack</span>
+<h2 class="h2">Nine Clocks, Not One</h2>
+<p class="lede">A contract shows one word — "SLA." Inside the SOC, that word decomposes into a stack of separately-triggered timers, each started and stopped by a different party, which is why a report can read green while an incident is still open, or red on a case handled well.</p>
+</div>
+
+<div class="figure">
+<img src="../../assets/mockups/sla-clock-diagram.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 4.1</span><span class="figtext">The incident lifecycle produces nine stages, which most contracts collapse into five reported clocks sitting downstream of two pre-SLA stages — detection and ingestion — that the SOC rarely controls.</span></div>
+</div>
+
+<p>Contracts typically report six of these clocks to the customer — acknowledge, investigate, notify, contain, resolve, close — while escalation stays an internal handoff governed by OLA, not a line item in the customer contract. Inside the SOC's own case system the taxonomy is finer still, because each split marks a handoff of timer control: ticketing system, analyst, Tier 2 lead, legal, customer.</p>
+
+<h3 class="h3">Acknowledgement Clock</h3>
+<p>Starts when an alert is created, stops when an analyst claims it — Microsoft's MTTA metric uses exactly this boundary, not any finding, so an analyst can acknowledge in seconds and then sit idle for an hour without breaching anything.</p>
+
+<h3 class="h3">Initial Triage / Investigation Clock</h3>
+<p>Starts at ownership, stops when the analyst assigns a first categorization and severity — the pivot for the entire stack, since every downstream target keys off it, so an under-called severity quietly loosens every SLA that follows.</p>
+
+<h3 class="h3">Customer Notification Clock</h3>
+<p>Starts when a case crosses the contract's notification threshold, stops when the customer is formally informed — but legal and PR review of permitted language routinely sits inside this window, so the analyst who found the issue rarely controls the stop timestamp.</p>
+
+<h3 class="h3">Escalation Clock</h3>
+<p>Starts when a Tier 1 analyst determines a case exceeds their authority, stops when Tier 2/3 acknowledges the handoff — governed by an internal operational-level agreement (OLA) rather than the customer SLA, though a slow escalation usually turns a borderline downstream clock into an outright breach.</p>
+
+<h3 class="h3">Containment Clock</h3>
+<p>Starts when the decision to act is made and is supposed to stop the moment the threat is "contained" — a judgment call, not an instrument-measurable event, so the analyst, the IR lead, and the customer can each reasonably assert a different timestamp.</p>
+
+<h3 class="h3">Investigation (Deep) Clock</h3>
+<p>Starts once containment is asserted and covers root-cause and scope work, stopping when that scope is established — it consumes the largest share of analyst hours on most cases, yet is the clock most often excluded from the SLA entirely, because contracts are written for triage-and-respond, not forensics.</p>
+
+<h3 class="h3">Resolution Clock</h3>
+<p>Supposed to start at containment and stop at "resolved" — but resolved is overloaded: contained, eradicated, and fully recovered are three distinct states, and a contract that doesn't specify which one closes the clock leaves the earliest defensible option free to be picked.</p>
+
+<h3 class="h3">Closure Clock</h3>
+<p>Starts at resolution, stops at formal sign-off — often gated on the customer confirming the case is done, so a fully resolved case can sit open on the dashboard, accumulating time against a metric the SOC can no longer influence.</p>
+
+<h3 class="h3">Post-Incident Report Clock</h3>
+<p>Starts at closure, stops when a formal RCA is delivered, paced by the SOC's own capacity rather than external pressure — the deadline most often quietly missed, because it competes directly with time an analyst could spend on a case still counting down.</p>
+
+<div class="figure">
+<img src="../../assets/mockups/cockpit-dashboard.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 4.2</span><span class="figtext">A live SLA countdown view of the kind a shift lead watches in real time, showing several clocks in flight across different cases — illustrative and not a real tenant or incident.</span></div>
+</div>
+
+<p>A single "SLA compliance: 94%" summary hides that a shift lead manages a portfolio of countdowns, each owned by a different person — a case can be healthy on acknowledgement while quietly burning through containment in the next row down, which only a nine-clock view shows in time to act.</p>
+
+<h3 class="h3">A Sample SLA Model</h3>
+<div class="callout illustrative">
+<span class="callout-label">Illustrative Example — Not a Universal Industry Standard</span>
+One hypothetical MSSP/SOC contract model shown only to demonstrate how a severity-to-time table is typically <em>structured</em> — no source (NIST, FIRST, ITIL, CISA, SANS) publishes a fixed cross-industry version, and real numbers vary by contract, customer tier, and severity definition (e.g. Microsoft Azure support plans map the same "Sev A" label to different response times depending on the support plan purchased).
+</div>
+
+<table class="clean" style="table-layout:fixed;width:100%;">
+<thead>
+<tr>
+<th style="width:22%;">Severity (illustrative)</th>
+<th style="width:13%;">Acknowledge</th>
+<th style="width:13%;">Investigation Begins</th>
+<th style="width:13%;">Notification</th>
+<th style="width:13%;">Containment</th>
+<th style="width:13%;">Resolution</th>
+<th style="width:13%;">Closure / RCA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="pill p1">P1</span>&nbsp;Critical — confirmed active compromise, business-critical system, exfiltration suspected</td>
+<td>15 min</td>
+<td>30 min</td>
+<td>1 hr (then every 2 hrs)</td>
+<td>4 hrs</td>
+<td>24 hrs</td>
+<td>Within 5 business days</td>
+</tr>
+<tr>
+<td><span class="pill p2">P2</span>&nbsp;High — likely malicious, contained blast radius, no confirmed exfiltration</td>
+<td>30 min</td>
+<td>1 hr</td>
+<td>4 hrs</td>
+<td>8 hrs</td>
+<td>3 business days</td>
+<td>Within 10 business days</td>
+</tr>
+<tr>
+<td><span class="pill p3">P3</span>&nbsp;Medium — suspicious activity, low immediate business impact</td>
+<td>2 hrs</td>
+<td>4 hrs</td>
+<td>1 business day</td>
+<td>N/A (monitor)</td>
+<td>5 business days</td>
+<td>Within 15 business days</td>
+</tr>
+<tr>
+<td><span class="pill p4">P4</span>&nbsp;Low — informational, policy violation, benign-positive candidate</td>
+<td>1 business day</td>
+<td>2 business days</td>
+<td>On closure</td>
+<td>N/A</td>
+<td>10 business days</td>
+<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p class="muted">These severity definitions, values, and business-day conventions are invented for illustration only. Real contracts define "acknowledge" versus "respond" differently, define an hour as business-hours versus 24×7 differently, and layer pause/stop-clock conditions — customer non-response, scheduled maintenance windows, disputed severity — that a simple table like this one cannot show.</p>
+
+</div>
+</body></html>

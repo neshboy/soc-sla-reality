@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  html,body{margin:0;}
+  body{
+    width:1500px; background:var(--d-page); color:var(--d-ink);
+    padding:56px 40px; font-family:var(--font);
+  }
+  /* everything in this fragment is dark-context; avoid the theme's
+     light-default p/li color by using div/span exclusively */
+  .row{ position:relative; width:1356px; }
+
+  .fig-header{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:36px; }
+  .fig-kicker{ font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--c1-blue-d); margin-bottom:6px; }
+  .fig-title{ font-size:20px; font-weight:800; letter-spacing:-.005em; color:var(--d-ink); }
+  .fig-sub{ font-size:11.5px; color:var(--d-ink-2); margin-top:5px; max-width:820px; line-height:1.5; }
+  .console .illustrative-tag{ color:var(--c1-blue-d); border-color:rgba(57,135,229,0.45); }
+
+  .incident-row{ display:flex; gap:24px; width:1356px; }
+  .inc-card{
+    flex:1 1 0; height:258px; display:flex; flex-direction:column; justify-content:space-between;
+    background:var(--d-surface); border:1px solid var(--d-border); border-radius:10px;
+    padding:18px 20px 16px;
+  }
+  .inc-card.pending{ border-left:3px solid var(--s-warning); }
+  .inc-top .inc-id-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .inc-id{ font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--d-ink-muted); font-weight:700; }
+  .inc-desc{ font-size:13px; line-height:1.48; color:var(--d-ink); font-weight:600; margin-bottom:12px; min-height:38px; }
+  .skill-label{ font-size:7.6px; text-transform:uppercase; letter-spacing:.07em; color:var(--d-ink-muted); font-weight:700; margin-bottom:5px; }
+  .skill-tag{
+    display:inline-block; font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:.02em;
+    color:var(--d-ink-2); background:rgba(255,255,255,0.06); border:1px solid var(--d-border);
+    border-radius:4px; padding:3px 9px;
+  }
+  .inc-bottom{ min-height:6px; }
+  .assign-note{ display:flex; align-items:center; gap:6px; font-size:9.6px; color:var(--d-ink-muted); letter-spacing:.02em; }
+  .assign-dot{ width:7px; height:7px; border-radius:50%; background:var(--c1-blue-d); flex:none; }
+  .inc-card .callout.warning{ margin:0; padding:9px 11px; border-radius:6px; }
+  .inc-card .callout.warning .callout-label{ color:var(--s-warning); font-size:8px; margin-bottom:2px; }
+  .inc-card .callout-text{ font-size:10.3px; font-weight:700; color:var(--d-ink); line-height:1.35; letter-spacing:.01em; }
+
+  .connector-svg{ display:block; width:1356px; height:92px; margin-top:14px; }
+
+  .analyst-row{ position:relative; width:1356px; height:128px; margin-top:8px; }
+  .pool-label{
+    position:absolute; left:0; top:0; font-size:9px; font-weight:700; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--d-ink-muted);
+  }
+  .chip-wrap{ position:absolute; top:34px; width:120px; text-align:center; }
+  .chip{
+    width:56px; height:56px; border-radius:50%; margin:0 auto 7px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:800; font-size:15px; color:var(--d-ink);
+    background:var(--d-surface); border:2px solid var(--c1-blue-d);
+  }
+  .chip.pending-chip{ border:2px dashed var(--s-warning); }
+  .chip-caption{ font-size:9px; color:var(--d-ink-muted); letter-spacing:.02em; }
+  .chip-flag{ font-size:8.4px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; margin-top:2px; }
+  .chip-flag.over{ color:var(--c2-orange-d); }
+
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; margin-top:40px; width:1356px; }
+  .legend{ display:flex; gap:18px; font-size:9.3px; color:var(--d-ink-muted); }
+  .legend .item{ display:flex; align-items:center; gap:6px; }
+  .legend svg{ display:block; }
+  .footnote{ font-size:12.5px; font-style:italic; color:var(--d-ink-2); letter-spacing:.01em; }
+</style>
+</head>
+<body>
+  <div class="console">
+    <div class="console-bar">
+      <div class="dot" style="background:#e34948;"></div>
+      <div class="dot" style="background:#eda100;"></div>
+      <div class="dot" style="background:#1baf7a;"></div>
+      <div class="title">shift-roster.soc — active-p1-queue</div>
+    </div>
+    <div class="console-body" style="padding:36px 32px 40px;">
+
+      <div class="row fig-header">
+        <div>
+          <div class="fig-kicker">Multiple P1s · One Shift</div>
+          <div class="fig-title">Resource Allocation Under Concurrent P1 Incidents</div>
+          <div class="fig-sub">Three simultaneous Priority-1 incidents, two qualified analysts on shift. Coverage snapshot at declaration.</div>
+        </div>
+        <span class="illustrative-tag">ILLUSTRATIVE</span>
+      </div>
+
+      <div class="row incident-row">
+        <div class="inc-card">
+          <div class="inc-top">
+            <div class="inc-id-row">
+              <span class="inc-id">INC-1</span>
+              <span class="pill p1">P1</span>
+            </div>
+            <div class="inc-desc">Suspected domain admin compromise — lateral movement toward DC02</div>
+            <div class="skill-label">Required Skill</div>
+            <span class="skill-tag">Identity / AD</span>
+          </div>
+          <div class="inc-bottom">
+            <div class="assign-note"><span class="assign-dot"></span>Assigned — JT</div>
+          </div>
+        </div>
+
+        <div class="inc-card">
+          <div class="inc-top">
+            <div class="inc-id-row">
+              <span class="inc-id">INC-2</span>
+              <span class="pill p1">P1</span>
+            </div>
+            <div class="inc-desc">Ransomware behavior detected on primary file server</div>
+            <div class="skill-label">Required Skill</div>
+            <span class="skill-tag">Endpoint / EDR</span>
+          </div>
+          <div class="inc-bottom">
+            <div class="assign-note"><span class="assign-dot"></span>Assigned — JT</div>
+          </div>
+        </div>
+
+        <div class="inc-card pending">
+          <div class="inc-top">
+            <div class="inc-id-row">
+              <span class="inc-id">INC-3</span>
+              <span class="pill p1">P1</span>
+            </div>
+            <div class="inc-desc">Anomalous IAM role creation in production AWS account</div>
+            <div class="skill-label">Required Skill</div>
+            <span class="skill-tag">Cloud / IAM</span>
+          </div>
+          <div class="inc-bottom">
+            <div class="callout warning">
+              <span class="callout-label">Status</span>
+              <div class="callout-text">Awaiting Incident Commander decision</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <svg class="row connector-svg" viewBox="0 0 1356 92" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowSolid" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#3987e5"/>
+          </marker>
+          <marker id="arrowDash" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#fab219"/>
+          </marker>
+        </defs>
+        <!-- JT (448,90) covers INC-1 (218,4) and INC-2 (678,4) -->
+        <path d="M448,90 L218,4" fill="none" stroke="#3987e5" stroke-width="2" marker-end="url(#arrowSolid)"/>
+        <path d="M448,90 L678,4" fill="none" stroke="#3987e5" stroke-width="2" marker-end="url(#arrowSolid)"/>
+        <!-- MR (1138,90) pending on INC-3 (1138,4), dashed -->
+        <path d="M1138,90 L1138,4" fill="none" stroke="#fab219" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrowDash)"/>
+        <circle cx="448" cy="88" r="4" fill="#3987e5"/>
+        <circle cx="1138" cy="88" r="4" fill="#fab219"/>
+      </svg>
+
+      <div class="row analyst-row">
+        <div class="pool-label">2 Qualified Analysts On Shift</div>
+        <div class="chip-wrap" style="left:388px;">
+          <div class="chip">JT</div>
+          <div class="chip-caption">On shift</div>
+          <div class="chip-flag over">Covering 2 P1s</div>
+        </div>
+        <div class="chip-wrap" style="left:1078px;">
+          <div class="chip pending-chip">MR</div>
+          <div class="chip-caption">On shift</div>
+          <div class="chip-flag" style="color:var(--d-ink-muted);">Not yet tasked</div>
+        </div>
+      </div>
+
+      <div class="row footer-row">
+        <div class="legend">
+          <div class="item"><svg width="26" height="8"><line x1="0" y1="4" x2="26" y2="4" stroke="#3987e5" stroke-width="2"/></svg>Active assignment</div>
+          <div class="item"><svg width="26" height="8"><line x1="0" y1="4" x2="26" y2="4" stroke="#fab219" stroke-width="2" stroke-dasharray="5 4"/></svg>Pending decision</div>
+        </div>
+        <div class="footnote">Two analysts, three P1s — someone decides what waits.</div>
+      </div>
+
+    </div>
+  </div>
+</body></html>

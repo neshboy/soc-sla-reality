@@ -1,0 +1,36 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 3</span>
+<h2 class="h2">Four SLAs, One Word</h2>
+
+<p class="lede">Everyone says "SLA," but a trainer, a lawyer, a ticketing system, and a customer are reading different documents. The confusion isn't communication failure — it's structural. Four things share one name; none measures the same thing.</p>
+
+<h3 class="h3">3.1 The Book SLA</h3>
+<p>The Book SLA is what gets taught: one analyst, one incident, walked through a phase model — NIST SP 800-61's lifecycle, or SANS's PICERL (Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned). Neither assigns minutes to a phase; it assumes full context and no queue — a teaching simplification, not reality.</p>
+
+<h3 class="h3">3.2 The Contractual SLA</h3>
+<p>The Contractual SLA carries legal weight, and it's the one fewest analysts read end to end. Buried in the MSA: severity definitions, clock conditions, capped penalties, and exclusions. ITIL formalizes SLA, OLA, and UC as a structure, but the number is negotiated per contract and severity tier.</p>
+
+<h3 class="h3">3.3 The Operational SLA</h3>
+<p>The Operational SLA is what SOC tooling measures minute to minute — a looser proxy for the Contractual SLA, rarely reconciled against the contract's actual language. A click-triggered ticketing stage isn't the same event as "identification" defined as confirmed malicious activity — whichever clock a manager watches becomes, functionally, "the SLA."</p>
+
+<h3 class="h3">3.4 Customer Expectation</h3>
+<p>The fourth lane is unwritten, which is why it causes the most friction. A customer who reads "one hour response" often assumes resolution within the hour; the contract usually just means acknowledgment. That gap can make a technically-met SLA and a furious customer coexist — and sink an account even when the other three lanes look clean.</p>
+
+<div class="callout note"><span class="callout-label">Reading the lanes together</span>Four instruments on one incident, each accurate on its own terms: Book teaches structure, Contractual allocates risk, Operational drives the shift, Customer Expectation decides renewal.</div>
+
+<div class="figure"><img src="../../assets/mockups/four-lanes-sla.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 3.1</span><span class="figtext">The same incident, read through four lanes, produces four plausible but different answers to "did we meet the SLA" — illustrative layout, not live SOC data.</span></div></div>
+
+<table class="clean">
+<tr><th>Lane</th><th>Who defines it</th><th>What it measures</th><th>Who reads it</th></tr>
+<tr><td>Book SLA</td><td>Trainers, vendor curricula</td><td>Idealized phase model (NIST, SANS PICERL) — structure, not a commitment</td><td>Analysts in training</td></tr>
+<tr><td>Contractual SLA</td><td>Legal teams, via the MSA</td><td>Severity tiers, clock conditions, penalties, exclusions — real risk allocation</td><td>Account managers, legal</td></tr>
+<tr><td>Operational SLA</td><td>SOC tooling configuration</td><td>Real-time proxy, loosely reconciled with contract language</td><td>Analysts, shift leads</td></tr>
+<tr><td>Customer Expectation</td><td>Nobody — forms informally</td><td>What the customer believes the number means; conflates acknowledgment with resolution</td><td>Whoever explains the gap</td></tr>
+</table>
+
+<p>These lanes are why one incident can be simultaneously "met" and "failed," depending on which lane you're reading.</p>
+
+</div></div></body></html>

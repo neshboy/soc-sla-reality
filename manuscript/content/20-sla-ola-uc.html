@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 10</span>
+<h2 class="h2">SLA vs. OLA vs. UC: The Hidden Contract Stack</h2>
+
+<p class="lede">A customer SLA reads as one promise, but a chain of agreements behind it — invisible to the customer — decides whether it holds. ITIL structures that chain as three instruments, each with its own owner, each able to break the number.</p>
+
+<h3 class="h3">10.1 Three Agreements, One Word</h3>
+
+<p>Per ITIL: an <strong class="accent">SLA</strong> is the commercial, externally-visible promise; an <strong class="accent">OLA</strong> supports it internally — L1 to L2, SOC to platform — no penalty, just an owner and clock; a <strong class="accent">UC</strong> is with an external supplier the SLA depends on, e.g. an EDR vendor's isolation turnaround. This chain shows whether a breach traces to an OLA, a UC, or slow analysts.</p>
+
+<table class="clean">
+<tr><th>Instrument</th><th>Relationship</th><th>What a breach means</th></tr>
+<tr><td>SLA</td><td>Provider &harr; customer</td><td>Credits, penalties, trust erosion</td></tr>
+<tr><td>OLA</td><td>Provider's own teams</td><td>Invisible to the customer; the SLA's buffer</td></tr>
+<tr><td>UC</td><td>Provider &harr; external supplier</td><td>Elapsed time the provider never controlled</td></tr>
+</table>
+
+<h3 class="h3">10.2 Same Engine, Different Field</h3>
+
+<p>Per ServiceNow's own Service Level Management documentation, SLA/OLA/UC records run on the same timer/task engine, differentiated only by a "Type" field &mdash; a missing OLA is a configuration gap, not a platform limit. Case Study 7 is exactly that gap.</p>
+
+<h3 class="h3">10.3 Worked Example: The 30-Minute Promise, Decomposed</h3>
+
+<p>Take a customer SLA promising P1 escalation to L2 within thirty minutes: delivering it means decomposing that clock into owned segments plus a buffer.</p>
+
+<div class="figure"><img src="../../assets/mockups/ola-buffer-breakdown.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 10.1</span><span class="figtext">A 30-minute customer SLA decomposed into four chained OLA segments — illustrative, not live-account data.</span></div></div>
+
+<div class="stat-grid">
+  <div class="stat-tile"><div class="label">L1 Triage Target</div><div class="value">10 MIN</div></div>
+  <div class="stat-tile"><div class="label">L2 Acceptance Target</div><div class="value">5 MIN</div></div>
+  <div class="stat-tile"><div class="label">IM Engagement Target</div><div class="value">5 MIN</div></div>
+  <div class="stat-tile"><div class="label">Buffer / Margin</div><div class="value">10 MIN</div></div>
+</div>
+
+<div class="callout illustrative">
+  <span class="callout-label">Illustrative example &mdash; not a universal industry standard</span>
+  This 10/5/5/10 split is illustrative, not prescriptive. No framework here &mdash; ITIL, NIST SP 800-61, FIRST's CSIRT Services Framework, or other &mdash; sets these durations; it's negotiated per account.
+</div>
+
+<p>L2's five minutes accepts the ticket, not resolves it. Each segment should be its own OLA, so a red number points to which segment ate the buffer.</p>
+
+<h3 class="h3">10.4 Why an SLA Without Matching OLAs Is Structurally Unsound</h3>
+
+<p>An SLA without a backing OLA chain is unmeasured, not conservative: no leg is bounded, so time can vanish at any handoff. Case Study 7: L1 triaged in twelve minutes, inside that account's own OLA target (a separate figure from the illustrative 10-minute example above); no OLA covered L2 acceptance, so the ticket sat unopened forty-five more minutes &mdash; fifty-seven total against a thirty-minute SLA, from one unowned segment.</p>
+
+<p>Case Study 8 mirrors this one layer out: a flawless OLA chain can still miss the SLA if resolution depends on an external UC &mdash; a cloud control-plane action, an ISP null-route &mdash; the last mile the provider never controlled. Soundness needs both halves.</p>
+
+<div class="quote-block">
+  <p>Every SLA a customer signs has a silent co-signer: the OLA and UC chain behind it. No SOC can out-perform a promise that a third party's contract already broke.</p>
+</div>
+
+</div></div></body></html>

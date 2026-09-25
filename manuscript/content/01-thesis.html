@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body>
+<div class="flow">
+
+<div class="lede">What the contract specifies and what the SOC does to close an incident are two records of the same event — a countdown, and an investigation under incomplete information. This paper is about the gap.</div>
+
+<span class="kicker">Framing the Problem</span>
+<h2 class="h2">The Central Thesis</h2>
+
+<p>An SLA measures elapsed time; a SOC manages uncertainty, dependencies, and risk. Meeting the SLA doesn't mean the investigation was good; breaching it doesn't mean the SOC failed. That gap is a category error, not a rounding error.</p>
+
+<div class="figure">
+  <img src="../../assets/mockups/thesis-diagram.png" style="width:100%;display:block;">
+  <div class="figcap"><span class="fignum">FIGURE 1.1</span><span class="figtext">The contractual clock against the analyst's uncertainty cloud — illustrative only, not a specific case or environment.</span></div>
+</div>
+
+<p>The clock is precise; the cloud — complete telemetry, confirmed scope, corroborated evidence — is not.</p>
+
+<p>Four claims underlie it:</p>
+
+<h3 class="h3">a. An SLA Is a Negotiated Clock</h3>
+<p>A service-level agreement fixes when a timer starts, stops, and what duration is acceptable — a negotiated business term, not a technical constant. Every severity-to-duration figure in this paper is illustrative, not a universal standard — no accreditation body publishes a definitive number for "the" SOC SLA.</p>
+
+<h3 class="h3">b. SOC Work Is Investigation Under Incomplete Information</h3>
+<p>An analyst rarely has a complete picture: telemetry can be partial, scope isn't self-evident, and one indicator is a lead until corroborated. Closure often depends on someone the SOC doesn't manage. That isn't the SOC being slow — it's reducing uncertainty on a timeline others partially control.</p>
+
+<h3 class="h3">c. The Two Overlap, But They Are Not Identical</h3>
+<p>Ordinarily the SLA and investigation quality move together, which is why the two get conflated; the divergence shows at the tails. A trivial alert can breach its window for administrative reasons; another can close inside its window because a corroborating log went unchecked — an investigation problem wearing a compliant clock.</p>
+
+<h3 class="h3">d. Two Outcomes a Compliance Dashboard Cannot Tell Apart</h3>
+<p>Pull those three claims together and two outcomes fall out that a compliance percentage cannot tell apart.</p>
+
+<div class="callout illustrative">
+  <span class="callout-label">Two Real Outcomes, One Indistinguishable Dashboard</span>
+  <p><strong>SLA met, investigation poor.</strong> An analyst closes a <span class="pill p2">P2</span> alert inside the window without pulling the telemetry that would have contextualized it. The report shows a compliant case; nobody found the actual exposure.</p>
+  <p><strong>SLA breached, SOC did its job.</strong> A <span class="pill p1">P1</span> alert stalls because containment needs a change-approval the customer's board hasn't granted, or a support queue is the only path to a forensic image. The clock runs; the analyst's work was correct.</p>
+</div>
+
+<p>A monthly percentage can't tell these two cases apart — both produce identical entries in an SLA-compliance column while saying nothing about which case reduced risk. This matters more now that detection and response often runs through an MDR or MSSP, so the relationship is defined by contract, not visibility into the investigation — a dynamic examined later in this paper.</p>
+
+<p>The rest of the paper covers the SLA taxonomy and where it diverges from a real queue; ten case studies from real operating conditions; the operating model underneath both — gaming, quality measurement, pause-the-clock mechanics, OLA obligations, staffing — and a closing playbook for negotiating SLAs.</p>
+
+</div>
+</body></html>

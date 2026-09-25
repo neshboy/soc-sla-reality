@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; width:750px; background:var(--d-surface); }
+  .wrap{ width:750px; }
+
+  /* ---- top: executive summary (light) ---- */
+  .top-panel{ background:var(--l-surface); padding:28px 36px 26px; position:relative; }
+  .top-head{ display:flex; justify-content:space-between; align-items:flex-start; }
+  .headline-row{ display:flex; align-items:center; gap:26px; margin-top:16px; }
+  .big-num{ display:flex; align-items:baseline; gap:12px; }
+  .big-num .value{ font-size:60px; font-weight:800; color:var(--l-ink); line-height:1; letter-spacing:-0.02em; }
+  .big-num .labels .lbl{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--l-ink-2); }
+  .big-num .labels .delta{ font-size:13px; font-weight:700; color:var(--s-good); margin-top:4px; display:flex; align-items:center; gap:5px; }
+  .vrule{ width:1px; height:58px; background:var(--l-grid); flex:0 0 auto; }
+  .metric-pills{ display:flex; flex-direction:column; gap:8px; }
+  .metric-pills .pill.ok{ font-size:11px; padding:4px 12px; }
+
+  /* ---- seam ---- */
+  .seam{ position:relative; height:46px; background:linear-gradient(to bottom, var(--l-surface) 50%, var(--d-surface) 50%); }
+  .seam .line{ position:absolute; top:50%; left:0; right:0; border-top:2px dashed var(--s-critical); transform:translateY(-1px); }
+  .seam .chip{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    background:var(--s-critical); color:#fff; font-size:11px; font-weight:800;
+    letter-spacing:.05em; text-transform:uppercase; padding:6px 16px; border-radius:20px; white-space:nowrap;
+  }
+
+  /* ---- bottom: exposed audit (dark console) ---- */
+  .bottom-panel{ border-radius:0; border:none; }
+  .bottom-panel .console-body{ padding:22px 36px 26px; }
+  .subhead{ font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--d-ink-muted); margin-bottom:14px; }
+  .finding{ display:flex; align-items:flex-start; gap:12px; margin-bottom:13px; }
+  .finding:last-of-type{ margin-bottom:0; }
+  .finding .marker{
+    flex:0 0 auto; width:20px; height:20px; border-radius:50%; color:#fff;
+    font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+  .finding .text{ font-size:14px; line-height:1.4; color:var(--d-ink); padding-top:1px; }
+  .closing{ border-top:1px solid var(--d-grid); margin-top:18px; padding-top:14px; }
+  .closing p{ font-size:13.5px; font-weight:700; color:var(--d-ink); line-height:1.4; margin:0; }
+  .closing p span{ color:var(--s-critical); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TOP: polished executive dashboard -->
+  <div class="top-panel">
+    <div class="top-head">
+      <div class="kicker">EXECUTIVE SUMMARY — WEEKLY SLA REPORT</div>
+      <span class="illustrative-tag">ILLUSTRATIVE</span>
+    </div>
+    <div class="headline-row">
+      <div class="big-num">
+        <div class="value">99%</div>
+        <div class="labels">
+          <div class="lbl">SLA Compliance</div>
+          <div class="delta">&#9650; +2.1 pts vs. last week</div>
+        </div>
+      </div>
+      <div class="vrule"></div>
+      <div class="metric-pills">
+        <span class="pill ok">0 breaches this week</span>
+        <span class="pill ok">100% P1 acknowledged on time</span>
+        <span class="pill ok">4.2 min avg. first response</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEAM -->
+  <div class="seam">
+    <div class="line"></div>
+    <div class="chip">What the dashboard doesn't show</div>
+  </div>
+
+  <!-- BOTTOM: exposed case audit -->
+  <div class="console bottom-panel">
+    <div class="console-bar">
+      <span class="dot" style="background:var(--s-critical);"></span>
+      <span class="dot" style="background:var(--s-warning);"></span>
+      <span class="dot" style="background:var(--s-good);"></span>
+      <span class="title">case_audit.log — sampled against this week's "green" tickets</span>
+    </div>
+    <div class="console-body">
+      <div class="subhead">5 of 5 sampled cases had at least one unrecorded gap</div>
+
+      <div class="finding">
+        <span class="marker" style="background:var(--s-critical);">&#10005;</span>
+        <span class="text">Premature closure before evidence review</span>
+      </div>
+      <div class="finding">
+        <span class="marker" style="background:var(--s-serious);">&#10005;</span>
+        <span class="text">False-positive disposition without verification</span>
+      </div>
+      <div class="finding">
+        <span class="marker" style="background:var(--s-critical);">&#10005;</span>
+        <span class="text">Case closed, then reopened two days later</span>
+      </div>
+      <div class="finding">
+        <span class="marker" style="background:var(--s-serious);">&#10005;</span>
+        <span class="text">Generic copy-paste investigation notes</span>
+      </div>
+      <div class="finding">
+        <span class="marker" style="background:var(--s-critical);">&#10005;</span>
+        <span class="text">One missed lateral-movement alert</span>
+      </div>
+
+      <div class="closing">
+        <p>A <span>99% compliance rate</span> measures the clock — not the investigation.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body></html>

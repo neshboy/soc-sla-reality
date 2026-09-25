@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; }
+
+  .fig-wrap{
+    width:780px;
+    background:var(--l-page);
+    padding:20px;
+  }
+
+  .fig-card{
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid var(--l-border);
+  }
+
+  /* override the bare .split border/radius — the outer .fig-card owns those now */
+  .fig-card .split{ border:none; border-radius:0; }
+
+  .split .side{ padding:22px 26px 24px; }
+
+  .side.book{ display:flex; flex-direction:column; }
+  .side.book ol{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; }
+  .side.book ol li{ font-size:11pt; margin-bottom:18px; }
+  .side.book ol li:last-child{ margin-bottom:0; }
+  .side.book ol li::marker{ color:var(--c1-blue); font-weight:800; }
+
+  .side.reality ul{ padding-left:17px; }
+  .side.reality ul li{ font-size:9.6pt; margin-bottom:10px; }
+  .side.reality ul li:last-child{ margin-bottom:0; }
+  .side.reality ul li::marker{ color:var(--c2-orange-d); }
+
+  .split .side h4{ display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+
+  .caption-bar{
+    background:var(--d-page);
+    color:var(--d-ink-2);
+    text-align:center;
+    font-style:italic;
+    font-size:10.3pt;
+    line-height:1.5;
+    padding:14px 24px;
+    border-top:1px solid var(--d-border);
+  }
+</style>
+</head>
+<body>
+<div class="fig-wrap">
+  <div class="fig-card">
+    <div class="split">
+      <div class="side book">
+        <h4>The Textbook SOC</h4>
+        <ol>
+          <li>One alert arrives</li>
+          <li>Analyst investigates</li>
+          <li>Analyst escalates</li>
+          <li>Case closes</li>
+        </ol>
+      </div>
+      <div class="side reality">
+        <h4>The SOC at 2:17&nbsp;AM <span class="illustrative-tag">Illustrative</span></h4>
+        <ul>
+          <li>15 alerts arrive together</li>
+          <li>Two SIEM rules create duplicate incidents</li>
+          <li>EDR console is slow to load</li>
+          <li>Customer contact is unreachable</li>
+          <li>Firewall logs are delayed 20 minutes</li>
+          <li>Analyst is mid-P1 on another case</li>
+          <li>Shift ends in 40 minutes</li>
+          <li>Threat-intel enrichment call times out</li>
+          <li>Another team owns the endpoint</li>
+          <li>Management wants a status update</li>
+          <li>Customer asks why the ticket isn't closed yet</li>
+        </ul>
+      </div>
+    </div>
+    <div class="caption-bar">&ldquo;The SLA timer does not know which side of this page it is on.&rdquo;</div>
+  </div>
+</div>
+</body></html>

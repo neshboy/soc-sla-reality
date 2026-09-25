@@ -1,0 +1,276 @@
+/* ============================================================
+   SOC SLA REALITY — shared design system
+   Light = report body (Mandiant-style analyst paper)
+   Dark  = cover / section dividers / SOC console mockups
+   Palette source: dataviz skill reference palette (validated)
+   ============================================================ */
+
+:root{
+  /* ---- light (report surface) ---- */
+  --l-surface:      #fcfcfb;
+  --l-page:         #f9f9f7;
+  --l-ink:          #0b0b0b;
+  --l-ink-2:        #52514e;
+  --l-ink-muted:    #898781;
+  --l-grid:         #e1e0d9;
+  --l-baseline:     #c3c2b7;
+  --l-border:       rgba(11,11,11,0.10);
+
+  /* ---- dark (console / cover surface) ---- */
+  --d-surface:      #1a1a19;
+  --d-page:         #0d0d0d;
+  --d-ink:          #ffffff;
+  --d-ink-2:        #c3c2b7;
+  --d-ink-muted:    #898781;
+  --d-grid:         #2c2c2a;
+  --d-baseline:     #383835;
+  --d-border:       rgba(255,255,255,0.10);
+
+  /* ---- categorical (fixed order, never cycled) ---- */
+  --c1-blue:    #2a78d6;  --c1-blue-d:    #3987e5;
+  --c2-orange:  #eb6834;  --c2-orange-d:  #d95926;
+  --c3-aqua:    #1baf7a;  --c3-aqua-d:    #199e70;
+  --c4-yellow:  #eda100;  --c4-yellow-d:  #c98500;
+  --c5-magenta: #e87ba4;  --c5-magenta-d: #d55181;
+  --c6-green:   #008300;  --c6-green-d:   #008300;
+  --c7-violet:  #4a3aa7;  --c7-violet-d:  #9085e9;
+  --c8-red:     #e34948;  --c8-red-d:     #e66767;
+
+  /* ---- status (reserved, never reused as series) ---- */
+  --s-good:     #0ca30c;
+  --s-warning:  #fab219;
+  --s-serious:  #ec835a;
+  --s-critical: #d03b3b;
+
+  /* ---- sequential blue ramp (magnitude) ---- */
+  --seq-100:#cde2fb; --seq-150:#b7d3f6; --seq-200:#9ec5f4; --seq-250:#86b6ef;
+  --seq-300:#6da7ec; --seq-350:#5598e7; --seq-400:#3987e5; --seq-450:#2a78d6;
+  --seq-500:#256abf; --seq-550:#1c5cab; --seq-600:#184f95; --seq-650:#104281;
+  --seq-700:#0d366b;
+
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Consolas", "SF Mono", "Cascadia Mono", monospace;
+}
+
+*{box-sizing:border-box;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+  color-adjust:exact!important;
+}
+html,body{margin:0;padding:0;}
+body{font-family:var(--font);}
+
+/* ============================================================
+   PAGE / PRINT
+   ============================================================ */
+@page{ size: 8.5in 11in; margin: 0; }
+@page flow{ margin: 0.9in 0.9in 1in 0.9in; }
+@page pageB{ margin: 0; }
+.page.alt{ page: pageB; }
+
+/* Full-bleed single page (cover / section dividers) — exactly one PDF page each */
+.page{
+  page: auto;
+  width:8.5in!important; max-width:none!important; min-height:11in; background:var(--l-surface); color:var(--l-ink);
+  position:relative; overflow:hidden; page-break-before:always; break-before:page;
+  page-break-after:always; break-after:page; box-sizing:border-box;
+  padding: 0.85in 0.9in 0.95in 0.9in;
+}
+.page:last-child{page-break-after:auto;}
+.page.dark{ background:var(--d-surface); color:var(--d-ink); }
+.page.no-pad{padding:0;}
+
+/* Flowing body content — normal print margins repeat automatically across
+   as many physical pages as the content needs; do NOT wrap this in .page */
+.flow{ page: flow; max-width:6.7in; margin:0 auto; }
+.flow .figure, .flow .callout, .flow .quote-block, .flow table.clean,
+.flow .stat-grid{ page-break-inside:avoid; break-inside:avoid; }
+.flow .case-head{ page-break-after:avoid; break-after:avoid; }
+.flow .case-meta{ page-break-inside:avoid; break-inside:avoid; }
+.flow h2.h2, .flow h3.h3{ page-break-after:avoid; break-after:avoid; }
+.flow .section{ page-break-before:always; break-before:page; padding-top:0.05in; }
+.flow .section:first-child{ page-break-before:auto; break-before:auto; }
+
+.pagefoot{
+  position:absolute; left:0.9in; right:0.9in; bottom:0.42in;
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-size:8.2pt; letter-spacing:.04em; text-transform:uppercase; color:var(--l-ink-muted);
+  border-top:1px solid var(--l-grid); padding-top:8px;
+}
+.page.dark .pagefoot{ color:var(--d-ink-muted); border-top-color:var(--d-grid); }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.kicker{
+  font-size:9.5pt; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--c1-blue);
+}
+.page.dark .kicker{ color:var(--c1-blue-d); }
+h1.h1{ font-size:27pt; line-height:1.12; font-weight:800; margin:.18in 0 .10in; letter-spacing:-.01em;}
+h2.h2{ font-size:16.5pt; font-weight:800; margin:.32in 0 .12in; letter-spacing:-.005em;
+  border-left:4px solid var(--c1-blue); padding-left:10px;}
+.page.dark h2.h2{ border-left-color:var(--c1-blue-d); }
+h3.h3{ font-size:12.5pt; font-weight:700; margin:.22in 0 .08in; color:var(--l-ink);}
+.page.dark h3.h3{ color:var(--d-ink); }
+.lede{ font-size:12.5pt; line-height:1.55; color:var(--l-ink-2); }
+.page.dark .lede{ color:var(--d-ink-2); }
+p, li{ font-size:10.3pt; line-height:1.58; color:var(--l-ink); margin:0 0 8pt; }
+.page.dark p, .page.dark li{ color:var(--d-ink); }
+small.muted, .muted{ color:var(--l-ink-muted); font-size:9pt; }
+.page.dark .muted{ color:var(--d-ink-muted); }
+strong.accent{ color:var(--c1-blue); }
+.page.dark strong.accent{ color:var(--c1-blue-d); }
+
+/* ============================================================
+   COVER
+   ============================================================ */
+.cover{
+  background: radial-gradient(circle at 78% 8%, rgba(57,135,229,0.22), transparent 45%),
+              radial-gradient(circle at 8% 92%, rgba(214,73,72,0.14), transparent 40%),
+              var(--d-page);
+  color:var(--d-ink); display:flex; flex-direction:column; justify-content:space-between;
+}
+.cover .brand-row{ display:flex; justify-content:space-between; align-items:center; padding:.55in .7in 0;}
+.cover .brand{ font-size:10pt; font-weight:700; letter-spacing:.16em; color:var(--d-ink-2);}
+.cover .tag{ font-size:9pt; color:var(--d-ink-muted); letter-spacing:.08em;}
+.cover .cover-clock{ align-self:center; margin:0 auto;}
+.cover .title-block{ padding:0 .8in; }
+.cover .title-block .kicker{ color:var(--c2-orange-d); }
+.cover h1{ font-size:46pt; font-weight:800; line-height:1.04; margin:.14in 0; letter-spacing:-.015em;}
+.cover .subtitle{ font-size:14.5pt; color:var(--d-ink-2); max-width:6.4in; line-height:1.4;}
+.cover .footer-row{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  padding:0 .8in .65in; border-top:1px solid var(--d-border); margin-top:.4in; padding-top:.28in;
+}
+.cover .footer-row .meta{ font-size:9pt; color:var(--d-ink-muted); line-height:1.6; }
+
+/* ============================================================
+   DIVIDER (section opener, dark, full bleed)
+   ============================================================ */
+.divider{
+  background:var(--d-page); color:var(--d-ink);
+  display:flex; flex-direction:column; justify-content:center; padding:0 1in;
+  position:relative;
+}
+.divider .num{
+  font-size:110pt; font-weight:800; color:transparent; -webkit-text-stroke:2px var(--c1-blue-d);
+  line-height:1; margin-bottom:.05in;
+}
+.divider .kicker{ color:var(--c2-orange-d); }
+.divider h1{ font-size:33pt; font-weight:800; line-height:1.1; margin:.1in 0 .16in; max-width:6.6in;}
+.divider .desc{ font-size:12pt; color:var(--d-ink-2); max-width:5.6in; line-height:1.55;}
+
+/* ============================================================
+   CALLOUTS
+   ============================================================ */
+.callout{ border-radius:8px; padding:12px 14px; margin:10px 0 14px; font-size:9.7pt; line-height:1.5; }
+.callout .callout-label{ font-weight:800; letter-spacing:.05em; text-transform:uppercase; font-size:8.3pt; display:block; margin-bottom:3px;}
+.callout.illustrative{ background:rgba(57,135,229,0.08); border:1px solid rgba(42,120,214,0.35); }
+.callout.illustrative .callout-label{ color:var(--c1-blue); }
+.callout.warning{ background:rgba(250,178,25,0.10); border:1px solid rgba(250,178,25,0.45); }
+.callout.warning .callout-label{ color:#8a6200; }
+.callout.critical{ background:rgba(208,59,59,0.08); border:1px solid rgba(208,59,59,0.4); }
+.callout.critical .callout-label{ color:var(--s-critical); }
+.callout.note{ background:#f1f1ee; border:1px solid var(--l-grid); }
+.callout.note .callout-label{ color:var(--l-ink-2); }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+table.clean{ width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:9.3pt; }
+table.clean th{
+  text-align:left; font-size:8.3pt; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--l-ink-muted); border-bottom:1.5px solid var(--l-baseline); padding:6px 10px 7px;
+  font-weight:700;
+}
+table.clean td{ padding:8px 10px; border-bottom:1px solid var(--l-grid); vertical-align:top; color:var(--l-ink); word-wrap:break-word; overflow-wrap:break-word;}
+table.clean th{ word-wrap:break-word; overflow-wrap:break-word;}
+table.clean tr:last-child td{ border-bottom:none; }
+table.clean tbody tr:nth-child(odd){ background:rgba(11,11,11,0.015); }
+
+/* ============================================================
+   PILLS / BADGES
+   ============================================================ */
+.pill{ display:inline-flex; align-items:center; gap:5px; padding:2.5px 9px; border-radius:20px;
+  font-size:8pt; font-weight:700; letter-spacing:.03em; }
+.pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+.pill.p1{ background:rgba(208,59,59,0.12); color:var(--s-critical); }
+.pill.p2{ background:rgba(236,131,90,0.14); color:#b25322; }
+.pill.p3{ background:rgba(250,178,25,0.16); color:#8a6200; }
+.pill.p4{ background:rgba(11,11,11,0.06); color:var(--l-ink-2); }
+.pill.ok{ background:rgba(12,163,12,0.12); color:var(--s-good); }
+.tag{ display:inline-block; padding:2px 8px; border-radius:4px; background:rgba(11,11,11,0.05);
+  color:var(--l-ink-2); font-size:8pt; font-weight:600; letter-spacing:.02em;}
+
+/* ============================================================
+   FIGURES
+   ============================================================ */
+.figure{ margin:10px 0 14px; }
+.figure img{ max-width:100%; max-height:2.9in; width:auto; height:auto; display:block; margin:0 auto;
+  border-radius:6px; border:1px solid var(--l-border); }
+.figure .figcap{ display:flex; gap:8px; align-items:baseline; margin-top:7px; }
+.figure .fignum{ font-weight:800; color:var(--c1-blue); font-size:8.6pt; letter-spacing:.04em;}
+.figure .figtext{ font-size:8.8pt; color:var(--l-ink-2); line-height:1.45; }
+.illustrative-tag{
+  display:inline-block; font-size:7.6pt; font-weight:800; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--c1-blue); border:1px solid rgba(42,120,214,0.4); border-radius:3px; padding:1.5px 6px; margin-left:6px;
+}
+
+/* ============================================================
+   CASE-STUDY CARD
+   ============================================================ */
+.case{ border:1px solid var(--l-grid); border-radius:10px; margin:14px 0 20px; overflow:hidden; }
+.case-head{ background:var(--d-surface); color:var(--d-ink); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;}
+.case-head .case-num{ font-size:8.5pt; font-weight:700; letter-spacing:.1em; color:var(--c2-orange-d); text-transform:uppercase;}
+.case-head h3{ margin:2px 0 0; font-size:12.5pt; color:var(--d-ink); font-weight:800;}
+.case-body{ padding:12px 16px 4px; }
+.case-meta{ display:flex; gap:18px; flex-wrap:wrap; padding:10px 16px; background:#f1f1ee; border-bottom:1px solid var(--l-grid); font-size:8.6pt;}
+.case-meta div b{ display:block; font-size:7.6pt; text-transform:uppercase; letter-spacing:.05em; color:var(--l-ink-muted); font-weight:700; margin-bottom:2px;}
+
+/* ============================================================
+   STAT TILES
+   ============================================================ */
+.stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:10px 0 18px; }
+.stat-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+.stat-tile{ background:var(--d-surface); color:var(--d-ink); border-radius:8px; padding:11px 13px; }
+.stat-tile .label{ font-size:7.6pt; text-transform:uppercase; letter-spacing:.05em; color:var(--d-ink-muted); font-weight:700;}
+.stat-tile .value{ font-size:19pt; font-weight:800; margin:3px 0 1px; }
+.stat-tile .delta{ font-size:8pt; font-weight:700; }
+.stat-tile .delta.good{ color:var(--s-good); }
+.stat-tile .delta.bad{ color:var(--s-critical); }
+
+/* ============================================================
+   QUOTE / MEMORABLE STATEMENT
+   ============================================================ */
+.quote-block{
+  background:var(--d-surface); color:var(--d-ink); border-radius:10px; padding:22px 26px;
+  margin:14px 0 20px; border-left:5px solid var(--c1-blue-d);
+}
+.quote-block p{ color:var(--d-ink); font-size:14.5pt; font-weight:700; line-height:1.4; margin:0; letter-spacing:-.005em;}
+.quote-block .attrib{ margin-top:8px; font-size:8.6pt; color:var(--d-ink-muted); text-transform:uppercase; letter-spacing:.05em; font-weight:700;}
+
+/* ============================================================
+   DASHBOARD / CONSOLE MOCKUP SHELL
+   ============================================================ */
+.console{ background:var(--d-surface); color:var(--d-ink); border-radius:10px; overflow:hidden; border:1px solid var(--d-border);}
+.console-bar{ display:flex; align-items:center; gap:6px; padding:8px 12px; background:#111110; border-bottom:1px solid var(--d-border);}
+.console-bar .dot{ width:9px; height:9px; border-radius:50%; }
+.console-bar .title{ margin-left:8px; font-size:8.3pt; color:var(--d-ink-muted); font-family:var(--mono); letter-spacing:.02em;}
+.console-body{ padding:14px 16px; }
+.console table{ width:100%; border-collapse:collapse; font-size:8pt; font-family:var(--mono);}
+.console th{ text-align:left; color:var(--d-ink-muted); font-size:7.3pt; text-transform:uppercase; letter-spacing:.04em; padding:4px 8px; border-bottom:1px solid var(--d-grid);}
+.console td{ padding:6px 8px; border-bottom:1px solid var(--d-grid); color:var(--d-ink);}
+
+/* ============================================================
+   SPLIT SCREEN (book vs reality)
+   ============================================================ */
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:10px; overflow:hidden; border:1px solid var(--l-border);}
+.split .side{ padding:16px 18px; }
+.split .side.book{ background:var(--l-surface); color:var(--l-ink); }
+.split .side.reality{ background:var(--d-surface); color:var(--d-ink); }
+.split .side h4{ margin:0 0 10px; font-size:9.5pt; text-transform:uppercase; letter-spacing:.08em; font-weight:800;}
+.split .side.book h4{ color:var(--c1-blue);}
+.split .side.reality h4{ color:var(--c2-orange-d);}
+.split ol,.split ul{ margin:0; padding-left:18px; font-size:8.7pt; line-height:1.65;}
+.split .side.reality li{ color:var(--d-ink); }

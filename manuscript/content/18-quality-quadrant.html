@@ -1,0 +1,46 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 8</span>
+<h2 class="h2">SLA vs. Quality: A Framework</h2>
+
+<p class="lede">Every closed case gets two verdicts: a procedural one (did it close inside the clock) and a substantive one (was the investigation actually good). A monthly SLA report collapses both into one compliance percentage. Plotted as SLA Met/Breached against Quality High/Low, four combinations emerge — only one is unambiguously a management problem.</p>
+
+<div class="figure"><img src="../../assets/mockups/sla-quality-quadrant.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 8.1</span><span class="figtext">Illustrative example, not a universal standard — case markers are synthetic, shown only to illustrate the framework's structure.</span></div></div>
+
+<table class="clean">
+<tr><th>Quadrant</th><th>Clock</th><th>Quality</th><th>Represents</th><th>Corrective action?</th></tr>
+<tr><td><strong>1 — Target State</strong></td><td>Met</td><td>High</td><td>Claimed outcome — verify, don't assume</td><td>No</td></tr>
+<tr><td><strong>2 — Lucky, Not Good</strong></td><td>Met</td><td>Low</td><td>Premature closure dressed as success</td><td>Yes — process review</td></tr>
+<tr><td><strong>3 — Safe But At Breach Risk</strong></td><td>Breached</td><td>High</td><td>Hard case, correctly worked</td><td>No — check the SLA's scoping</td></tr>
+<tr><td><strong>4 — Worst Case</strong></td><td>Breached</td><td>Low</td><td>Slow and wrong together</td><td>Yes — the one quadrant that warrants it</td></tr>
+</table>
+
+<h3 class="h3">8.1 Quadrant 1 — Target State: the Rarest Combination Anyone Can Actually Verify</h3>
+<p>Quadrant 1 is the least-verified claim in SLA reporting: "met" is recorded automatically, "high quality" is not. Verifying it takes evidence the clock never produces — RCA completeness, a second-reviewer audit score, a near-zero reopen rate.</p>
+
+<h3 class="h3">8.2 Quadrant 2 — Lucky, Not Good: Clock Theater</h3>
+<p>Quadrant 2 is clock theater: the timer stopped because the investigation stopped <em>looking</em>, not because it finished. Case Study 10, elsewhere in this paper, shows exactly this — a clean, on-time close a second reviewer later found rested on triage too thin for the evidence.</p>
+
+<h3 class="h3">8.3 Quadrant 3 — Safe But At Breach Risk: the Thesis Made Concrete</h3>
+<p>A genuinely novel incident can take longer to work correctly than any generic clock allows — the SLA breaches, but scope is correctly mapped and root cause confirmed, not assumed. The risk is reputational, not investigative: an x-axis-only report records this identically to Quadrant 4, erasing the difference between "hard" and "bad."</p>
+
+<h3 class="h3">8.4 Quadrant 4 — Worst Case: the Only Quadrant That Should Trigger Corrective Action</h3>
+<p>Here the clock breached and the investigation was also weak — scope incomplete, root cause unconfirmed. No complexity narrative to invoke, no clean dashboard row to hide behind: this is the one quadrant where management response — staffing, playbook, or queue-prioritization fixes — is actually justified, because both signals agree something went wrong.</p>
+
+<div class="callout warning">
+<span class="callout-label">What the compliance percentage cannot tell you</span>
+Compliance percentage can't distinguish Quadrant 1 from 2 (both "met"), or 3 from 4 (both "breached") — an x-axis-only dashboard is blind to the y-axis. Quality signals must sit <em>alongside</em> the clock, not be derived <em>from</em> it, or they just reproduce the x-axis under a new label.
+</div>
+
+<div class="callout critical">
+<span class="callout-label">The fifth case the grid can't plot</span>
+All four quadrants presuppose an alert fired and a clock started. None has a cell for the intrusion that triggers no alert at all — a false negative, a missed detection. There, the clock never starts, so SLA compliance reads 100% by default, while investigation quality is effectively zero: nothing was ever opened to investigate. That is a fifth, off-grid case a four-quadrant model is structurally unable to see, and it is the most extreme version of this section's own thesis — a fully "met" clock next to fully absent quality. Nothing on a compliance dashboard defends against it; the real countermeasures are threat hunting, purple-teaming, and detection-coverage audits, not SLA mechanisms.
+</div>
+
+<div class="quote-block">
+<p>Meeting the SLA does not mean the investigation was good. Breaching the SLA does not mean the SOC failed. The clock and the case are two different stories, and only one of them made it into the contract.</p>
+</div>
+
+</div></div></body></html>

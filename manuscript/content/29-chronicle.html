@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 18</span>
+<h2 class="h2">Platform Walkthrough: Google SecOps / Chronicle</h2>
+
+<p class="lede">Google Security Operations — still widely called Chronicle — publishes an explicit five-phase lifecycle: Collect, Detect, Investigate, Respond, Manage/Monitor. Google's documentation never attaches a numeric time target to any phase — it describes sequence, not contractual speed.</p>
+
+<h3 class="h3">18.1 The Five-Phase Lifecycle</h3>
+<p>Collect normalizes logs into the Unified Data Model. Detect correlates via YARA-L 2.0, curated packs, and threat-intel matching into an alert, not a case. Investigate hands off to a human — Section 4's investigation clock, started and stopped by analyst judgment alone. Respond runs SOAR playbooks, automated or approval-gated. Manage/Monitor tunes those rules from performance feedback.</p>
+
+<h3 class="h3">18.2 What a "Case" Actually Is</h3>
+<p>A "case" isn't a fixed unit — it's a container that administrator-configured grouping and overflow settings roll alerts into. Too loose, unrelated volume collapses into one case; too tight, a real attack chain scatters unseen.</p>
+<div class="callout note"><span class="callout-label">Why this distinction matters to the SLA argument</span>Because case boundaries are configured, not fixed, "case resolution time" isn't stable across tenants or across one tenant's own configuration changes — a clause citing it without specifying thresholds measures a moving boundary, not the work.</div>
+
+<h3 class="h3">18.3 One Alert Chain Through All Five Phases</h3>
+<p>The sequence below is a composite, not a real breach, threaded through Figure 18.1: an anomalous login trips correlated credential-stuffing and impossible-travel rules, a follow-on OAuth grant, a mailbox-forwarding rule, and a bulk export each correlate against the same entities — grouping settings (18.2) decide whether they join one case — reading as one entity's access-persistence-exfiltration chain, not four isolated alerts.</p>
+
+<div class="figure"><img src="../../assets/mockups/chronicle-illustrative-mock.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 18.1</span><span class="figtext">An illustrative case-investigation console modeled on Google SecOps' structure — synthetic data, not an actual screenshot or real tenant.</span></div></div>
+
+<p>Respond could revoke the grant, disable forwarding, and force a reset, automated or approval-gated by confidence; Manage/Monitor tightens or loosens the fired rules afterward.</p>
+
+<h3 class="h3">18.4 Two Clocks, Not One</h3>
+<p>Detection execution time is a compute-pipeline property, governed by ingestion latency and rule complexity. Investigation time is a human property — how long an analyst needs to establish scope and root cause with confidence. No vendor documentation reviewed here, Google's included, attaches a universal target to either, individually or combined. Blending "time to detect" and "time to investigate" into one SLA figure erases the distinction that determines who owns a delay.</p>
+
+<div class="callout warning"><span class="callout-label">Two clocks, one dashboard</span>Telemetry can tell you exactly how long detection took. It cannot tell you how long investigation should have taken — that belongs to the case file, not the pipeline, and treating pipeline speed as a proxy for diligence repeats the substitution Section 8 warned against.</div>
+
+</div></div></body></html>

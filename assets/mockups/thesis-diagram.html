@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; }
+  .wrap{
+    width:1400px; box-sizing:border-box; background:var(--l-surface); color:var(--l-ink);
+    padding:46px 70px 42px;
+  }
+  .hd .kicker{ color:var(--c1-blue); }
+  .hd h2{
+    font-size:23px; font-weight:800; margin:8px 0 8px; letter-spacing:-.01em; color:var(--l-ink);
+    border-left:4px solid var(--c1-blue); padding-left:12px;
+  }
+  .hd .sub{ font-size:13px; line-height:1.55; color:var(--l-ink-2); max-width:1000px; padding-left:16px; margin:0; }
+
+  .diagram{ margin:22px 0 4px; display:flex; justify-content:center; }
+
+  .lens-label{ font-family:var(--font); font-weight:800; letter-spacing:.03em; fill:var(--l-ink-2); font-size:13px; text-transform:uppercase; }
+  .shape-title{ font-family:var(--font); font-weight:800; letter-spacing:.02em; font-size:19px; }
+  .shape-sub{ font-family:var(--font); font-weight:600; fill:var(--l-ink-2); font-size:13px; }
+
+  .thesis-quote{
+    background:rgba(42,120,214,0.06); border-left:5px solid var(--c1-blue); border-radius:10px;
+    padding:20px 30px; margin-top:10px;
+  }
+  .thesis-quote p{ margin:0; font-size:16.5px; font-weight:700; line-height:1.48; color:var(--l-ink); letter-spacing:-.005em; }
+  .thesis-quote .attrib{
+    margin-top:9px; font-size:9.3px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:var(--l-ink-muted);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div class="kicker">FIGURE — CENTRAL THESIS</div>
+    <h2>The SLA Clock Is Not the SOC</h2>
+    <p class="sub">Every incident runs two systems at once — one measuring elapsed time against a contract, one managing everything elapsed time doesn't capture. The two sometimes line up. Often they don't. This report is about the gap between them.</p>
+  </div>
+
+  <div class="diagram">
+    <svg id="thesis" viewBox="0 0 1260 520" width="1260" height="520" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <div class="thesis-quote">
+    <p>&ldquo;An SLA measures elapsed time. A SOC manages uncertainty, dependencies, evidence, and risk.&rdquo;</p>
+    <div class="attrib">The argument of this report</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('thesis');
+  function el(tag, attrs){
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  // ---- geometry constants ----
+  const clockCx = 380, clockCy = 250, clockR = 140;
+  const cloudCx = 780, cloudCy = 250, rx = 210, ry = 140;
+  const mult = [1.05,0.95,1.10,0.92,1.08,0.90,1.05,1.28,1.48,1.28,1.05,1.10,0.90,1.12,0.98,1.08];
+  const N = mult.length;
+
+  // ---- build cloud polygon points (irregular blob, bulging toward the clock) ----
+  const pts = [];
+  for (let i=0;i<N;i++){
+    const a = (360/N)*i * Math.PI/180;
+    const m = mult[i];
+    pts.push([ cloudCx + rx*Math.cos(a)*m, cloudCy + ry*Math.sin(a)*m ]);
+  }
+
+  // ---- smooth closed path (Catmull-Rom -> cubic Bezier) ----
+  function smoothPath(p, k){
+    const n = p.length;
+    let d = `M ${p[0][0].toFixed(2)},${p[0][1].toFixed(2)} `;
+    for (let i=0;i<n;i++){
+      const p0 = p[(i-1+n)%n], p1 = p[i], p2 = p[(i+1)%n], p3 = p[(i+2)%n];
+      const c1x = p1[0] + (p2[0]-p0[0])*k, c1y = p1[1] + (p2[1]-p0[1])*k;
+      const c2x = p2[0] - (p3[0]-p1[0])*k, c2y = p2[1] - (p3[1]-p1[1])*k;
+      d += `C ${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2[0].toFixed(2)},${p2[1].toFixed(2)} `;
+    }
+    return d + "Z";
+  }
+  const cloudD = smoothPath(pts, 0.22);
+
+  // ---- defs: clip paths (used to derive the exact intersection "lens") ----
+  const defs = el('defs', {});
+  const clipCloud = el('clipPath', { id:'clipCloud' });
+  clipCloud.appendChild(el('path', { d: cloudD }));
+  defs.appendChild(clipCloud);
+  const clipClock = el('clipPath', { id:'clipClock' });
+  clipClock.appendChild(el('circle', { cx:clockCx, cy:clockCy, r:clockR }));
+  defs.appendChild(clipClock);
+  svg.appendChild(defs);
+
+  // ---- base cloud shape ----
+  svg.appendChild(el('path', { d:cloudD, fill:'rgba(74,58,167,0.10)', stroke:'var(--c7-violet)', 'stroke-width':4 }));
+
+  // ---- base clock shape ----
+  svg.appendChild(el('circle', { cx:clockCx, cy:clockCy, r:clockR, fill:'rgba(42,120,214,0.08)', stroke:'var(--c1-blue)', 'stroke-width':4 }));
+
+  // ---- intersection lens: fill + dashed boundary composited from both source shapes ----
+  // (drawn now, underneath the ticks/hands, so the clock face stays crisp on top of the wash)
+  svg.appendChild(el('circle', { cx:clockCx, cy:clockCy, r:clockR, fill:'rgba(11,11,11,0.17)', 'clip-path':'url(#clipCloud)' }));
+  svg.appendChild(el('circle', { cx:clockCx, cy:clockCy, r:clockR, fill:'none', stroke:'var(--l-ink-2)', 'stroke-width':2.5,
+    'stroke-dasharray':'6 4', opacity:0.7, 'clip-path':'url(#clipCloud)' }));
+  svg.appendChild(el('path', { d:cloudD, fill:'none', stroke:'var(--l-ink-2)', 'stroke-width':2.5,
+    'stroke-dasharray':'6 4', opacity:0.7, 'clip-path':'url(#clipClock)' }));
+
+  // ---- clock ticks ----
+  for (let i=0;i<12;i++){
+    const a = (i*30 - 90) * Math.PI/180;
+    const major = (i % 3 === 0);
+    const rOuter = clockR - 8;
+    const rInner = major ? clockR - 26 : clockR - 17;
+    const x1 = clockCx + rOuter*Math.cos(a), y1 = clockCy + rOuter*Math.sin(a);
+    const x2 = clockCx + rInner*Math.cos(a), y2 = clockCy + rInner*Math.sin(a);
+    svg.appendChild(el('line', { x1:x1.toFixed(2), y1:y1.toFixed(2), x2:x2.toFixed(2), y2:y2.toFixed(2),
+      stroke:'var(--c1-blue)', 'stroke-width': major?3:1.5, opacity: major?0.75:0.4, 'stroke-linecap':'round' }));
+  }
+
+  // ---- clock hands (classic "10:10" icon position) ----
+  function hand(angleDeg, length, width){
+    const a = (angleDeg - 90) * Math.PI/180;
+    const x2 = clockCx + length*Math.cos(a), y2 = clockCy + length*Math.sin(a);
+    return el('line', { x1:clockCx, y1:clockCy, x2:x2.toFixed(2), y2:y2.toFixed(2),
+      stroke:'var(--c1-blue)', 'stroke-width':width, 'stroke-linecap':'round' });
+  }
+  svg.appendChild(hand(300, clockR*0.52, 7));   // hour hand -> ~10 o'clock
+  svg.appendChild(hand(60,  clockR*0.76, 5));   // minute hand -> ~2 o'clock
+  svg.appendChild(el('circle', { cx:clockCx, cy:clockCy, r:7, fill:'var(--c1-blue)' }));
+
+  // ---- locate the lens (grid scan against clock circle + cloud polygon) for label placement ----
+  function pointInPoly(x,y,poly){
+    let inside=false;
+    for (let i=0,j=poly.length-1;i<poly.length;j=i++){
+      const xi=poly[i][0], yi=poly[i][1], xj=poly[j][0], yj=poly[j][1];
+      if (((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) inside=!inside;
+    }
+    return inside;
+  }
+  let minLX=Infinity, maxLX=-Infinity, minLY=Infinity, maxLY=-Infinity;
+  for (let x = clockCx-clockR; x <= clockCx+clockR; x += 2){
+    for (let y = clockCy-clockR; y <= clockCy+clockR; y += 2){
+      const dx=x-clockCx, dy=y-clockCy;
+      if (dx*dx+dy*dy > clockR*clockR) continue;
+      if (pointInPoly(x,y,pts)){
+        if (x<minLX) minLX=x; if (x>maxLX) maxLX=x;
+        if (y<minLY) minLY=y; if (y>maxLY) maxLY=y;
+      }
+    }
+  }
+  const lensTopX = (minLX+maxLX)/2, lensTopY = minLY;
+
+  // ---- overlap callout, anchored to the actual computed lens position ----
+  const labelY1 = 80, labelY2 = 100, dotY = lensTopY - 4;
+  svg.appendChild(el('line', { x1:lensTopX.toFixed(2), y1:(labelY2+10).toFixed(2), x2:lensTopX.toFixed(2), y2:dotY.toFixed(2),
+    stroke:'var(--l-ink-muted)', 'stroke-width':1.5, 'stroke-dasharray':'4 3' }));
+  svg.appendChild(el('circle', { cx:lensTopX.toFixed(2), cy:dotY.toFixed(2), r:4, fill:'var(--l-ink-2)' }));
+
+  const t1 = el('text', { x:lensTopX.toFixed(2), y:labelY1, 'text-anchor':'middle', class:'lens-label' });
+  t1.textContent = 'WHERE THEY SOMETIMES COINCIDE';
+  svg.appendChild(t1);
+  const t2 = el('text', { x:lensTopX.toFixed(2), y:labelY2, 'text-anchor':'middle', class:'lens-label' });
+  t2.textContent = '— AND OFTEN DON’T';
+  svg.appendChild(t2);
+
+  // ---- shape labels (aligned to a shared baseline under both shapes) ----
+  const cloudBottom = cloudCy + ry*mult[4]; // idx4 = 90deg = bottom of blob
+  const baseY = Math.max(clockCy+clockR, cloudBottom) + 46;
+
+  const slaTitle = el('text', { x:clockCx, y:baseY, 'text-anchor':'middle', class:'shape-title', style:'fill:var(--c1-blue);' });
+  slaTitle.textContent = 'THE SLA';
+  svg.appendChild(slaTitle);
+  const slaSub = el('text', { x:clockCx, y:baseY+24, 'text-anchor':'middle', class:'shape-sub' });
+  slaSub.textContent = 'elapsed time.';
+  svg.appendChild(slaSub);
+
+  const socTitle = el('text', { x:cloudCx, y:baseY, 'text-anchor':'middle', class:'shape-title', style:'fill:var(--c7-violet);' });
+  socTitle.textContent = 'THE SOC';
+  svg.appendChild(socTitle);
+  const socSub1 = el('text', { x:cloudCx, y:baseY+24, 'text-anchor':'middle', class:'shape-sub' });
+  socSub1.textContent = 'uncertainty, dependencies,';
+  svg.appendChild(socSub1);
+  const socSub2 = el('text', { x:cloudCx, y:baseY+45, 'text-anchor':'middle', class:'shape-sub' });
+  socSub2.textContent = 'evidence, and risk.';
+  svg.appendChild(socSub2);
+
+})();
+</script>
+</body></html>

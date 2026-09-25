@@ -1,0 +1,39 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 17</span>
+<h2 class="h2">Platform Walkthrough: QRadar</h2>
+
+<p class="lede">IBM QRadar, among the most widely deployed SIEM platforms, illustrates a point this paper keeps returning to: it prioritizes what an analyst sees, not how fast a human must act.</p>
+
+<h3 class="h3">The offense: correlation, not raw alerting</h3>
+
+<p>QRadar's core investigative unit is the <strong>offense</strong>: the record created when correlation rules judge related events or flows worth investigating together, rather than as separate queue items. That consolidation is QRadar's value as a SIEM; it carries no numeric handling target.</p>
+
+<h3 class="h3">Magnitude: a prioritization heuristic, not a severity contract</h3>
+
+<p>Every offense carries a <strong>magnitude</strong> score, weighted from three inputs — <strong>relevance</strong> (network impact), <strong>credibility</strong> (source corroboration), and <strong>severity</strong> (threat versus readiness) — into one normalized number, usually a ten-segment bar. IBM notes magnitude <strong>might not align to any single event</strong> inside an offense: high event volume doesn't guarantee high magnitude, as the figure below shows. It ranks IBM's queue, not a customer severity tier, with no response-time mapping.</p>
+
+<div class="figure">
+  <img src="../../assets/mockups/qradar-illustrative-mock.png" style="width:100%;display:block;">
+  <div class="figcap"><span class="fignum">FIGURE 17.1</span><span class="figtext">A synthetic offense console modeled on QRadar's layout (illustrative, not a real tenant): an 8,742-event offense scores near the bottom while an 88-event offense scores highest — magnitude reflects relevance, credibility, and severity, not volume.</span></div>
+</div>
+
+<div class="callout warning">
+  <span class="callout-label">Do not read magnitude as an SLA tier</span>
+  A magnitude of 9/10 reflects QRadar's internal weighting — not an IBM-certified response window or a contractual P1. Mapping magnitude bands onto SLA tiers without an explicit policy decision imports a vendor heuristic as negotiated severity.
+</div>
+
+<h3 class="h3">The Custom Rules Engine, building blocks, and reference sets</h3>
+
+<p>Offenses and magnitude exist because of the <strong>Custom Rules Engine (CRE)</strong>, which tests events, flows, and offenses against defined conditions and generates a response, typically an offense. Two constructs get mistaken for detections themselves: a <strong>building block</strong> is reusable rule logic — a tuning aid, generating no offense alone; a <strong>reference set</strong> is a dynamic, rule-populated watchlist (IPs, usernames) rules check automatically, making its tuning ongoing maturity work.</p>
+
+<h3 class="h3">Start time versus storage time — and "near real-time"</h3>
+
+<p>The earlier SIEM Ingestion Delay case study introduced QRadar's <strong>Device Time</strong> (the timestamp parsed from the event payload itself: the source's own report of when the activity happened) and <strong>Start Time</strong> (essentially that same source-reported timestamp — it falls back to arrival time only when the source provides none, so it is not when QRadar received the event). The field that actually marks when QRadar wrote the record is <strong>Storage Time</strong>, and it's the Start Time versus Storage Time gap — driven by network transit, source batching, queue depth, and license throttling, all before the CRE evaluates the record — that measures ingestion delay. IBM calls default correlation <strong>near real-time</strong>, a phrase, not a number, with no published latency guarantee.</p>
+
+<div class="callout note">
+  <span class="callout-label">What this section is not saying</span>
+  None of this criticizes QRadar's design — coalescing, throttling, and near-real-time correlation are reasonable trade-offs at this scale. Even QRadar's own vendor, with full pipeline visibility, won't commit to a numeric latency figure; SLA language shouldn't claim more certainty than IBM itself does.
+</div>
+
+</div></div></body></html>

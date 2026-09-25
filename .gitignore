@@ -1,0 +1,4 @@
+assets/_*
+build/_*
+**/*.tmp
+Thumbs.db

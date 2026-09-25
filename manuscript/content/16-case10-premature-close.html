@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 10</div>
+      <h3>The Premature Close<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+    <span class="pill p2">Clock Stopped, Not Solved</span>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Trigger</b>SLA timer running down to single-digit minutes before breach</div>
+    <div><b>Analyst Action</b>Case marked resolved before evidence review is complete</div>
+    <div><b>Dashboard Outcome</b>Case shows green &mdash; no breach recorded</div>
+    <div><b>Open Question</b>Did the investigation finish, or did the clock just stop?</div>
+  </div>
+
+  <div class="case-body">
+    <p>An overloaded analyst's routine case &mdash; an outbound connection still needing correlation and a reputation check &mdash; hits single digits on its SLA timer, unreviewed. The analyst writes a boilerplate note, marks it resolved, and closes it. The clock stops; the dashboard reads green. Unlike Case 05, where severity changed because evidence changed, here the case closed <em>instead of</em> the evidence being reviewed.</p>
+
+    <div class="callout critical">
+      <span class="callout-label">Naming the pattern: SLA gaming</span>
+      SLA gaming is any action that makes the SLA record look compliant without making the response correspondingly good, distinct from a good-faith wrong call under uncertainty. It reads identical to a well-handled case on any elapsed-time-only dashboard.
+    </div>
+
+    <p>It recurs in a recognizable set, each gaming a different part of the clock:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Gaming behavior</th><th>What it actually manipulates</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Premature closure</td><td>Resolved before the justifying analysis exists.</td></tr>
+        <tr><td>Incorrect false-positive call</td><td>Labeled benign to exit the breach count, not on evidence.</td></tr>
+        <tr><td>Close, then reopen</td><td>Closed for a timestamp, reopened later for the deferred work.</td></tr>
+        <tr><td>Severity downgrade</td><td>Looser tier without new evidence &mdash; Case 05's reclassification, inverted.</td></tr>
+        <tr><td>False "waiting on customer"</td><td>Stop-clock with no logged contact attempt (contrast Case 03).</td></tr>
+        <tr><td>Delayed ticket creation</td><td>Record opened after the alert, delaying the clock's start.</td></tr>
+        <tr><td>Copy-paste comments</td><td>Boilerplate mimics analysis with no case-specific substance.</td></tr>
+      </tbody>
+    </table>
+
+    <p>None require a dishonest individual &mdash; measuring analysts mainly on elapsed time predictably produces this. Catching it needs routine checks on signals the clock itself doesn't carry:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Governance control</th><th>What it catches</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Reopen-rate tracking</td><td>Quick reopens, by analyst and shift, signal premature or reopen-gamed closures. Broadened to a recurrence rate &mdash; new cases opened on the same asset, account, or indicator within a defined window of a prior closure &mdash; this also catches the closure abandoned and re-alerted as a brand-new ticket rather than a literal reopen.</td></tr>
+        <tr><td>Quality / root-cause audits</td><td>Sampled cases checked against evidence catch unreviewed, boilerplate closures.</td></tr>
+        <tr><td>Reclassification-rate monitoring</td><td>Severity moves plotted against time-to-breach surface deadline-correlated downgrades.</td></tr>
+      </tbody>
+    </table>
+
+    <p>These sit alongside the dashboard, not in place of it, checking what it structurally cannot: whether the work behind each stopped clock happened.</p>
+
+    <div class="callout note">
+      <span class="callout-label">Bridges to Section 7</span>
+      This case states plainly what Section 7 addresses in full: SLA gaming as an incentive-design failure, and the governance program that separates measuring response from managing metrics.
+    </div>
+  </div>
+</div>
+
+</div></body></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 14</span>
+<h2 class="h2">SLA Breach Management</h2>
+
+<p class="lede">Most SLA programs discover a breach at month-end — too late to do anything but explain it. Programs that hold up flag risk early, log the time, and only then judge the failure.</p>
+
+<h3 class="h3">Before the Clock Lapses: Flagging Risk and Reallocating</h3>
+
+<p>Whoever works a case flags risk before the clock lapses, as a warning rather than an accusation. A team lead then decides whether shift resources can clear it, or the constraint is external — documented at the time, since reconstructed later it reads as an excuse.</p>
+
+<p>Where practice calls for it, the customer is told before the deadline is the story. Each dependency gets logged as it happens; unlogged, it reads as the SOC's own delay.</p>
+
+<div class="callout note">
+<span class="callout-label">The clock does not get to decide when the investigation is finished</span>
+A flagged risk, a reallocation, a dependency log manage exposure to the clock — not permission to stop looking sooner. This is Section&nbsp;8's Quadrant&nbsp;3: a breached clock with a sound investigation.
+</div>
+
+<h3 class="h3">After the Breach: Classification, Review, and Corrective Action</h3>
+
+<p>The clock decides whether a breach occurred, not what it means. A missed target is classified against a root-cause taxonomy — using the dependency log and risk flag as evidence — then reviewed by the manager, who assigns an owner to corrective action. Without that, a root cause is a diagnosis with no treatment.</p>
+
+<h3 class="h3">A Seven-Branch Root-Cause Taxonomy</h3>
+
+<p>The taxonomy is this paper's own synthesis, generalized from Section&nbsp;6's case studies — not drawn from NIST, ITIL, FIRST, or any other cited framework. Treat it as a structure to adapt, not a checklist — meant to name a mechanism, not just say "the SLA was breached."</p>
+
+<div class="figure"><img src="../../assets/mockups/root-cause-taxonomy.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 14.1</span><span class="figtext">The seven-branch taxonomy used in this paper, mapped illustratively to its clearest case; authorial synthesis, not an external standard.</span></div></div>
+
+<table class="clean">
+<thead><tr><th>Branch</th><th>On the floor</th><th>Case</th></tr></thead>
+<tbody>
+<tr><td><strong>Capacity</strong></td><td>Too many cases, too few hands.</td><td><span class="tag">Case 01</span></td></tr>
+<tr><td><strong>Detection noise</strong></td><td>An untuned rule eats real minutes.</td><td><span class="tag">Case 06</span></td></tr>
+<tr><td><strong>Tool failure / telemetry delay</strong></td><td>Latency in a pipeline, not analysts.</td><td><span class="tag">Case 04</span></td></tr>
+<tr><td><strong>Customer dependency</strong></td><td>A reply the SOC can't compel.</td><td><span class="tag">Case 03</span></td></tr>
+<tr><td><strong>Third-party / vendor dependency</strong></td><td>A vendor's own queue, not the SOC's.</td><td><span class="tag">Case 08</span></td></tr>
+<tr><td><strong>Definitional</strong></td><td>Severity shifts; the start point is disputed.</td><td><span class="tag">Case 05</span></td></tr>
+<tr><td><strong>Process / escalation failure</strong></td><td>A handoff with no owner or clock.</td><td><span class="tag">Case 07</span></td></tr>
+</tbody>
+</table>
+
+<div class="callout warning">
+<span class="callout-label">Tag the branch before anyone reads the number</span>
+A breach's branch matters before its performance verdict: Third-party or Definitional suggests Quadrant&nbsp;3; Capacity or Process failure with a thin investigation suggests Quadrant&nbsp;4 — the one warranting corrective action.
+</div>
+
+<div class="quote-block">
+<p>The severity table lives in a conference room at 2 PM. The actual severity gets decided at 2:17 AM by whoever is on shift, with half the evidence in and the customer not picking up.</p>
+</div>
+
+<p>Run this way, breach management doesn't make breaches disappear — it makes them legible, which is the only accountability that survives a real shift.</p>
+
+</div></div></body></html>

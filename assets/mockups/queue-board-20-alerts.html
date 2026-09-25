@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+body{ margin:0; width:1500px; background:var(--d-page); }
+.wrap{ padding:34px; }
+
+.qhead{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px; gap:24px; }
+.qhead-title{ font-family:var(--mono); font-size:18px; font-weight:800; letter-spacing:.035em; color:var(--d-ink); text-transform:uppercase; }
+.qhead-sub{ font-family:var(--mono); font-size:11.5px; color:var(--d-ink-muted); margin-top:7px; letter-spacing:.02em; }
+.qhead-right{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; flex-shrink:0; }
+.qcounts{ display:flex; gap:6px; }
+.qcounts .pill{ font-size:9.5px; padding:3px 10px; }
+.shift-label{ font-family:var(--mono); font-size:8.3px; letter-spacing:.08em; text-transform:uppercase; color:var(--d-ink-muted); text-align:right; }
+.shift-row{ display:flex; gap:8px; align-items:center; }
+.shift-chip{
+  width:29px; height:29px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:11px; font-weight:800; color:#0d0d0d; letter-spacing:.01em;
+}
+
+.qtable{ width:100%; border-collapse:collapse; font-family:var(--mono); }
+.qtable th{
+  text-align:left; text-transform:uppercase; letter-spacing:.05em; font-size:10px; font-weight:700;
+  color:var(--d-ink-muted); padding:0 12px 12px; border-bottom:1px solid var(--d-baseline);
+}
+.qtable th.num{ text-align:right; }
+.qtable td{
+  padding:16px 12px; border-bottom:1px solid var(--d-grid); color:var(--d-ink); font-size:13.2px;
+  vertical-align:middle; border-left:4px solid transparent;
+}
+.qtable td.num{ text-align:right; }
+.qtable tr.flag-critical td:first-child{ border-left-color:var(--s-critical); }
+.qtable tr.flag-critical{ background:rgba(208,59,59,0.07); }
+.qtable tr.flag-warning td:first-child{ border-left-color:var(--s-warning); }
+.qtable tr.flag-warning{ background:rgba(250,178,25,0.05); }
+.qtable td.time{ color:var(--d-ink-2); }
+.qtable td.cust{ color:var(--d-ink-2); font-weight:700; }
+.unassigned{ color:var(--d-ink-muted); font-style:italic; }
+.sla-crit{ color:var(--s-critical); font-weight:800; }
+.sla-warn{ color:var(--s-warning); font-weight:800; }
+.sla-ok{ color:var(--d-ink-2); font-weight:700; }
+
+.qfoot td{
+  padding:20px 12px; text-align:center; font-family:var(--mono); font-size:12.5px; font-style:italic;
+  color:var(--d-ink-muted); border-top:1px dashed var(--d-baseline); border-bottom:none; letter-spacing:.02em;
+  background:transparent;
+}
+</style>
+</head>
+<body>
+<div class="console" style="margin:0;">
+  <div class="console-bar">
+    <span class="dot" style="background:#e34948;"></span>
+    <span class="dot" style="background:#eda100;"></span>
+    <span class="dot" style="background:#1baf7a;"></span>
+    <span class="title">triage-queue &mdash; tier1.soc.internal</span>
+    <span class="title" style="margin-left:auto;">14:07:32 MYT &middot; auto-refresh 30s</span>
+  </div>
+  <div class="console-body">
+    <div class="wrap" style="padding:32px 34px 26px;">
+
+      <div class="qhead">
+        <div>
+          <div class="qhead-title">Queue snapshot &mdash; 20 alerts, 3 analysts on shift</div>
+          <div class="qhead-sub">Showing 10 most urgent of 20 open alerts &middot; sorted by SLA remaining</div>
+        </div>
+        <div class="qhead-right">
+          <div class="qcounts">
+            <span class="pill p1">3 P1</span>
+            <span class="pill p2">7 P2</span>
+            <span class="pill p3">10 P3</span>
+          </div>
+          <div>
+            <div class="shift-label">Analysts on shift</div>
+            <div class="shift-row">
+              <span class="shift-chip" style="background:var(--c1-blue);" title="Jamie M.">JM</span>
+              <span class="shift-chip" style="background:var(--c3-aqua);" title="Ravi K.">RK</span>
+              <span class="shift-chip" style="background:var(--c7-violet-d);" title="Sara L.">SL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="qtable">
+        <thead>
+          <tr>
+            <th style="width:9%;">Time</th>
+            <th style="width:9%;">Severity</th>
+            <th style="width:10%;">Customer</th>
+            <th style="width:34%;">Alert Type</th>
+            <th style="width:14%;">Analyst</th>
+            <th class="num" style="width:14%;">SLA Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="flag-critical">
+            <td class="time">14:03</td>
+            <td><span class="pill p1">P1</span></td>
+            <td class="cust">CUST-D</td>
+            <td>Mass file encryption pattern</td>
+            <td>JM</td>
+            <td class="num sla-crit">OVERDUE 00:04</td>
+          </tr>
+          <tr class="flag-critical">
+            <td class="time">14:01</td>
+            <td><span class="pill p1">P1</span></td>
+            <td class="cust">CUST-B</td>
+            <td>Outbound beacon-like traffic</td>
+            <td><span class="unassigned">Unassigned</span></td>
+            <td class="num sla-crit">00:02 left</td>
+          </tr>
+          <tr class="flag-critical">
+            <td class="time">14:04</td>
+            <td><span class="pill p1">P1</span></td>
+            <td class="cust">CUST-A</td>
+            <td>Impossible travel login</td>
+            <td>RK</td>
+            <td class="num sla-crit">00:06 left</td>
+          </tr>
+          <tr class="flag-warning">
+            <td class="time">14:02</td>
+            <td><span class="pill p2">P2</span></td>
+            <td class="cust">CUST-C</td>
+            <td>New admin role granted</td>
+            <td><span class="unassigned">Unassigned</span></td>
+            <td class="num sla-warn">00:14 left</td>
+          </tr>
+          <tr class="flag-warning">
+            <td class="time">14:05</td>
+            <td><span class="pill p2">P2</span></td>
+            <td class="cust">CUST-B</td>
+            <td>Impossible travel login</td>
+            <td>JM</td>
+            <td class="num sla-warn">00:18 left</td>
+          </tr>
+          <tr class="flag-warning">
+            <td class="time">14:03</td>
+            <td><span class="pill p2">P2</span></td>
+            <td class="cust">CUST-E</td>
+            <td>Outbound beacon-like traffic</td>
+            <td>RK</td>
+            <td class="num sla-warn">00:22 left</td>
+          </tr>
+          <tr class="flag-warning">
+            <td class="time">14:06</td>
+            <td><span class="pill p2">P2</span></td>
+            <td class="cust">CUST-A</td>
+            <td>Suspicious OAuth grant added</td>
+            <td><span class="unassigned">Unassigned</span></td>
+            <td class="num sla-warn">00:26 left</td>
+          </tr>
+          <tr>
+            <td class="time">14:01</td>
+            <td><span class="pill p3">P3</span></td>
+            <td class="cust">CUST-D</td>
+            <td>Repeated failed MFA prompts</td>
+            <td>SL</td>
+            <td class="num sla-ok">01:10 left</td>
+          </tr>
+          <tr>
+            <td class="time">14:07</td>
+            <td><span class="pill p3">P3</span></td>
+            <td class="cust">CUST-C</td>
+            <td>Unusual PowerShell execution</td>
+            <td>SL</td>
+            <td class="num sla-ok">01:45 left</td>
+          </tr>
+          <tr>
+            <td class="time">14:04</td>
+            <td><span class="pill p3">P3</span></td>
+            <td class="cust">CUST-B</td>
+            <td>Rare geo login, known device</td>
+            <td>JM</td>
+            <td class="num sla-ok">02:30 left</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="qfoot"><td colspan="6">+ 10 more alerts queued &mdash; 3 additional P2, 7 P3</td></tr>
+        </tfoot>
+      </table>
+
+    </div>
+  </div>
+</div>
+</body></html>

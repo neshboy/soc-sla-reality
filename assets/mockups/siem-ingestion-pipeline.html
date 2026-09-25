@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  html,body{ margin:0; padding:0; }
+  body{ width:1500px; background:var(--l-page); font-family:var(--font); }
+
+  .wrap{ width:1500px; box-sizing:border-box; background:var(--l-surface); padding:34px 50px 30px; }
+
+  .hd{ display:flex; justify-content:space-between; align-items:flex-start; }
+  .hd .kicker{ display:block; }
+  .fig-title{ font-size:23px; font-weight:800; color:var(--l-ink); letter-spacing:-.01em; margin:7px 0 5px; }
+  .fig-sub{ font-size:12px; line-height:1.5; color:var(--l-ink-2); max-width:1000px; margin:0; }
+
+  .pipeline{ width:1400px; margin:32px auto 0; position:relative; }
+
+  .bracket-label{ font-family:var(--font); font-weight:800; letter-spacing:.04em; fill:var(--l-ink); }
+
+  .row{ display:flex; align-items:flex-start; width:1400px; }
+
+  /* ---- stage nodes (real timestamps) ---- */
+  .node{ box-sizing:border-box; background:var(--l-surface); border:1px solid var(--l-grid);
+    border-radius:8px; padding:15px 12px 13px; text-align:center; min-height:150px;
+    display:flex; flex-direction:column; justify-content:center; position:relative; }
+  .node .step{ position:absolute; top:9px; left:11px; font-size:8.3px; font-weight:800; color:var(--l-ink-muted);
+    letter-spacing:.06em; }
+  .node .name{ font-size:10.6px; font-weight:800; text-transform:uppercase; letter-spacing:.02em;
+    color:var(--l-ink); line-height:1.38; min-height:30px; display:flex; align-items:center; justify-content:center; }
+  .node .time{ font-family:var(--mono); font-weight:800; font-size:27px; color:var(--l-ink);
+    margin-top:9px; letter-spacing:-.01em; }
+  .node .hl-tag{ display:inline-block; margin-top:9px; font-size:8.6px; font-weight:800; letter-spacing:.04em;
+    color:var(--l-ink); background:#ffffff; border:1.5px solid var(--l-ink); border-radius:4px; padding:2px 8px; }
+
+  .n1{ border-top:4px solid var(--c1-blue); }
+  .n2{ border-top:4px solid var(--c2-orange); }
+  .n3{ border-top:4px solid var(--c3-aqua); }
+  .n4{ border-top:4px solid var(--c4-yellow); }
+  .n1, .n4{ border-left:2px solid var(--l-ink); border-right:2px solid var(--l-ink);
+    border-bottom:2px solid var(--l-ink); box-shadow:0 0 0 3px rgba(11,11,11,0.05); }
+
+  /* ---- connectors between real stages ---- */
+  .conn{ box-sizing:border-box; display:flex; flex-direction:column; align-items:center;
+    padding-top:56px; flex-shrink:0; }
+  .gap-pill{ font-size:9.3px; font-weight:800; letter-spacing:.02em; color:var(--l-ink-2);
+    background:var(--l-page); border:1px solid var(--l-grid); border-radius:20px; padding:3px 9px 3px;
+    margin-bottom:7px; white-space:nowrap; }
+  .conn.ambi .gap-pill{ color:var(--c1-blue); border-color:rgba(42,120,214,0.4); background:rgba(42,120,214,0.06); }
+
+  /* ---- stage 5: the ambiguity callout ---- */
+  .node5{ box-sizing:border-box; min-height:150px; padding:12px 16px 13px; }
+  .node5 .callout-label{ color:var(--c1-blue); }
+  .node5 p{ font-size:9.9px !important; line-height:1.45 !important; color:var(--l-ink-2) !important;
+    margin:3px 0 9px !important; }
+  .chip-list{ display:flex; flex-direction:column; gap:4px; }
+  .chip{ display:flex; align-items:center; gap:6px; font-size:9.4px; font-weight:700; color:var(--l-ink-2); }
+  .chip .dot{ width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .chip b{ color:var(--l-ink); font-weight:800; }
+
+  .fig-caption{ margin-top:26px; padding-top:17px; border-top:1px solid var(--l-grid);
+    font-size:14px; font-weight:600; color:var(--l-ink-2); line-height:1.55; }
+  .fig-caption strong{ color:var(--l-ink); font-weight:800; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div>
+      <span class="kicker">FIGURE &mdash; CASE TIMELINE &middot; SIEM INGESTION DELAY</span>
+      <div class="fig-title">The 29 Minutes Before the Clock Starts</div>
+      <div class="fig-sub">One case produces four candidate start times for the SLA clock &mdash; and the SOC does not get to pick which one the contract uses.</div>
+    </div>
+    <span class="illustrative-tag">Illustrative</span>
+  </div>
+
+  <div class="pipeline">
+
+    <svg width="1400" height="46" viewBox="0 0 1400 46">
+      <text x="505" y="12" text-anchor="middle" class="bracket-label" font-size="11">29 MINUTES OF REAL-WORLD ELAPSED TIME BEFORE THE CLOCK MOST CONTRACTS WOULD RECOGNIZE EVEN STARTS</text>
+      <line x1="90" y1="17" x2="90" y2="40" stroke="var(--l-ink)" stroke-width="2"/>
+      <line x1="920" y1="17" x2="920" y2="40" stroke="var(--l-ink)" stroke-width="2"/>
+      <line x1="90" y1="40" x2="920" y2="40" stroke="var(--l-ink)" stroke-width="2"/>
+      <circle cx="90" cy="40" r="3.5" fill="var(--l-ink)"/>
+      <circle cx="920" cy="40" r="3.5" fill="var(--l-ink)"/>
+    </svg>
+
+    <div class="row">
+
+      <div class="node n1" style="width:180px;">
+        <span class="step">01</span>
+        <div class="name">Attacker Action</div>
+        <div class="time">01:00</div>
+        <span class="hl-tag">T+0</span>
+      </div>
+
+      <div class="conn" style="width:75px;">
+        <div class="gap-pill">+21 MIN</div>
+        <svg width="56" height="14" viewBox="0 0 56 14"><line x1="1" y1="7" x2="46" y2="7" stroke="var(--l-ink-muted)" stroke-width="2"/><polygon points="46,2 55,7 46,12" fill="var(--l-ink-muted)"/></svg>
+      </div>
+
+      <div class="node n2" style="width:190px;">
+        <span class="step">02</span>
+        <div class="name">Log Reaches SIEM</div>
+        <div class="time">01:21</div>
+      </div>
+
+      <div class="conn" style="width:75px;">
+        <div class="gap-pill">+3 MIN</div>
+        <svg width="56" height="14" viewBox="0 0 56 14"><line x1="1" y1="7" x2="46" y2="7" stroke="var(--l-ink-muted)" stroke-width="2"/><polygon points="46,2 55,7 46,12" fill="var(--l-ink-muted)"/></svg>
+      </div>
+
+      <div class="node n3" style="width:230px;">
+        <span class="step">03</span>
+        <div class="name">Correlation Rule Fires / Alert Generated</div>
+        <div class="time">01:24</div>
+      </div>
+
+      <div class="conn" style="width:75px;">
+        <div class="gap-pill">+5 MIN</div>
+        <svg width="56" height="14" viewBox="0 0 56 14"><line x1="1" y1="7" x2="46" y2="7" stroke="var(--l-ink-muted)" stroke-width="2"/><polygon points="46,2 55,7 46,12" fill="var(--l-ink-muted)"/></svg>
+      </div>
+
+      <div class="node n4" style="width:190px;">
+        <span class="step">04</span>
+        <div class="name">Analyst Acknowledges</div>
+        <div class="time">01:29</div>
+        <span class="hl-tag">T+29</span>
+      </div>
+
+      <div class="conn ambi" style="width:75px;">
+        <div class="gap-pill">?</div>
+        <svg width="56" height="14" viewBox="0 0 56 14"><line x1="1" y1="7" x2="46" y2="7" stroke="var(--c1-blue)" stroke-width="2" stroke-dasharray="3 3"/><polygon points="46,2 55,7 46,12" fill="var(--c1-blue)"/></svg>
+      </div>
+
+      <div class="node5 callout illustrative" style="width:310px;">
+        <span class="callout-label">SLA Clock&rsquo;s Official Start</span>
+        <p>Could legitimately be defined as any one of the four points to the left &mdash; depending entirely on contract language:</p>
+        <div class="chip-list">
+          <div class="chip"><span class="dot" style="background:var(--c1-blue)"></span>Attacker Action &mdash; <b>01:00</b></div>
+          <div class="chip"><span class="dot" style="background:var(--c2-orange)"></span>Log Reaches SIEM &mdash; <b>01:21</b></div>
+          <div class="chip"><span class="dot" style="background:var(--c3-aqua)"></span>Alert Generated &mdash; <b>01:24</b></div>
+          <div class="chip"><span class="dot" style="background:var(--c4-yellow)"></span>Analyst Acknowledges &mdash; <b>01:29</b></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="fig-caption">
+    If the SLA clock starts at <strong>alert generation</strong>, the SOC&rsquo;s <strong style="color:var(--s-good);">5-minute acknowledgement</strong> looks great. If it starts at the attacker&rsquo;s first action, the same case is already <strong style="color:var(--s-critical);">29 minutes old</strong> before anyone touches it.
+  </div>
+
+</div>
+</body></html>

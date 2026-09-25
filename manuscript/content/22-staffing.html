@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section">
+
+<span class="kicker">Section 12</span>
+<h2 class="h2">SLA Is Also a Capacity Problem</h2>
+
+<p class="lede">Every clock in this paper ends at a person on a finite roster and shift, not the constant capacity an SLA assumes. Many SLA failures are staffing failures in disguise.</p>
+
+<h3 class="h3">12.1 Headcount, Shifts, and the Coverage Nobody Standardized</h3>
+<p>A contract promising round-the-week coverage implies a roster staffed every hour of it. No standards body has solved that arithmetic: FIRST's CSIRT Services Framework catalogs the services a CSIRT provides but explicitly leaves staffing models, shift design, and roster logistics for each team to work out on its own.</p>
+
+<div class="callout note">
+<span class="callout-label">Out of scope, by the framework's own admission</span>
+The field's own professional body files staffing under logistics each organization handles alone — a standard was never attempted.
+</div>
+
+<p>Thinner night-and-weekend rosters and planned leave cut headcount on a schedule the contract never adjusts for.</p>
+
+<h3 class="h3">12.2 Concurrency, Queue Depth, and Why "Alerts Per Analyst" Is a Bad Metric</h3>
+<p>Alerts-per-analyst-per-shift means little without the mix: a domain-admin compromise consumes hours, a benign positive a minute, yet both count as one alert. The SLA clock cannot tell an easy alert from a hard one — the roster can.</p>
+
+<h3 class="h3">12.3 Skills, Specialization, and the Training Tax</h3>
+<p>Headcount answers how many people, not who can work a case well — routing by queue position rather than specialty just adds investigation time, and ramp-up or certification pulls that same capacity off the floor.</p>
+
+<h3 class="h3">12.4 Surge Events and Tool Outages: When Demand or Capacity Moves Without Warning</h3>
+<p>A widely exploited vulnerability can multiply alert volume within hours, and every clock slows together — simply more open cases. A tool outage adds a second shock: its backlog lands all at once on recovery, on a roster sized for ordinary volume.</p>
+
+<div class="callout warning">
+<span class="callout-label">When demand and capacity move in opposite directions</span>
+A surge raises demand while capacity stays fixed; an outage removes capacity while demand builds unseen. The two together are the default failure mode, not a coincidence.
+</div>
+
+<div class="figure"><img src="../../assets/mockups/soc-floor-plan.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 12.1</span><span class="figtext">A diagrammatic SOC layout with analyst pods and a war room for major-incident coordination — illustrative, not an actual SOC's layout.</span></div></div>
+
+<p>Isolated pods have no place to coordinate a multi-pod response; a war room does, at a real cost in analyst time.</p>
+
+<h3 class="h3">12.5 Three Staffing Models, No Universal Answer</h3>
+<p>If one correct SOC staffing structure existed, the largest vendors would have converged on it. They have not.</p>
+
+<table class="clean">
+<tr><th>Organization</th><th>Model</th><th>Structure</th><th>Rationale</th></tr>
+<tr><td>Microsoft</td><td>Tiers + temporary surge team</td><td>Standing tiers handle triage/investigation/hunting; a temporary cross-functional team is assembled for major incidents (distinct from Sentinel's unrelated "Fusion" correlation feature)</td><td>Routine work suits tiers; incidents need cross-team coordination</td></tr>
+<tr><td>CrowdStrike</td><td>Three-tier model + permanent hunt team</td><td>Tier 1 triages, Tier 2 remediates, Falcon OverWatch — a standing, dedicated team — hunts proactively</td><td>Matches workload to skill depth</td></tr>
+<tr><td>Palo Alto Networks</td><td>Rejects the four-tier SOC</td><td>Cross-trained analysts handle cases end-to-end; automation absorbs first-pass work</td><td>Self-described: hand-offs cost more than specialization gained</td></tr>
+</table>
+
+<p>Microsoft layers a temporary cross-functional team atop fixed tiers, CrowdStrike keeps its tiers — including a permanent hunt team — fixed, and Palo Alto Networks removes tiers by default: the real three-way split is tiered-with-surge-team versus tiered-permanent versus tier-less-with-automation, none calling the others wrong.</p>
+
+<div class="callout note">
+<span class="callout-label">A planning heuristic — not an attributed Microsoft figure</span>
+A reasonable planning heuristic — echoed informally in some Microsoft SOC guidance — is that effective available capacity often runs closer to half of paper headcount once PTO, training, attrition, and non-case work are netted out.
+</div>
+
+<p>None of this means staffing is unsolvable — the SLA and the roster simply run on different disciplines and timelines. A contract signed without visibility into coverage, concurrency, and surge planning has priced a promise without pricing what delivers it.</p>
+
+<div class="quote-block">
+<p>A roster is not elastic. A queue is. An SLA that assumes otherwise is measuring a promise the staffing plan was never sized to keep.</p>
+</div>
+
+</div></div></body></html>

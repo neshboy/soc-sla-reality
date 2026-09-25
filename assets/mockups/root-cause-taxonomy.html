@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+body{margin:0;}
+.fig-wrap{
+  width:1500px; box-sizing:border-box; background:var(--l-surface); color:var(--l-ink);
+  padding:46px 0 46px;
+}
+.fig-header{ padding:0 60px; }
+.fig-header .kicker-row{ display:flex; align-items:baseline; gap:10px; }
+.fig-header .fig-title{ font-size:23px; font-weight:800; letter-spacing:-.01em; color:var(--l-ink); margin:6px 0 6px; }
+.fig-header .fig-sub{ font-size:12px; line-height:1.5; color:var(--l-ink-2); max-width:1080px; }
+
+.tree-zone{ position:relative; width:1500px; height:172px; margin-top:20px; }
+.root-node{
+  position:absolute; left:620px; top:6px; width:260px; height:62px;
+  background:var(--d-surface); color:var(--d-ink); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.14);
+}
+.root-node .root-label{ font-size:16.5px; font-weight:800; letter-spacing:.06em; }
+.root-node .root-dot{ width:7px; height:7px; border-radius:50%; background:var(--s-critical); margin-right:9px; box-shadow:0 0 0 3px rgba(208,59,59,0.32);}
+
+.stem{ position:absolute; left:749px; top:68px; width:2px; height:34px; background:var(--l-baseline); }
+.bus{ position:absolute; left:150px; top:102px; width:1200px; height:2px; background:var(--l-baseline); }
+.drop{ position:absolute; top:102px; width:2px; height:70px; background:var(--l-baseline); }
+.node-dot{ position:absolute; top:98px; width:9px; height:9px; border-radius:50%; border:2px solid var(--l-surface); transform:translateX(-50%); }
+
+.chips-row{
+  display:grid; grid-template-columns:repeat(7,180px); column-gap:20px; margin:0 60px;
+}
+.chips-row{ align-items:stretch; }
+.chip{
+  background:var(--l-surface); border:1px solid var(--l-grid); border-radius:10px;
+  overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.05); display:flex; flex-direction:column;
+}
+.chip .chip-bar{ height:7px; }
+.chip .chip-body{ padding:14px 13px 13px; flex:1; display:flex; flex-direction:column; }
+.chip .chip-branch{ font-size:8.6px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; margin-bottom:7px; }
+.chip .chip-name{ font-size:13.3px; font-weight:800; color:var(--l-ink); line-height:1.28; min-height:35px; }
+.chip .chip-example{
+  font-size:10.3px; color:var(--l-ink-2); line-height:1.42; font-style:italic;
+  margin-top:14px; padding-top:9px; border-top:1px dashed var(--l-grid);
+}
+
+.fig-footer{ padding:0 60px; margin-top:26px; }
+.fig-footer p{
+  font-size:14.5px; line-height:1.5; font-weight:700; color:var(--l-ink); margin:0;
+  border-left:3px solid var(--c1-blue); padding-left:14px; max-width:1300px;
+}
+</style>
+</head>
+<body style="margin:0;width:1500px;background:var(--l-surface);">
+<div class="fig-wrap">
+
+  <div class="fig-header">
+    <div class="kicker-row">
+      <span class="kicker">Figure — Root-Cause Taxonomy</span>
+      <span class="illustrative-tag">Illustrative</span>
+    </div>
+    <div class="fig-title">SLA Breach Root-Cause Taxonomy</div>
+    <div class="fig-sub">Seven branches cover the breaches in this report. Naming the branch is the first line of any credible breach review — not the analyst's name.</div>
+  </div>
+
+  <div class="tree-zone">
+    <div class="root-node">
+      <div style="display:flex;align-items:center;">
+        <span class="root-dot"></span><span class="root-label">SLA BREACH</span>
+      </div>
+    </div>
+    <div class="stem"></div>
+    <div class="bus"></div>
+    <div class="drop" style="left:149px;"></div>
+    <div class="drop" style="left:349px;"></div>
+    <div class="drop" style="left:549px;"></div>
+    <div class="drop" style="left:749px;"></div>
+    <div class="drop" style="left:949px;"></div>
+    <div class="drop" style="left:1149px;"></div>
+    <div class="drop" style="left:1349px;"></div>
+    <div class="node-dot" style="left:150px;background:var(--c1-blue);"></div>
+    <div class="node-dot" style="left:350px;background:var(--c2-orange);"></div>
+    <div class="node-dot" style="left:550px;background:var(--c3-aqua);"></div>
+    <div class="node-dot" style="left:750px;background:var(--c4-yellow);"></div>
+    <div class="node-dot" style="left:950px;background:var(--c5-magenta);"></div>
+    <div class="node-dot" style="left:1150px;background:var(--c6-green);"></div>
+    <div class="node-dot" style="left:1350px;background:var(--c7-violet);"></div>
+  </div>
+
+  <div class="chips-row">
+
+    <div class="chip">
+      <div class="chip-bar" style="background:var(--c1-blue);"></div>
+      <div class="chip-body">
+        <div class="chip-branch" style="color:var(--c1-blue);">Branch 01</div>
+        <div class="chip-name">Capacity</div>
+        <div class="chip-example">Three P1s, two analysts on shift.</div>
+      </div>
+    </div>
+
+    <div class="chip">
+      <div class="chip-bar" style="background:var(--c2-orange);"></div>
+      <div class="chip-body">
+        <div class="chip-branch" style="color:var(--c2-orange-d);">Branch 02</div>
+        <div class="chip-name">Detection noise</div>
+        <div class="chip-example">False positives eating triage time.</div>
+      </div>
+    </div>
+
+    <div class="chip">
+      <div class="chip-bar" style="background:var(--c3-aqua);"></div>
+      <div class="chip-body">
+        <div class="chip-branch" style="color:var(--c3-aqua-d);">Branch 03</div>
+        <div class="chip-name">Tool failure / telemetry delay</div>
+        <div class="chip-example">SIEM ingestion lag.</div>
+      </div>
+    </div>
+
+    <div class="chip">
+      <div class="chip-bar" style="background:var(--c4-yellow);"></div>
+      <div class="chip-body">
+        <div class="chip-branch" style="color:var(--c4-yellow-d);">Branch 04</div>
+        <div class="chip-name">Customer dependency</div>
+        <div class="chip-example">Non-responsive account owner.</div>
+      </div>
+    </div>
+
+    <div class="chip">
+      <div class="chip-bar" style="background:var(--c5-magenta);"></div>
+      <div class="chip-body">
+        <div class="chip-branch" style="color:var(--c5-magenta-d);">Branch 05</div>
+        <div class="chip-name">Third-party / vendor dependency</div>
+        <div class="chip-example">Cloud provider, ISP, MDR.</div>
+      </div>
+    </div>
+
+    <div class="chip">
+      <div class="chip-bar" style="background:var(--c6-green);"></div>
+      <div class="chip-body">
+        <div class="chip-branch" style="color:var(--c6-green);">Branch 06</div>
+        <div class="chip-name">Definitional</div>
+        <div class="chip-example">Severity reclassified mid-investigation.</div>
+      </div>
+    </div>
+
+    <div class="chip">
+      <div class="chip-bar" style="background:var(--c7-violet);"></div>
+      <div class="chip-body">
+        <div class="chip-branch" style="color:var(--c7-violet);">Branch 07</div>
+        <div class="chip-name">Process / escalation failure</div>
+        <div class="chip-example">L2 acceptance delay, no OLA.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="fig-footer">
+    <p>Every breach report should name its branch before anyone concludes the SOC &ldquo;failed.&rdquo;</p>
+  </div>
+
+</div>
+</body></html>

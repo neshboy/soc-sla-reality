@@ -1,0 +1,45 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<div class="section-unforced">
+<span class="kicker">Foundations</span>
+<h2 class="h2">Why SOC SLAs Matter</h2>
+<p class="lede">An SLA is the written agreement on what "acceptable service" means before an incident forces the question — remove it, and speed disputes become unresolvable.</p>
+</div>
+
+<h3 class="h3">The Business Case for a Written Commitment</h3>
+<p>An SLA creates four things unrelated to detection technology: <strong class="accent">accountability</strong> (a named party, outcome, window), <strong class="accent">contractual clarity</strong> (what's being bought), <strong class="accent">customer trust</strong> (an auditable target), and a <strong class="accent">shared vocabulary</strong> — without it, "resolved" means nothing consistent, and most later disputes trace back to that gap.</p>
+
+<table class="clean">
+<thead><tr><th>SLA Commitment</th><th>What It Actually Guarantees</th></tr></thead>
+<tbody>
+<tr><td>Response-time target</td><td>A clock started, not comprehension.</td></tr>
+<tr><td>Escalation window</td><td>A hand-off happened, not context transfer.</td></tr>
+<tr><td>Resolution / closure timestamp</td><td>A ticket changed state, not root cause found.</td></tr>
+<tr><td>Reporting cadence</td><td>An update shipped, not analysis completed.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">What an SLA Formally Is</h3>
+<p>NIST's CSRC Glossary (via SP 800-47) defines a Service-Level Agreement as follows:</p>
+<div class="callout note">
+<span class="callout-label">NIST CSRC Glossary — Service-Level Agreement</span>
+"Represents a commitment between a service provider and one or more customers and addresses specific aspects of the service, such as responsibilities, details on the type of service, expected performance level (e.g., reliability, acceptable quality, and response times), and requirements for reporting, resolution, and termination."
+</div>
+<p>Notice what's missing: triage, evidentiary rigor, what "resolved" means. It's structural, not technical — exactly how an SLA can be met on paper while an investigation was shallow, or breached while it was exemplary.</p>
+
+<h3 class="h3">What an SLA Is Not</h3>
+<p>An SLA guarantees none of detection accuracy, investigation depth, or root-cause correctness: a closed-on-time case may reflect efficient work, or an analyst who simply stopped when pressure took over. Whether that work was sound is a separate question for quality assurance, not the SLA.</p>
+
+<h3 class="h3">No Governing Body Has Set "The" Number</h3>
+<p>No NIST figure, FIRST recommendation, or ISO clause backs vendor SLA numbers. FIRST's own framework says so directly:</p>
+<div class="callout note">
+<span class="callout-label">FIRST CSIRT Services Framework v2.1</span>
+The framework describes what a CSIRT or SOC <em>may</em> provide, but declines to prescribe a capability level, maturity tier, or timing target — that's left to each team's own context.
+</div>
+<p>NIST SP 800-61 does the same for the incident-response lifecycle: phases, no stopwatch. Federal deadlines are narrow and regulatory, not SOC SLAs — CISA: one hour; CIRCIA: 72 hours (24 if ransom paid); FISMA: seven days to Congress. None is a triage benchmark; every SLA number is negotiated, not technical.</p>
+
+<div class="quote-block">
+<p>An SLA measures elapsed time. A SOC manages uncertainty, evidence, and risk. Confusing the two is where most SLA disputes begin.</p>
+</div>
+
+</div></body></html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+<style>
+body{margin:0;}
+.cover-clock-wrap{ display:flex; align-items:center; justify-content:center; padding:.15in 0 .05in;}
+.ring-label{ font-family:var(--font); font-size:7.6px; fill:var(--d-ink-muted); letter-spacing:.06em; text-transform:uppercase;}
+.ring-center-a{ font-family:var(--font); font-size:15px; font-weight:800; fill:#ffffff;}
+.ring-center-b{ font-family:var(--font); font-size:6.6px; fill:#898781; letter-spacing:.08em; text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="page dark cover" style="page-break-after:always;">
+  <div class="brand-row">
+    <div class="brand">NESHBOY&nbsp;&nbsp;·&nbsp;&nbsp;SECURITY OPERATIONS RESEARCH</div>
+    <div class="tag" style="background:none;padding:0;border-radius:0;color:var(--d-ink-muted);text-align:right;">TECHNICAL PAPER — 2026</div>
+  </div>
+
+  <div class="cover-clock-wrap" style="position:relative;">
+    <svg width="300" height="300" viewBox="0 0 300 300">
+      <circle cx="150" cy="150" r="128" fill="none" stroke="#2c2c2a" stroke-width="1"/>
+      <!-- segmented SLA clock ring: 9 stages, unequal arcs, categorical-ish hues -->
+      <g transform="rotate(-90 150 150)">
+        <!-- circumference = 2*pi*110 = 691.15 -->
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#3987e5" stroke-width="14" stroke-dasharray="55 636.15" stroke-dashoffset="0"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#d95926" stroke-width="14" stroke-dasharray="45 646.15" stroke-dashoffset="-58"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#199e70" stroke-width="14" stroke-dasharray="70 621.15" stroke-dashoffset="-106"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#c98500" stroke-width="14" stroke-dasharray="120 571.15" stroke-dashoffset="-179"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#9085e9" stroke-width="14" stroke-dasharray="90 601.15" stroke-dashoffset="-302"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#d55181" stroke-width="14" stroke-dasharray="80 611.15" stroke-dashoffset="-395"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#e66767" stroke-width="14" stroke-dasharray="100 591.15" stroke-dashoffset="-478"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#3987e5" stroke-width="14" stroke-dasharray="65 626.15" stroke-dashoffset="-581" opacity="0.55"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#199e70" stroke-width="14" stroke-dasharray="66 625.15" stroke-dashoffset="-649" opacity="0.55"/>
+      </g>
+      <circle cx="150" cy="150" r="94" fill="#1a1a19" stroke="#2c2c2a" stroke-width="1"/>
+    </svg>
+    <div style="position:absolute; left:0; top:0; width:300px; height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; pointer-events:none;">
+      <div style="font-family:var(--font); font-size:15px; font-weight:800; color:#ffffff;">SLA CLOCK</div>
+      <div style="font-family:var(--font); font-size:6.6px; letter-spacing:.08em; text-transform:uppercase; color:#898781; margin-top:3px;">9 stages · 1 elapsed timer</div>
+    </div>
+  </div>
+
+  <div class="title-block">
+    <span class="kicker">Detection to Closure</span>
+    <h1>THE SOC SLA<br/>REALITY</h1>
+    <div class="subtitle">What the contract says vs. what actually happens inside a security operations center — queue pressure, dependencies, evidence, and the clock that keeps running anyway.</div>
+  </div>
+
+  <div class="footer-row">
+    <div class="meta">
+      Research &amp; analysis: neshboy<br/>
+      SOC operations · SLA management · incident response<br/>
+      soc-sla-reality
+    </div>
+    <div class="meta" style="text-align:right;">
+      Illustrative case studies &amp; models throughout<br/>
+      are clearly labeled — not universal standards.
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  html,body{margin:0;padding:0;}
+  body{
+    width:1500px;
+    height:650px;
+    background:var(--d-page);
+    font-family:var(--font);
+  }
+  .wrap{ padding:28px; }
+
+  /* ---- header row inside console-body ---- */
+  .cockpit-head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    margin-bottom:16px;
+  }
+  .cockpit-head .title-row{ display:flex; align-items:center; gap:10px; }
+  .cockpit-head .title-row .live-dot{
+    width:9px; height:9px; border-radius:50%; background:var(--s-good);
+    box-shadow:0 0 0 3px rgba(12,163,12,0.22);
+  }
+  .cockpit-head h1{
+    margin:0; font-family:var(--mono); font-size:21px; font-weight:800;
+    letter-spacing:.04em; color:var(--d-ink); text-transform:uppercase;
+  }
+  .cockpit-head .live-tag{
+    font-family:var(--mono); font-size:9.5px; font-weight:800; letter-spacing:.08em;
+    color:var(--s-good); border:1px solid rgba(12,163,12,0.4); border-radius:3px;
+    padding:2px 6px; margin-left:2px;
+  }
+  .cockpit-head .snapshot{
+    text-align:right; font-family:var(--mono); color:var(--d-ink-muted); font-size:12.5px;
+    line-height:1.5;
+  }
+  .cockpit-head .snapshot b{ color:var(--d-ink-2); font-weight:700; }
+
+  /* ---- stat strip ---- */
+  .cockpit-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:18px; }
+  .cockpit-stats .tile{
+    background:var(--d-page); border:1px solid var(--d-border); border-radius:8px;
+    padding:11px 14px;
+  }
+  .cockpit-stats .tile .label{
+    font-size:9.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--d-ink-muted);
+    font-weight:700; font-family:var(--mono);
+  }
+  .cockpit-stats .tile .value{ font-size:23px; font-weight:800; margin:4px 0 1px; color:var(--d-ink); font-family:var(--mono); }
+  .cockpit-stats .tile .value.warn{ color:var(--s-warning); }
+  .cockpit-stats .tile .value.crit{ color:var(--s-critical); }
+  .cockpit-stats .tile .sub{ font-size:10.5px; color:var(--d-ink-muted); }
+
+  /* ---- table ---- */
+  .cockpit-table table{ width:100%; border-collapse:collapse; table-layout:fixed; font-family:var(--mono); }
+  .cockpit-table th{
+    text-align:left; font-size:9.6px; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--d-ink-muted); border-bottom:1px solid var(--d-grid); padding:0 10px 8px;
+    font-weight:700;
+  }
+  .cockpit-table td{
+    padding:11px 10px; border-bottom:1px solid var(--d-grid); color:var(--d-ink);
+    font-size:13px; vertical-align:middle;
+  }
+  .cockpit-table tbody tr:last-child td{ border-bottom:none; }
+  .cockpit-table tbody tr.breached{ background:rgba(208,59,59,0.08); }
+  .cockpit-table tbody tr.at-risk{ background:rgba(250,178,25,0.06); }
+  .cockpit-table .case-id{ font-weight:700; letter-spacing:.01em; }
+  .cockpit-table .cust{ color:var(--d-ink-2); }
+  .cockpit-table .owner{
+    display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px;
+    border-radius:50%; background:var(--d-grid); color:var(--d-ink-2); font-size:10.5px; font-weight:700;
+  }
+  .sla-val{ font-weight:800; }
+  .sla-val.good{ color:var(--s-good); }
+  .sla-val.warn{ color:var(--s-warning); }
+  .sla-val.crit{ color:var(--s-critical); }
+  .sla-sub{ display:block; font-family:var(--font); font-size:9.5px; font-weight:600; letter-spacing:.03em; color:var(--d-ink-muted); margin-top:2px; text-transform:uppercase; }
+  .invest{ font-family:var(--font); font-size:11.5px; color:var(--d-ink-2); }
+
+  /* Breach-risk pills reuse the pill system's status colors, boosted for dark-panel contrast */
+  .pill{ font-family:var(--font); }
+  .cockpit-table .pill.ok{ background:rgba(12,163,12,0.20); }
+  .cockpit-table .pill.p3{ background:rgba(250,178,25,0.24); color:#f0b429; }
+  .cockpit-table .pill.p2{ background:rgba(236,131,90,0.24); color:#f0916a; }
+  .cockpit-table .pill.p1{ background:rgba(208,59,59,0.24); color:#f47a79; }
+
+  /* ---- legend ---- */
+  .cockpit-legend{
+    display:flex; gap:22px; margin-top:16px; padding-top:12px; border-top:1px solid var(--d-border);
+    font-family:var(--mono); font-size:10.5px; color:var(--d-ink-muted); letter-spacing:.02em;
+  }
+  .cockpit-legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .cockpit-legend i{ width:7px; height:7px; border-radius:50%; display:inline-block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="console">
+    <div class="console-bar">
+      <div class="dot" style="background:#e34948;"></div>
+      <div class="dot" style="background:#eda100;"></div>
+      <div class="dot" style="background:#1baf7a;"></div>
+      <div class="title">soc-console — case-queue/live · sla-cockpit.sh</div>
+    </div>
+    <div class="console-body">
+
+      <div class="cockpit-head">
+        <div class="title-row">
+          <span class="live-dot"></span>
+          <h1>SLA Countdown Cockpit</h1>
+          <span class="live-tag">LIVE</span>
+        </div>
+        <div class="snapshot">
+          Snapshot — <b>02:17 local</b><br/>
+          Auto-refresh 30s · 6 open cases
+        </div>
+      </div>
+
+      <div class="cockpit-stats">
+        <div class="tile">
+          <div class="label">Open Cases</div>
+          <div class="value">6</div>
+          <div class="sub">across 6 customers</div>
+        </div>
+        <div class="tile">
+          <div class="label">Breached</div>
+          <div class="value crit">1</div>
+          <div class="sub">INC-88231 · P1</div>
+        </div>
+        <div class="tile">
+          <div class="label">At Risk (&lt;20%)</div>
+          <div class="value warn">1</div>
+          <div class="sub">INC-88245 · P1</div>
+        </div>
+        <div class="tile">
+          <div class="label">Avg SLA Remaining</div>
+          <div class="value">57%</div>
+          <div class="sub">of allotted window</div>
+        </div>
+      </div>
+
+      <div class="cockpit-table">
+        <table>
+          <colgroup>
+            <col style="width:11%"><col style="width:6%"><col style="width:9%">
+            <col style="width:6%"><col style="width:9%"><col style="width:12%">
+            <col style="width:31%"><col style="width:16%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Case ID</th><th>Sev</th><th>Customer</th><th>Owner</th>
+              <th>Elapsed</th><th>SLA Remaining</th><th>Investigation Status</th><th>Breach Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="breached">
+              <td class="case-id">INC-88231</td>
+              <td><span class="pill p1">P1</span></td>
+              <td class="cust">ACME-01</td>
+              <td><span class="owner">JD</span></td>
+              <td>04:07:12</td>
+              <td><span class="sla-val crit">&minus;00:07:12</span><span class="sla-sub">over SLA</span></td>
+              <td class="invest">Awaiting EDR isolation confirm</td>
+              <td><span class="pill p1">BREACHED</span></td>
+            </tr>
+            <tr class="at-risk">
+              <td class="case-id">INC-88245</td>
+              <td><span class="pill p1">P1</span></td>
+              <td class="cust">GLBX-04</td>
+              <td><span class="owner">MK</span></td>
+              <td>03:51:05</td>
+              <td><span class="sla-val warn">00:08:55</span><span class="sla-sub">4% left</span></td>
+              <td class="invest">Containment in progress</td>
+              <td><span class="pill p2">HIGH</span></td>
+            </tr>
+            <tr>
+              <td class="case-id">INC-88250</td>
+              <td><span class="pill p2">P2</span></td>
+              <td class="cust">INTC-02</td>
+              <td><span class="owner">RT</span></td>
+              <td>01:15:30</td>
+              <td><span class="sla-val good">06:44:30</span><span class="sla-sub">84% left</span></td>
+              <td class="invest">Awaiting EDR telemetry</td>
+              <td><span class="pill ok">LOW</span></td>
+            </tr>
+            <tr>
+              <td class="case-id">INC-88256</td>
+              <td><span class="pill p2">P2</span></td>
+              <td class="cust">UMBR-11</td>
+              <td><span class="owner">SC</span></td>
+              <td>02:02:10</td>
+              <td><span class="sla-val good">05:57:50</span><span class="sla-sub">74% left</span></td>
+              <td class="invest">Log collection</td>
+              <td><span class="pill ok">LOW</span></td>
+            </tr>
+            <tr>
+              <td class="case-id">INC-88261</td>
+              <td><span class="pill p3">P3</span></td>
+              <td class="cust">STRK-07</td>
+              <td><span class="owner">JD</span></td>
+              <td>00:45:12</td>
+              <td><span class="sla-val good">23:14:48</span><span class="sla-sub">97% left</span></td>
+              <td class="invest">Awaiting customer response</td>
+              <td><span class="pill p3">MEDIUM</span></td>
+            </tr>
+            <tr>
+              <td class="case-id">INC-88266</td>
+              <td><span class="pill p3">P3</span></td>
+              <td class="cust">WAYN-03</td>
+              <td><span class="owner">MK</span></td>
+              <td>05:30:00</td>
+              <td><span class="sla-val good">18:30:00</span><span class="sla-sub">77% left</span></td>
+              <td class="invest">Root cause analysis</td>
+              <td><span class="pill ok">LOW</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cockpit-legend">
+        <span><i style="background:var(--s-good);"></i>Healthy — &gt;20% SLA window remaining</span>
+        <span><i style="background:var(--s-warning);"></i>At risk — &lt;20% remaining</span>
+        <span><i style="background:var(--s-critical);"></i>Breached — SLA clock past zero</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body></html>

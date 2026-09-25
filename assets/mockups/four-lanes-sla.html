@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; }
+
+  .fig-wrap{
+    width:1500px; box-sizing:border-box; background:var(--l-page);
+    padding:50px 56px 54px;
+  }
+
+  .fig-header{ margin-bottom:32px; }
+  .fig-header .top{ display:flex; align-items:baseline; gap:10px; }
+  .fig-title{ font-size:31px; font-weight:800; letter-spacing:-.01em; color:var(--l-ink); margin:7px 0 9px; }
+  .fig-sub{ font-size:16px; line-height:1.5; color:var(--l-ink-2); max-width:1150px; }
+
+  .board{ display:flex; align-items:stretch; gap:26px; }
+
+  .lanes{ flex:1 1 auto; display:flex; flex-direction:column; gap:16px; min-width:0; }
+
+  .lane{
+    position:relative; display:flex; align-items:center; gap:24px;
+    background:var(--l-surface); border:1px solid var(--l-grid); border-radius:10px;
+    padding:22px 28px 22px 30px; overflow:hidden;
+  }
+  .lane .bar{ position:absolute; left:0; top:0; bottom:0; width:8px; background:var(--accent); }
+
+  .lane .icon-wrap{
+    flex:0 0 auto; width:62px; height:62px; border-radius:50%;
+    background:var(--accent-bg); display:flex; align-items:center; justify-content:center;
+  }
+  .lane .icon-wrap svg{ width:28px; height:28px; stroke:var(--accent); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+  .lane .label-col{ flex:0 0 260px; }
+  .lane .eyebrow{ display:flex; align-items:center; gap:8px; font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--l-ink-muted); margin-bottom:5px; }
+  .lane .eyebrow .idx{ display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:var(--accent); color:#fff; font-size:8.5px; font-weight:800; letter-spacing:0; }
+  .lane .title{ font-size:17.5px; font-weight:800; color:var(--l-ink); letter-spacing:-.005em; }
+
+  .lane .vsep{ flex:0 0 auto; width:1px; align-self:stretch; margin:2px 0; background:var(--l-grid); }
+
+  .lane .desc{ flex:1 1 auto; font-size:13.5px; line-height:1.55; color:var(--l-ink-2); }
+  .lane .desc b{ color:var(--l-ink); font-weight:700; }
+
+  .noteline{ flex:0 0 240px; position:relative; display:flex; align-items:center; padding-left:36px; }
+  .noteline::before{ content:""; position:absolute; left:0; top:4px; bottom:4px; width:0; border-left:2px dashed var(--l-baseline); }
+  .noteline::after{ content:""; position:absolute; left:0; top:50%; width:22px; height:0; border-top:2px dashed var(--l-baseline); }
+  .noteline .dot{ position:absolute; left:-4px; top:50%; width:9px; height:9px; margin-top:-4.5px; border-radius:50%; background:var(--l-ink-2); }
+
+  .note-card{
+    background:var(--l-surface); border:1px solid var(--l-grid); border-left:4px solid var(--c1-blue);
+    border-radius:8px; padding:18px 20px; box-shadow:0 1px 3px rgba(0,0,0,.05);
+  }
+  .note-card .note-label{ font-size:8.6px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--c1-blue); margin-bottom:6px; }
+  .note-card p{ margin:0; font-size:14.5px; font-weight:700; line-height:1.48; color:var(--l-ink); letter-spacing:-.003em; }
+</style>
+</head>
+<body>
+<div class="fig-wrap">
+
+  <div class="fig-header">
+    <div class="top">
+      <span class="kicker">FIGURE — SLA DEFINITIONS</span>
+      <span class="illustrative-tag">ILLUSTRATIVE</span>
+    </div>
+    <div class="fig-title">Four SLAs, One Word</div>
+    <div class="fig-sub">One P1 incident, read through four different documents — a training manual, a contract, a ticketing tool, and a customer's expectations. Each one calls itself &ldquo;the SLA.&rdquo;</div>
+  </div>
+
+  <div class="board">
+    <div class="lanes">
+
+      <div class="lane" style="--accent:var(--c1-blue); --accent-bg:rgba(42,120,214,0.12);">
+        <div class="bar"></div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M3 5.5C3 5.5 6.2 4 12 4C17.8 4 21 5.5 21 5.5V18.3C21 18.3 17.8 16.8 12 16.8C6.2 16.8 3 18.3 3 18.3V5.5Z"/><path d="M12 4V16.8"/></svg>
+        </div>
+        <div class="label-col">
+          <div class="eyebrow"><span class="idx">1</span>WHAT TRAINING TEACHES</div>
+          <div class="title">BOOK SLA</div>
+        </div>
+        <div class="vsep"></div>
+        <div class="desc"><b>Alert &rarr; Investigate &rarr; Escalate &rarr; Close.</b> Clean phases, one analyst, complete evidence, textbook order.</div>
+      </div>
+
+      <div class="lane" style="--accent:var(--c2-orange); --accent-bg:rgba(235,104,52,0.12);">
+        <div class="bar"></div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2.8" width="14" height="18.4" rx="1.6"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+        </div>
+        <div class="label-col">
+          <div class="eyebrow"><span class="idx">2</span>THE NEGOTIATED LEGAL TEXT</div>
+          <div class="title">CONTRACTUAL SLA</div>
+        </div>
+        <div class="vsep"></div>
+        <div class="desc"><b>P1 acknowledge in 30 min.</b> Severity definitions, clock start/stop conditions, penalties, exclusions.</div>
+      </div>
+
+      <div class="lane" style="--accent:var(--c3-aqua); --accent-bg:rgba(27,175,122,0.12);">
+        <div class="bar"></div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.4" rx="1.6"/><path d="M6.2 13.4l3-3.2 2.1 2 3.9-4.8"/><line x1="12" y1="16.4" x2="12" y2="19.6"/><line x1="8.2" y1="19.6" x2="15.8" y2="19.6"/></svg>
+        </div>
+        <div class="label-col">
+          <div class="eyebrow"><span class="idx">3</span>WHAT THE TOOLING MEASURES</div>
+          <div class="title">OPERATIONAL SLA</div>
+        </div>
+        <div class="vsep"></div>
+        <div class="desc">Ticket stage field, automation-rule <b>&ldquo;SLA Exceeded&rdquo;</b> trigger, queue-order magnitude score &mdash; a looser proxy for the contract.</div>
+      </div>
+
+      <div class="lane" style="--accent:var(--c4-yellow); --accent-bg:rgba(237,161,0,0.16);">
+        <div class="bar"></div>
+        <div class="icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M4 5.2h16a1 1 0 0 1 1 1v9.4a1 1 0 0 1-1 1H10.4L6.4 20v-3.4H4a1 1 0 0 1-1-1V6.2a1 1 0 0 1 1-1z"/></svg>
+        </div>
+        <div class="label-col">
+          <div class="eyebrow"><span class="idx">4</span>UNWRITTEN, OFTEN UNREALISTIC</div>
+          <div class="title">CUSTOMER EXPECTATION</div>
+        </div>
+        <div class="vsep"></div>
+        <div class="desc">Customer hears <b>&ldquo;30-minute response&rdquo;</b> and assumes &ldquo;resolved,&rdquo; not &ldquo;acknowledged.&rdquo;</div>
+      </div>
+
+    </div>
+
+    <div class="noteline">
+      <div class="dot"></div>
+      <div class="note-card">
+        <div class="note-label">The catch</div>
+        <p>Same incident. Four different readings of &ldquo;the SLA.&rdquo;</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body></html>

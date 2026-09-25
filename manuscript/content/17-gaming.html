@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow"><div class="section">
+
+<span class="kicker">Section 7</span>
+<h2 class="h2">When SLA Becomes the Wrong Incentive</h2>
+
+<p class="lede">An SLA holds a SOC accountable to a customer, not analysts judged every shift. Once those collapse into one figure, it stops measuring what it was built to measure — not from dishonesty, but because that's what happens to any measure turned into a target.</p>
+
+<h3 class="h3">7.1 Two Laws Older Than the SOC</h3>
+<p>This isn't SOC-specific. Charles Goodhart described it in 1975: a targeted statistic gets managed to, not tracked — <strong class="accent">Goodhart's Law</strong>. Donald T. Campbell said the same a year later, as <strong class="accent">Campbell's Law</strong>: the more an indicator drives decisions, the more it invites corruption that distorts what it monitors. Neither implies bad faith; the analyst is responding to the SOC's own incentive.</p>
+
+<h3 class="h3">7.2 What Gaming Looks Like on a Real Shift</h3>
+<p>Case Study 10 is this pattern taken to its conclusion: a case closed on a one-line note nobody followed up on, timed just ahead of breach. The list below generalizes it — moves any rational analyst makes once the dashboard, not the incident, decides how their shift is judged.</p>
+
+<table class="clean">
+<thead>
+<tr><th>Gaming behavior</th><th>On the floor</th><th>Optimizes for</th></tr>
+</thead>
+<tbody>
+<tr><td>Blanket acknowledgment</td><td>Alert acked unread</td><td>Stops clock, no triage</td></tr>
+<tr><td>Closing early</td><td>Resolved on thin evidence</td><td>Elapsed time, not resolution</td></tr>
+<tr><td>"Awaiting customer," no contact</td><td>Paused, no message sent</td><td>Unearned stop-clock, unlike Case 03</td></tr>
+<tr><td>Severity downgrade</td><td>Cut pre-breach, no evidence</td><td>Looser clock, not truer risk</td></tr>
+<tr><td>Fresh case, not the hot one</td><td>Old ticket left to lapse</td><td>Clean clock, lost continuity (Case 05)</td></tr>
+<tr><td>Copy/paste notes</td><td>Only the ticket number changes</td><td>Looks like investigation, isn't</td></tr>
+<tr><td>Reflexive escalation</td><td>Pushed up fast, unread</td><td>Transfers clock, not understanding</td></tr>
+<tr><td>Managing the dashboard</td><td>Watching board, not queue</td><td>Reported number, not real risk</td></tr>
+<tr><td>Ticket splitting / incident fragmentation</td><td>One long incident cut into parallel tickets</td><td>Each fragment's clock in-window, not total duration</td></tr>
+<tr><td>Clock restart via repeated reclassification</td><td>Reclassified again each time breach nears</td><td>Fresh clock, not a fresh case</td></tr>
+<tr><td>Denominator gaming</td><td>Exclusions widened, thresholds raised, quietly</td><td>Compliance %, not faster cases</td></tr>
+<tr><td>Type reclassification</td><td>Retyped as service request, not incident</td><td>Exits the SLA population, not just its clock</td></tr>
+</tbody>
+</table>
+
+<p>Individually, several of these look like ordinary triage. Only a timestamped, evidence-linked record, per Sections 2 and 5, separates a gamed decision from a legitimate one.</p>
+
+<h3 class="h3">7.3 The Standard-Setter's Own Warning</h3>
+<p>This isn't an outside objection — NIST SP 800-61 Rev. 2 (since superseded by Rev. 3) warned against using incident metrics to judge individual analysts, since that discourages honest reporting. NIST still backs SOC-wide metrics for trend visibility; the caution is only against pointing one at an individual.</p>
+
+<div class="figure"><img src="../../assets/mockups/sla-gaming-xray.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 7.1</span><span class="figtext">Two views of one period: a 99% SLA-compliance dashboard on top, the behaviors above underneath it — an illustrative composite, not a live measurement.</span></div></div>
+
+<div class="quote-block">
+<p>A response-time number that becomes a performance target gets optimized instead of the incident — Goodhart's Law doesn't ask permission.</p>
+</div>
+
+<div class="callout note">
+<span class="callout-label">The uncomfortable half of this section</span>
+A beautiful SLA dashboard can hide a weak SOC: 99% compliance is compatible with every row above happening underneath it, every shift.
+</div>
+
+<p>That's uncomfortable, not an argument for abandoning SLA measurement — elapsed-time tracking still gives customers an auditable basis for accountability and leadership visibility no manager could hold in their head. Being gameable doesn't erase that value; it just means the number alone can't prove the work was good. Section 8 pairs the clock with quality signals that measure what it can't see.</p>
+
+</div></div></body></html>

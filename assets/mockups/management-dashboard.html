@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+body{margin:0;}
+.dash-wrap{ width:1412px; margin:0 auto; }
+.hdr-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; }
+.hdr-kicker{ color:var(--c1-blue-d); }
+.hdr-title{ font-size:21px; font-weight:800; color:var(--d-ink); margin-top:6px; letter-spacing:-.005em; }
+.chart-head{ font-size:15px; font-weight:700; color:var(--d-ink); margin:0 0 4px; }
+.chart-head .sub{ color:var(--d-ink-muted); font-weight:600; }
+.chart-cap{ font-size:10px; color:var(--d-ink-muted); margin-top:16px; }
+.dtext{ color:var(--d-ink-muted); font-weight:600; margin-left:4px; }
+.stat-tile .delta.neutral{ color:var(--d-ink-muted); }
+svg text{ font-family:var(--font); }
+.cat-label{ font-size:14px; fill:var(--d-ink-2); text-anchor:end; }
+.val-label{ font-size:14px; font-weight:700; fill:var(--d-ink); }
+.tick-label{ font-size:12px; fill:var(--d-ink-muted); text-anchor:middle; }
+.grid-line{ stroke:var(--d-grid); stroke-width:1; }
+.base-line{ stroke:var(--d-baseline); stroke-width:1; }
+.bar-fill{ fill:var(--c1-blue-d); }
+</style>
+</head>
+<body style="width:1500px;background:var(--d-page);padding:44px;">
+<div class="dash-wrap">
+  <div class="console">
+    <div class="console-bar" style="padding:14px 20px;">
+      <span class="dot" style="background:var(--s-critical);"></span>
+      <span class="dot" style="background:var(--s-warning);"></span>
+      <span class="dot" style="background:var(--s-good);"></span>
+      <span class="title">soc-console — management-dashboard.live</span>
+      <span style="margin-left:auto;font-family:var(--mono);font-size:8.3pt;color:var(--d-ink-muted);letter-spacing:.02em;">SHIFT: DAY &nbsp;·&nbsp; UPDATED 07:58 MYT</span>
+    </div>
+
+    <div class="console-body" style="padding:36px 38px 46px;">
+
+      <div class="hdr-row">
+        <div>
+          <div class="kicker hdr-kicker">SOC MANAGEMENT DASHBOARD</div>
+          <div class="hdr-title">Shift Overview — SLA &amp; Queue Health</div>
+        </div>
+        <span class="illustrative-tag">ILLUSTRATIVE DATA</span>
+      </div>
+
+      <div class="stat-grid" style="grid-template-columns:repeat(5,1fr); gap:18px; margin:0 0 38px;">
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">SLA Compliance</div>
+          <div class="value">94.2%</div>
+          <div class="delta good">▲ +1.8 pts<span class="dtext">vs target</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">Breaches (7d)</div>
+          <div class="value">6</div>
+          <div class="delta bad">▲ +2<span class="dtext">vs last week</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">MTTA</div>
+          <div class="value">3m 40s</div>
+          <div class="delta good">▼ 0:45<span class="dtext">vs target</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">MTTI</div>
+          <div class="value">18m</div>
+          <div class="delta bad">▲ +6m<span class="dtext">vs target</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">MTTC</div>
+          <div class="value">46m</div>
+          <div class="delta neutral">▬ steady<span class="dtext">vs target</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">MTTR</div>
+          <div class="value">3h 12m</div>
+          <div class="delta bad">▲ +38m<span class="dtext">vs target</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">Queue Depth</div>
+          <div class="value">27</div>
+          <div class="delta bad">▲ +9<span class="dtext">vs baseline</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">Oldest Open Case</div>
+          <div class="value">6h 40m</div>
+          <div class="delta bad">▲ +1h 12m<span class="dtext">past P2 SLA</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">Reopened Case Rate</div>
+          <div class="value">4.1%</div>
+          <div class="delta bad">▲ +1.4 pts<span class="dtext">vs target</span></div>
+        </div>
+
+        <div class="stat-tile" style="padding:18px 18px 20px;">
+          <div class="label">Quality Audit Score</div>
+          <div class="value">87%</div>
+          <div class="delta good">▲ +3 pts<span class="dtext">vs last audit</span></div>
+        </div>
+
+      </div>
+
+      <div>
+        <h3 class="chart-head">Breach Root Causes <span class="sub">— last 30 days</span></h3>
+        <svg width="1330" height="510" viewBox="0 0 1330 510">
+          <!-- gridlines -->
+          <line class="grid-line" x1="260" y1="20" x2="260" y2="478"/>
+          <line class="grid-line" x1="500" y1="20" x2="500" y2="478"/>
+          <line class="grid-line" x1="740" y1="20" x2="740" y2="478"/>
+          <line class="grid-line" x1="980" y1="20" x2="980" y2="478"/>
+          <line class="grid-line" x1="1220" y1="20" x2="1220" y2="478"/>
+          <!-- baseline -->
+          <line class="base-line" x1="260" y1="478" x2="1220" y2="478"/>
+
+          <!-- bars (value/16 * 960px track, sorted desc, 24px thick) -->
+          <path class="bar-fill" d="M260,36 H1096 A4,4 0 0 1 1100,40 V56 A4,4 0 0 1 1096,60 H260 Z"/>
+          <path class="bar-fill" d="M260,92 H916 A4,4 0 0 1 920,96 V112 A4,4 0 0 1 916,116 H260 Z"/>
+          <path class="bar-fill" d="M260,148 H796 A4,4 0 0 1 800,152 V168 A4,4 0 0 1 796,172 H260 Z"/>
+          <path class="bar-fill" d="M260,204 H676 A4,4 0 0 1 680,208 V224 A4,4 0 0 1 676,228 H260 Z"/>
+          <path class="bar-fill" d="M260,260 H616 A4,4 0 0 1 620,264 V280 A4,4 0 0 1 616,284 H260 Z"/>
+          <path class="bar-fill" d="M260,316 H496 A4,4 0 0 1 500,320 V336 A4,4 0 0 1 496,340 H260 Z"/>
+          <path class="bar-fill" d="M260,372 H436 A4,4 0 0 1 440,376 V392 A4,4 0 0 1 436,396 H260 Z"/>
+          <path class="bar-fill" d="M260,428 H376 A4,4 0 0 1 380,432 V448 A4,4 0 0 1 376,452 H260 Z"/>
+
+          <!-- category labels -->
+          <text class="cat-label" x="250" y="52">Customer dependency</text>
+          <text class="cat-label" x="250" y="108">Telemetry delay</text>
+          <text class="cat-label" x="250" y="164">Capacity</text>
+          <text class="cat-label" x="250" y="220">Detection noise</text>
+          <text class="cat-label" x="250" y="276">Third-party dependency</text>
+          <text class="cat-label" x="250" y="332">Analyst delay</text>
+          <text class="cat-label" x="250" y="388">Process failure</text>
+          <text class="cat-label" x="250" y="444">Tool failure</text>
+
+          <!-- value labels at bar tip -->
+          <text class="val-label" x="1110" y="52">14</text>
+          <text class="val-label" x="930" y="108">11</text>
+          <text class="val-label" x="810" y="164">9</text>
+          <text class="val-label" x="690" y="220">7</text>
+          <text class="val-label" x="630" y="276">6</text>
+          <text class="val-label" x="510" y="332">4</text>
+          <text class="val-label" x="450" y="388">3</text>
+          <text class="val-label" x="390" y="444">2</text>
+
+          <!-- axis ticks -->
+          <text class="tick-label" x="260" y="496">0</text>
+          <text class="tick-label" x="500" y="496">4</text>
+          <text class="tick-label" x="740" y="496">8</text>
+          <text class="tick-label" x="980" y="496">12</text>
+          <text class="tick-label" x="1220" y="496">16</text>
+        </svg>
+        <div class="chart-cap">Root-cause tags recorded against breached-SLA cases · n = 56 tags across 30 days · illustrative data</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body></html>

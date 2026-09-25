@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  html,body{margin:0;padding:0;}
+  .aqh-card{background:var(--l-surface);box-shadow:inset 0 0 0 1px var(--l-border);border-radius:12px;padding:40px 44px 34px;}
+  .aqh-head{display:flex;justify-content:space-between;align-items:flex-start;}
+  .aqh-head .kicker{display:block;margin-bottom:7px;}
+  .aqh-title{font-size:21px;font-weight:800;color:var(--l-ink);letter-spacing:-.01em;}
+  .aqh-sub{font-size:12px;color:var(--l-ink-2);margin:5px 0 0;}
+  .aqh-grid{display:grid;grid-template-columns:118px repeat(12,1fr);gap:5px;margin-top:24px;}
+  .aqh-colhead{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--l-ink-muted);
+    text-align:center;letter-spacing:.02em;align-self:center;padding-bottom:6px;}
+  .aqh-rowlabel{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--l-ink-2);
+    display:flex;align-items:center;letter-spacing:.02em;}
+  .aqh-cell{border-radius:5px;height:70px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:12.5px;font-weight:700;}
+  .aqh-cell.ink{color:var(--l-ink);}
+  .aqh-cell.paper{color:#ffffff;}
+  .aqh-legend-wrap{display:flex;align-items:center;gap:14px;margin-top:26px;}
+  .aqh-ramp{display:flex;height:14px;width:266px;border-radius:3px;overflow:hidden;
+    box-shadow:inset 0 0 0 1px var(--l-border);}
+  .aqh-ramp span{flex:1;}
+  .aqh-legend-lbl{font-size:10px;color:var(--l-ink-muted);font-weight:700;letter-spacing:.03em;text-transform:uppercase;}
+  .aqh-legend-cap{font-size:10px;color:var(--l-ink-muted);letter-spacing:.06em;text-transform:uppercase;
+    font-weight:700;margin-left:6px;padding-left:14px;border-left:1px solid var(--l-grid);}
+  .aqh-take{margin-top:22px;padding-top:16px;border-top:1px solid var(--l-grid);
+    font-size:13.5px;font-weight:600;color:var(--l-ink-2);line-height:1.5;}
+</style>
+</head>
+<body style="margin:0;width:1500px;background:var(--l-page);">
+<div class="aqh-card">
+
+  <div class="aqh-head">
+    <div>
+      <span class="kicker">QUEUE PRESSURE BY HOUR</span>
+      <div class="aqh-title">Alert Queue Heatmap</div>
+      <div class="aqh-sub">Synthetic alert volume by customer and two-hour window, 00:00&ndash;24:00 local time.</div>
+    </div>
+    <span class="illustrative-tag">ILLUSTRATIVE</span>
+  </div>
+
+  <div class="aqh-grid">
+    <div></div>
+    <div class="aqh-colhead">00&ndash;02</div>
+    <div class="aqh-colhead">02&ndash;04</div>
+    <div class="aqh-colhead">04&ndash;06</div>
+    <div class="aqh-colhead">06&ndash;08</div>
+    <div class="aqh-colhead">08&ndash;10</div>
+    <div class="aqh-colhead">10&ndash;12</div>
+    <div class="aqh-colhead">12&ndash;14</div>
+    <div class="aqh-colhead">14&ndash;16</div>
+    <div class="aqh-colhead">16&ndash;18</div>
+    <div class="aqh-colhead">18&ndash;20</div>
+    <div class="aqh-colhead">20&ndash;22</div>
+    <div class="aqh-colhead">22&ndash;24</div>
+
+    <div class="aqh-rowlabel">CUST-A</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">62</div>
+    <div class="aqh-cell paper" style="background:var(--seq-700);">78</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">58</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">22</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">14</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">12</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">11</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">13</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">15</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">19</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">24</div>
+    <div class="aqh-cell paper" style="background:var(--seq-400);">38</div>
+
+    <div class="aqh-rowlabel">CUST-B</div>
+    <div class="aqh-cell paper" style="background:var(--seq-500);">54</div>
+    <div class="aqh-cell paper" style="background:var(--seq-700);">65</div>
+    <div class="aqh-cell paper" style="background:var(--seq-700);">71</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-300);">33</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">16</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">9</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">8</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">14</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">15</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">17</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">22</div>
+    <div class="aqh-cell paper" style="background:var(--seq-400);">35</div>
+
+    <div class="aqh-rowlabel">CUST-C</div>
+    <div class="aqh-cell paper" style="background:var(--seq-700);">68</div>
+    <div class="aqh-cell paper" style="background:var(--seq-700);">74</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">61</div>
+    <div class="aqh-cell paper" style="background:var(--seq-500);">52</div>
+    <div class="aqh-cell paper" style="background:var(--seq-500);">49</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">57</div>
+    <div class="aqh-cell paper" style="background:var(--seq-500);">51</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">58</div>
+    <div class="aqh-cell paper" style="background:var(--seq-500);">53</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">60</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">56</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">59</div>
+
+    <div class="aqh-rowlabel">CUST-D</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">59</div>
+    <div class="aqh-cell paper" style="background:var(--seq-700);">73</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">63</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-300);">25</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">10</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">8</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">7</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">9</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">13</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">16</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">21</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-300);">34</div>
+
+    <div class="aqh-rowlabel">CUST-E</div>
+    <div class="aqh-cell paper" style="background:var(--seq-500);">49</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">60</div>
+    <div class="aqh-cell paper" style="background:var(--seq-600);">57</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">18</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">9</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">7</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">6</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">8</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-100);">11</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">15</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-200);">19</div>
+    <div class="aqh-cell ink"   style="background:var(--seq-300);">31</div>
+  </div>
+
+  <div class="aqh-legend-wrap">
+    <span class="aqh-legend-lbl">Low</span>
+    <div class="aqh-ramp">
+      <span style="background:var(--seq-100);"></span>
+      <span style="background:var(--seq-200);"></span>
+      <span style="background:var(--seq-300);"></span>
+      <span style="background:var(--seq-400);"></span>
+      <span style="background:var(--seq-500);"></span>
+      <span style="background:var(--seq-600);"></span>
+      <span style="background:var(--seq-700);"></span>
+    </div>
+    <span class="aqh-legend-lbl">High</span>
+    <span class="aqh-legend-cap">Alert volume &mdash; alerts per 2-hour window</span>
+  </div>
+
+  <div class="aqh-take">Alert volume is not evenly distributed across the day &mdash; SLA pressure concentrates overnight, when staffing is thinnest.</div>
+
+</div>
+</body></html>

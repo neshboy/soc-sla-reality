@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head>
+<body>
+<div class="flow">
+
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-num">CASE 03</div>
+        <h3>The Customer Who Won't Answer</h3>
+      </div>
+      <span class="illustrative-tag">Illustrative</span>
+    </div>
+    <div class="case-meta">
+      <div><b>Trigger</b>Anomalous account-privilege change flagged for validation</div>
+      <div><b>SOC Action</b>Escalate to customer contact, request confirm/deny</div>
+      <div><b>Customer Response Time</b>3 hours elapsed before reply</div>
+      <div><b>Open Question</b>Was the SLA clock running that whole time?</div>
+    </div>
+    <div class="case-body">
+      <p>A SOC analyst flags an ambiguous account event — a privilege change, a new device enrollment — that could be routine administration or an account takeover in progress. Only the customer can say which. The analyst escalates and waits three hours: legitimate, a laptop provisioning. Routine false positive.</p>
+
+      <p>What isn't routine is the clock. <strong>Did the SLA keep running while the SOC sat idle, waiting on someone outside its control?</strong> There's no universal answer — it lives entirely in whether the contract defines a "stop-clock" pause condition at all.</p>
+
+      <table class="clean">
+        <thead>
+          <tr><th>Question the contract must answer</th><th>Why it decides the outcome</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Is "awaiting customer" a defined pause state, or does the SLA only stop for the SOC's own internal dependencies?</td>
+            <td>Silence means the clock runs against the SOC by default, regardless of who caused the delay.</td>
+          </tr>
+          <tr>
+            <td>Is the pause logged with a timestamp and a named contact attempt, not just a status flag?</td>
+            <td>An undocumented flag is indistinguishable from the SOC parking a ticket to buy itself time.</td>
+          </tr>
+          <tr>
+            <td>Does the tier define a maximum response window after which the SOC's obligation is met regardless?</td>
+            <td>Without one, a three-hour wait and a three-day wait are contractually identical: unbounded.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Absent that language, assume the clock ran the full three hours — a pause the contract never anticipated earns no credit. This is why the SOC's own behavior during the wait matters on its own: a message timestamped at the one-hour mark, noting the customer confirmation still pending, is both fair and evidentiary. A pause claimed for the first time in a post-incident review, with no message trail behind it, rarely survives scrutiny.</p>
+
+      <div class="callout note">
+        <span class="callout-label">Bridges to Section 9</span>
+        This case turns on one mechanical question — what counts as a valid stop-clock condition and how it must be documented — that Section 9 addresses directly.
+      </div>
+    </div>
+  </div>
+
+</div>
+</body></html>

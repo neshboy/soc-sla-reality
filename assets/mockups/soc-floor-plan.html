@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  html,body{ margin:0; padding:0; }
+  body{
+    width:1500px;
+    background:var(--d-page);
+    font-family:var(--font);
+  }
+  .fp-wrap{ padding:52px 52px 44px; }
+
+  /* ---- header ---- */
+  .fp-kicker{
+    display:flex; align-items:center; gap:10px;
+    font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--c2-orange-d); margin-bottom:12px;
+  }
+  .fp-title{
+    font-size:30px; font-weight:800; line-height:1.2; color:var(--d-ink);
+    border-left:4px solid var(--c1-blue-d); padding-left:16px; margin:0 0 30px;
+    letter-spacing:-.005em;
+  }
+
+  /* ---- main row: floor + legend ---- */
+  .fp-main{ display:flex; gap:28px; align-items:stretch; }
+
+  .fp-floor{
+    flex:1; min-width:0; border-radius:14px; padding:30px;
+    border:1.5px solid rgba(255,255,255,0.16);
+    background-color: var(--d-surface);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  .fp-section-label{
+    font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.09em;
+    color:var(--d-ink-muted); margin-bottom:14px;
+  }
+
+  /* ---- shared displays (wall) ---- */
+  .fp-screens{ display:flex; gap:18px; margin-bottom:32px; }
+  .fp-screen{
+    flex:1; min-width:0; height:172px; background:#111110; border:1px solid var(--d-border);
+    border-radius:9px; padding:14px 16px; display:flex; flex-direction:column;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+  }
+  .fp-screen-title{
+    font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--d-ink-muted); margin-bottom:12px;
+  }
+
+  /* screen 1: alert queue mini bars */
+  .aq-row{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .aq-row:last-child{ margin-bottom:0; }
+  .aq-lbl{ font-family:var(--mono); font-size:9.5px; font-weight:800; color:var(--d-ink-2); width:22px; flex-shrink:0; }
+  .aq-track{ flex:1; height:9px; background:var(--d-grid); border-radius:4px; overflow:hidden; }
+  .aq-fill{ height:100%; border-radius:4px; }
+  .aq-num{ font-family:var(--mono); font-size:9.5px; color:var(--d-ink); width:16px; text-align:right; flex-shrink:0; }
+
+  /* screen 2: SLA compliance */
+  .sla-big{ flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  .sla-pct{ font-family:var(--mono); font-size:40px; font-weight:800; color:var(--s-good); line-height:1; }
+  .sla-sub{ font-size:9.5px; color:var(--d-ink-muted); margin-top:4px; letter-spacing:.03em; }
+  .sla-track{ width:100%; height:8px; background:var(--d-grid); border-radius:4px; margin-top:14px; overflow:hidden; }
+  .sla-fill{ height:100%; width:94%; background:var(--s-good); border-radius:4px; }
+
+  /* screen 3: major incident bridge */
+  .mib-body{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+  .mib-top{ display:flex; align-items:center; gap:9px; margin-bottom:10px; }
+  .mib-id{ font-family:var(--mono); font-weight:800; font-size:15px; color:var(--d-ink); }
+  .mib-line{ font-size:10.5px; color:var(--d-ink-2); line-height:1.6; }
+  .mib-line b{ color:var(--d-ink); }
+
+  /* ---- pods / seating ---- */
+  .fp-rows{ display:flex; flex-direction:column; gap:20px; }
+  .fp-row{ display:flex; align-items:center; gap:22px; }
+  .fp-row-label{ width:158px; flex-shrink:0; }
+  .fp-row-label .t{ font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--d-ink-2); }
+  .fp-row-label .s{ display:block; font-size:9px; color:var(--d-ink-muted); margin-top:3px; letter-spacing:.02em; text-transform:none; font-weight:600; }
+  .fp-pods{ display:flex; gap:14px; flex-wrap:wrap; }
+  .fp-spacer{ flex:1; }
+
+  .fp-pod{
+    position:relative; min-width:88px; height:74px; padding:0 12px;
+    background:rgba(255,255,255,0.045); border:1px solid var(--d-border); border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .fp-role{ font-family:var(--mono); font-weight:800; font-size:14px; color:var(--d-ink); letter-spacing:.01em; white-space:nowrap; }
+  .fp-dot{ position:absolute; top:8px; right:8px; width:10px; height:10px; border-radius:50%; }
+  .fp-dot.good{ background:var(--s-good); box-shadow:0 0 0 3px rgba(12,163,12,0.20); }
+  .fp-dot.warn{ background:var(--s-warning); box-shadow:0 0 0 3px rgba(250,178,25,0.22); }
+
+  /* war room */
+  .fp-warroom{
+    flex-shrink:0; width:232px; height:74px; border-radius:10px;
+    border:2px dashed rgba(255,255,255,0.38);
+    background:rgba(57,135,229,0.07);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+  }
+  .fp-warroom .t{ font-size:12.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--d-ink); }
+  .fp-warroom .s{ font-size:9px; color:var(--d-ink-muted); margin-top:3px; letter-spacing:.02em; }
+
+  /* ---- legend ---- */
+  .fp-legend{
+    width:300px; flex-shrink:0; background:var(--d-surface); border:1px solid var(--d-border);
+    border-radius:14px; padding:26px 26px 24px;
+  }
+  .fp-legend h4{ margin:0 0 18px; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--d-ink-muted); }
+  .fp-legend-section{ margin-bottom:20px; }
+  .fp-legend-section:last-child{ margin-bottom:0; }
+  .fp-legend-section-t{ font-size:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--c1-blue-d); margin-bottom:11px; }
+  .fp-legend-item{ display:flex; align-items:flex-start; gap:10px; margin-bottom:9px; font-size:11.5px; line-height:1.42; color:var(--d-ink-2); }
+  .fp-legend-item:last-child{ margin-bottom:0; }
+  .fp-legend-chip{
+    font-family:var(--mono); font-weight:800; font-size:10.5px; color:var(--d-ink);
+    background:rgba(255,255,255,0.07); border-radius:5px; padding:3px 7px; flex-shrink:0;
+    min-width:60px; text-align:center;
+  }
+  .fp-legend-dot{ width:11px; height:11px; border-radius:50%; flex-shrink:0; margin-top:2px; }
+  .fp-legend-swatch{ width:20px; height:14px; border-radius:3px; flex-shrink:0; margin-top:1px; }
+  .fp-hr{ border-top:1px solid var(--d-border); margin:0 0 20px; }
+  .fp-legend-foot{ font-size:9.5px; color:var(--d-ink-muted); line-height:1.5; margin-top:18px; padding-top:16px; border-top:1px solid var(--d-border); }
+
+  /* ---- caption ---- */
+  .fp-caption{
+    margin:30px auto 0; padding-top:22px; border-top:1px solid var(--d-border);
+    max-width:1180px; text-align:center; font-style:italic; font-size:15px; line-height:1.6;
+    color:var(--d-ink-2);
+  }
+</style>
+</head>
+<body>
+<div class="fp-wrap">
+
+  <div class="fp-kicker">Figure — SOC Floor Layout <span class="illustrative-tag">Illustrative</span></div>
+  <h1 class="fp-title">Inside the SOC: a realistic floor view</h1>
+
+  <div class="fp-main">
+
+    <div class="fp-floor">
+
+      <div class="fp-section-label">Wall — Shared Displays</div>
+      <div class="fp-screens">
+        <div class="fp-screen">
+          <div class="fp-screen-title">Alert Queue</div>
+          <div class="aq-row"><span class="aq-lbl">P1</span><div class="aq-track"><div class="aq-fill" style="width:22%;background:var(--s-critical);"></div></div><span class="aq-num">3</span></div>
+          <div class="aq-row"><span class="aq-lbl">P2</span><div class="aq-track"><div class="aq-fill" style="width:48%;background:var(--s-serious);"></div></div><span class="aq-num">7</span></div>
+          <div class="aq-row"><span class="aq-lbl">P3</span><div class="aq-track"><div class="aq-fill" style="width:78%;background:var(--s-warning);"></div></div><span class="aq-num">12</span></div>
+          <div class="aq-row"><span class="aq-lbl">P4</span><div class="aq-track"><div class="aq-fill" style="width:100%;background:var(--d-ink-muted);"></div></div><span class="aq-num">16</span></div>
+        </div>
+        <div class="fp-screen">
+          <div class="fp-screen-title">SLA Compliance</div>
+          <div class="sla-big">
+            <div class="sla-pct">94%</div>
+            <div class="sla-sub">rolling 30-day, all priorities</div>
+          </div>
+          <div class="sla-track"><div class="sla-fill"></div></div>
+        </div>
+        <div class="fp-screen">
+          <div class="fp-screen-title">Major Incident Bridge</div>
+          <div class="mib-body">
+            <div class="mib-top"><span class="pill p1">P1</span><span class="mib-id">INC-4471</span></div>
+            <div class="mib-line">3 responders on bridge<br/>Elapsed <b>01:42:10</b> · SLA remaining <b>02:17:50</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fp-section-label">Seating — Analyst Pods</div>
+      <div class="fp-rows">
+
+        <div class="fp-row">
+          <div class="fp-row-label"><span class="t">Front line</span><span class="s">Triage queue</span></div>
+          <div class="fp-pods">
+            <div class="fp-pod"><span class="fp-dot good"></span><span class="fp-role">L1</span></div>
+            <div class="fp-pod"><span class="fp-dot good"></span><span class="fp-role">L1</span></div>
+            <div class="fp-pod"><span class="fp-dot warn"></span><span class="fp-role">L1</span></div>
+            <div class="fp-pod"><span class="fp-dot good"></span><span class="fp-role">L1</span></div>
+          </div>
+        </div>
+
+        <div class="fp-row">
+          <div class="fp-row-label"><span class="t">Tier 2 / specialist</span><span class="s">Deep investigation</span></div>
+          <div class="fp-pods">
+            <div class="fp-pod"><span class="fp-dot good"></span><span class="fp-role">L2</span></div>
+            <div class="fp-pod"><span class="fp-dot warn"></span><span class="fp-role">L2</span></div>
+            <div class="fp-pod"><span class="fp-dot good"></span><span class="fp-role">Hunt</span></div>
+          </div>
+        </div>
+
+        <div class="fp-row">
+          <div class="fp-row-label"><span class="t">Escalation</span><span class="s">Command &amp; response</span></div>
+          <div class="fp-pods">
+            <div class="fp-pod"><span class="fp-dot warn"></span><span class="fp-role">IR</span></div>
+            <div class="fp-pod"><span class="fp-dot good"></span><span class="fp-role">Shift Lead</span></div>
+          </div>
+          <div class="fp-spacer"></div>
+          <div class="fp-warroom">
+            <div class="t">War Room</div>
+            <div class="s">glass-walled · reserved for majors</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="fp-legend">
+      <h4>Legend</h4>
+
+      <div class="fp-legend-section">
+        <div class="fp-legend-section-t">Pod Roles</div>
+        <div class="fp-legend-item"><span class="fp-legend-chip">L1</span><span>Tier 1 analyst — initial triage</span></div>
+        <div class="fp-legend-item"><span class="fp-legend-chip">L2</span><span>Tier 2 analyst — deep investigation</span></div>
+        <div class="fp-legend-item"><span class="fp-legend-chip">Hunt</span><span>Threat hunter — proactive detection</span></div>
+        <div class="fp-legend-item"><span class="fp-legend-chip">IR</span><span>Incident responder — active cases</span></div>
+        <div class="fp-legend-item"><span class="fp-legend-chip">Shift Lead</span><span>Shift supervisor — staffing &amp; escalation</span></div>
+      </div>
+
+      <div class="fp-hr"></div>
+
+      <div class="fp-legend-section">
+        <div class="fp-legend-section-t">Status Dot</div>
+        <div class="fp-legend-item"><span class="fp-legend-dot" style="background:var(--s-good);"></span><span>Active / available</span></div>
+        <div class="fp-legend-item"><span class="fp-legend-dot" style="background:var(--s-warning);"></span><span>On a call / heads-down</span></div>
+      </div>
+
+      <div class="fp-hr"></div>
+
+      <div class="fp-legend-section">
+        <div class="fp-legend-section-t">Floor Elements</div>
+        <div class="fp-legend-item"><span class="fp-legend-swatch" style="background:#111110;border:1px solid var(--d-border);"></span><span>Shared wall display</span></div>
+        <div class="fp-legend-item"><span class="fp-legend-swatch" style="background:rgba(57,135,229,0.07);border:2px dashed rgba(255,255,255,0.38);"></span><span>Glass-walled war room</span></div>
+      </div>
+
+      <div class="fp-legend-foot">Headcount, layout and desk count are illustrative — real SOC floor plans vary by staffing model and site.</div>
+    </div>
+
+  </div>
+
+  <div class="fp-caption">&ldquo;A SOC floor is a queue-management problem with desks &mdash; most of what determines SLA outcomes is who is free, who is on a call, and how many screens are showing the same incident.&rdquo;</div>
+
+</div>
+</body></html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; }
+  .wrap{ width:1500px; background:var(--d-page); color:var(--d-ink); padding:46px; }
+  .console-body{ padding:20px 22px; }
+
+  .illus-banner{
+    background:var(--c1-blue-d); color:#ffffff; border:1px solid rgba(255,255,255,0.28);
+    border-radius:8px; padding:15px 20px; margin-bottom:26px;
+    display:flex; align-items:center; gap:10px;
+    font-weight:800; font-size:14px; letter-spacing:.04em; text-transform:uppercase;
+    text-align:center; justify-content:center;
+  }
+  .illus-banner .ico{
+    width:18px; height:18px; border-radius:50%; border:2px solid #fff; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-family:var(--mono);
+  }
+
+  .console-bar .dot{ background:var(--d-grid); border:1px solid var(--d-border); }
+  .console-bar .dot:nth-child(2){ opacity:.7; }
+  .console-bar .dot:nth-child(3){ opacity:.45; }
+
+  .subhead{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:2px 4px 12px; border-bottom:1px solid var(--d-grid); margin-bottom:10px;
+  }
+  .subhead .t{ font-size:12.5px; font-weight:800; letter-spacing:.06em; color:var(--d-ink); text-transform:uppercase; }
+  .subhead .m{ font-size:10.5px; color:var(--d-ink-muted); font-family:var(--mono); }
+
+  table.offense-table{ width:100%; border-collapse:collapse; font-size:11.3px; font-family:var(--mono); table-layout:fixed; }
+  table.offense-table th{ text-align:left; color:var(--d-ink-muted); font-size:9.6px; text-transform:uppercase;
+    letter-spacing:.05em; padding:6px 10px; border-bottom:1px solid var(--d-grid); font-weight:700; }
+  table.offense-table td{ padding:19px 10px; border-bottom:1px solid var(--d-grid); color:var(--d-ink); vertical-align:middle; }
+  table.offense-table tbody tr:nth-child(odd){ background:rgba(255,255,255,0.015); }
+
+  .oid{ font-weight:700; color:var(--d-ink); }
+  .desc{ color:var(--d-ink-2); line-height:1.4; }
+  .src-ip{ color:var(--d-ink); font-weight:700; }
+  .src-host{ display:block; color:var(--d-ink-muted); font-size:9.8px; margin-top:2px; }
+  .evt{ text-align:right; display:block; }
+
+  .mag{ display:flex; align-items:center; gap:9px; }
+  .mag-bar{ display:flex; gap:2px; }
+  .mag-bar i{ width:9px; height:14px; border-radius:1px; background:var(--d-grid); display:inline-block; }
+  .mag-bar i.on{ background:var(--seq-450); }
+  .mag-num{ color:var(--d-ink-2); font-size:10.6px; min-width:20px; }
+
+  .stpill{ display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:20px;
+    font-size:9.4px; font-weight:700; letter-spacing:.03em; font-family:var(--font); }
+  .stpill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+  .stpill.new{ background:rgba(57,135,229,0.16); color:var(--c1-blue-d); }
+  .stpill.active{ background:rgba(237,161,0,0.18); color:var(--c4-yellow); }
+  .stpill.closed{ background:rgba(137,135,129,0.20); color:var(--d-ink-muted); }
+  .owner{ color:var(--d-ink-2); }
+  .owner.unassigned{ color:var(--d-ink-muted); font-style:italic; }
+
+  .cap{ margin-top:26px; font-size:11px; line-height:1.55; color:var(--d-ink-muted); padding:0 4px; }
+  .cap b{ color:var(--d-ink-2); }
+
+  .kpi-row{ margin:0 0 34px; }
+  .kpi-row .stat-tile .value{ font-family:var(--mono); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="illus-banner">
+    <span class="ico">i</span>
+    ILLUSTRATIVE SOC UI &mdash; SYNTHETIC EXAMPLE, NOT AN ACTUAL QRADAR SCREENSHOT
+  </div>
+
+  <div class="stat-grid kpi-row">
+    <div class="stat-tile">
+      <div class="label">Offenses Shown</div>
+      <div class="value">6</div>
+    </div>
+    <div class="stat-tile">
+      <div class="label">New</div>
+      <div class="value">2</div>
+    </div>
+    <div class="stat-tile">
+      <div class="label">Active</div>
+      <div class="value">3</div>
+    </div>
+    <div class="stat-tile">
+      <div class="label">Closed (24H)</div>
+      <div class="value">1</div>
+    </div>
+  </div>
+
+  <div class="console">
+    <div class="console-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="title">synthetic-offense-console.local &mdash; illustrative build, not a vendor product</span>
+    </div>
+    <div class="console-body">
+
+      <div class="subhead">
+        <span class="t">Offenses</span>
+        <span class="m">6 open &middot; sorted by magnitude &middot; last 24 hours</span>
+      </div>
+
+      <table class="offense-table">
+        <colgroup>
+          <col style="width:100px;"><col style="width:400px;"><col style="width:180px;">
+          <col style="width:190px;"><col style="width:135px;"><col style="width:95px;">
+          <col style="width:70px;"><col style="width:100px;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Offense ID</th><th>Description</th><th>Magnitude</th><th>Offense Source</th>
+            <th>Start Time</th><th style="text-align:right;">Event Count</th><th>Owner</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="oid">OFF-88214</td>
+            <td class="desc">Multiple failed logins followed by success</td>
+            <td><div class="mag"><div class="mag-bar">
+              <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i>
+            </div><span class="mag-num">8 / 10</span></div></td>
+            <td><span class="src-ip">10.42.6.19</span><span class="src-host">WEB-PROXY-04</span></td>
+            <td>2026-09-24 02:14</td>
+            <td class="evt">1,204</td>
+            <td class="owner">J.T.</td>
+            <td><span class="stpill active">ACTIVE</span></td>
+          </tr>
+          <tr>
+            <td class="oid">OFF-88219</td>
+            <td class="desc">Anomalous outbound data volume to rare destination</td>
+            <td><div class="mag"><div class="mag-bar">
+              <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i>
+            </div><span class="mag-num">6 / 10</span></div></td>
+            <td><span class="src-ip">10.11.3.88</span><span class="src-host">DB-ARCHIVE-02</span></td>
+            <td>2026-09-24 03:02</td>
+            <td class="evt">312</td>
+            <td class="owner unassigned">Unassigned</td>
+            <td><span class="stpill new">NEW</span></td>
+          </tr>
+          <tr>
+            <td class="oid">OFF-88231</td>
+            <td class="desc">Malware detection followed by lateral connection attempt</td>
+            <td><div class="mag"><div class="mag-bar">
+              <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i>
+            </div><span class="mag-num">9 / 10</span></div></td>
+            <td><span class="src-ip">172.16.4.51</span><span class="src-host">FIN-WKSTN-117</span></td>
+            <td>2026-09-24 04:47</td>
+            <td class="evt">88</td>
+            <td class="owner">R.K.</td>
+            <td><span class="stpill active">ACTIVE</span></td>
+          </tr>
+          <tr>
+            <td class="oid">OFF-88240</td>
+            <td class="desc">Excessive DNS queries to a newly seen domain</td>
+            <td><div class="mag"><div class="mag-bar">
+              <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div><span class="mag-num">3 / 10</span></div></td>
+            <td><span class="src-ip">10.42.1.203</span><span class="src-host">HR-LAPTOP-09</span></td>
+            <td>2026-09-24 05:11</td>
+            <td class="evt">5,910</td>
+            <td class="owner unassigned">Unassigned</td>
+            <td><span class="stpill new">NEW</span></td>
+          </tr>
+          <tr>
+            <td class="oid">OFF-88255</td>
+            <td class="desc">Privileged account used outside normal hours</td>
+            <td><div class="mag"><div class="mag-bar">
+              <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i>
+            </div><span class="mag-num">7 / 10</span></div></td>
+            <td><span class="src-ip">10.7.9.14</span><span class="src-host">DC-AUTH-01</span></td>
+            <td>2026-09-24 06:38</td>
+            <td class="evt">46</td>
+            <td class="owner">M.S.</td>
+            <td><span class="stpill active">ACTIVE</span></td>
+          </tr>
+          <tr>
+            <td class="oid">OFF-88260</td>
+            <td class="desc">Repeated firewall deny from a single source, low signal</td>
+            <td><div class="mag"><div class="mag-bar">
+              <i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div><span class="mag-num">2 / 10</span></div></td>
+            <td><span class="src-ip">203.0.113.44</span><span class="src-host">external</span></td>
+            <td>2026-09-24 07:55</td>
+            <td class="evt">8,742</td>
+            <td class="owner">J.T.</td>
+            <td><span class="stpill closed">CLOSED</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="cap"><b>Magnitude</b> reflects relevance, credibility, and severity together &mdash; not simply how many events fired. A high event count does not always mean a high-magnitude offense.</div>
+
+</div>
+</body></html>

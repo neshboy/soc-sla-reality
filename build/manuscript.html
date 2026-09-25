@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<title>THE SOC SLA REALITY</title>
+<link rel="stylesheet" href="../assets/theme.css?v=1790346494">
+</head>
+<body>
+<!-- ==== 00-cover.html ==== -->
+
+<div class="page dark cover" style="page-break-after:always;">
+  <div class="brand-row">
+    <div class="brand">NESHBOY&nbsp;&nbsp;·&nbsp;&nbsp;SECURITY OPERATIONS RESEARCH</div>
+    <div class="tag" style="background:none;padding:0;border-radius:0;color:var(--d-ink-muted);text-align:right;">TECHNICAL PAPER — 2026</div>
+  </div>
+
+  <div class="cover-clock-wrap" style="position:relative;">
+    <svg width="300" height="300" viewBox="0 0 300 300">
+      <circle cx="150" cy="150" r="128" fill="none" stroke="#2c2c2a" stroke-width="1"/>
+      <!-- segmented SLA clock ring: 9 stages, unequal arcs, categorical-ish hues -->
+      <g transform="rotate(-90 150 150)">
+        <!-- circumference = 2*pi*110 = 691.15 -->
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#3987e5" stroke-width="14" stroke-dasharray="55 636.15" stroke-dashoffset="0"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#d95926" stroke-width="14" stroke-dasharray="45 646.15" stroke-dashoffset="-58"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#199e70" stroke-width="14" stroke-dasharray="70 621.15" stroke-dashoffset="-106"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#c98500" stroke-width="14" stroke-dasharray="120 571.15" stroke-dashoffset="-179"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#9085e9" stroke-width="14" stroke-dasharray="90 601.15" stroke-dashoffset="-302"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#d55181" stroke-width="14" stroke-dasharray="80 611.15" stroke-dashoffset="-395"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#e66767" stroke-width="14" stroke-dasharray="100 591.15" stroke-dashoffset="-478"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#3987e5" stroke-width="14" stroke-dasharray="65 626.15" stroke-dashoffset="-581" opacity="0.55"/>
+        <circle cx="150" cy="150" r="110" fill="none" stroke="#199e70" stroke-width="14" stroke-dasharray="66 625.15" stroke-dashoffset="-649" opacity="0.55"/>
+      </g>
+      <circle cx="150" cy="150" r="94" fill="#1a1a19" stroke="#2c2c2a" stroke-width="1"/>
+    </svg>
+    <div style="position:absolute; left:0; top:0; width:300px; height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; pointer-events:none;">
+      <div style="font-family:var(--font); font-size:15px; font-weight:800; color:#ffffff;">SLA CLOCK</div>
+      <div style="font-family:var(--font); font-size:6.6px; letter-spacing:.08em; text-transform:uppercase; color:#898781; margin-top:3px;">9 stages · 1 elapsed timer</div>
+    </div>
+  </div>
+
+  <div class="title-block">
+    <span class="kicker">Detection to Closure</span>
+    <h1>THE SOC SLA<br/>REALITY</h1>
+    <div class="subtitle">What the contract says vs. what actually happens inside a security operations center — queue pressure, dependencies, evidence, and the clock that keeps running anyway.</div>
+  </div>
+
+  <div class="footer-row">
+    <div class="meta">
+      Research &amp; analysis: neshboy<br/>
+      SOC operations · SLA management · incident response<br/>
+      soc-sla-reality
+    </div>
+    <div class="meta" style="text-align:right;">
+      Illustrative case studies &amp; models throughout<br/>
+      are clearly labeled — not universal standards.
+    </div>
+  </div>
+</div>
+
+<!-- ==== 01-thesis.html ==== -->
+
+<div class="flow">
+
+<div class="lede">What the contract specifies and what the SOC does to close an incident are two records of the same event — a countdown, and an investigation under incomplete information. This paper is about the gap.</div>
+
+<span class="kicker">Framing the Problem</span>
+<h2 class="h2">The Central Thesis</h2>
+
+<p>An SLA measures elapsed time; a SOC manages uncertainty, dependencies, and risk. Meeting the SLA doesn't mean the investigation was good; breaching it doesn't mean the SOC failed. That gap is a category error, not a rounding error.</p>
+
+<div class="figure">
+  <img src="../assets/mockups/thesis-diagram.png" style="width:100%;display:block;">
+  <div class="figcap"><span class="fignum">FIGURE 1.1</span><span class="figtext">The contractual clock against the analyst's uncertainty cloud — illustrative only, not a specific case or environment.</span></div>
+</div>
+
+<p>The clock is precise; the cloud — complete telemetry, confirmed scope, corroborated evidence — is not.</p>
+
+<p>Four claims underlie it:</p>
+
+<h3 class="h3">a. An SLA Is a Negotiated Clock</h3>
+<p>A service-level agreement fixes when a timer starts, stops, and what duration is acceptable — a negotiated business term, not a technical constant. Every severity-to-duration figure in this paper is illustrative, not a universal standard — no accreditation body publishes a definitive number for "the" SOC SLA.</p>
+
+<h3 class="h3">b. SOC Work Is Investigation Under Incomplete Information</h3>
+<p>An analyst rarely has a complete picture: telemetry can be partial, scope isn't self-evident, and one indicator is a lead until corroborated. Closure often depends on someone the SOC doesn't manage. That isn't the SOC being slow — it's reducing uncertainty on a timeline others partially control.</p>
+
+<h3 class="h3">c. The Two Overlap, But They Are Not Identical</h3>
+<p>Ordinarily the SLA and investigation quality move together, which is why the two get conflated; the divergence shows at the tails. A trivial alert can breach its window for administrative reasons; another can close inside its window because a corroborating log went unchecked — an investigation problem wearing a compliant clock.</p>
+
+<h3 class="h3">d. Two Outcomes a Compliance Dashboard Cannot Tell Apart</h3>
+<p>Pull those three claims together and two outcomes fall out that a compliance percentage cannot tell apart.</p>
+
+<div class="callout illustrative">
+  <span class="callout-label">Two Real Outcomes, One Indistinguishable Dashboard</span>
+  <p><strong>SLA met, investigation poor.</strong> An analyst closes a <span class="pill p2">P2</span> alert inside the window without pulling the telemetry that would have contextualized it. The report shows a compliant case; nobody found the actual exposure.</p>
+  <p><strong>SLA breached, SOC did its job.</strong> A <span class="pill p1">P1</span> alert stalls because containment needs a change-approval the customer's board hasn't granted, or a support queue is the only path to a forensic image. The clock runs; the analyst's work was correct.</p>
+</div>
+
+<p>A monthly percentage can't tell these two cases apart — both produce identical entries in an SLA-compliance column while saying nothing about which case reduced risk. This matters more now that detection and response often runs through an MDR or MSSP, so the relationship is defined by contract, not visibility into the investigation — a dynamic examined later in this paper.</p>
+
+<p>The rest of the paper covers the SLA taxonomy and where it diverges from a real queue; ten case studies from real operating conditions; the operating model underneath both — gaming, quality measurement, pause-the-clock mechanics, OLA obligations, staffing — and a closing playbook for negotiating SLAs.</p>
+
+</div>
+
+<!-- ==== 02-why-matters.html ==== -->
+<div class="flow">
+
+<div class="section-unforced">
+<span class="kicker">Foundations</span>
+<h2 class="h2">Why SOC SLAs Matter</h2>
+<p class="lede">An SLA is the written agreement on what "acceptable service" means before an incident forces the question — remove it, and speed disputes become unresolvable.</p>
+</div>
+
+<h3 class="h3">The Business Case for a Written Commitment</h3>
+<p>An SLA creates four things unrelated to detection technology: <strong class="accent">accountability</strong> (a named party, outcome, window), <strong class="accent">contractual clarity</strong> (what's being bought), <strong class="accent">customer trust</strong> (an auditable target), and a <strong class="accent">shared vocabulary</strong> — without it, "resolved" means nothing consistent, and most later disputes trace back to that gap.</p>
+
+<table class="clean">
+<thead><tr><th>SLA Commitment</th><th>What It Actually Guarantees</th></tr></thead>
+<tbody>
+<tr><td>Response-time target</td><td>A clock started, not comprehension.</td></tr>
+<tr><td>Escalation window</td><td>A hand-off happened, not context transfer.</td></tr>
+<tr><td>Resolution / closure timestamp</td><td>A ticket changed state, not root cause found.</td></tr>
+<tr><td>Reporting cadence</td><td>An update shipped, not analysis completed.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">What an SLA Formally Is</h3>
+<p>NIST's CSRC Glossary (via SP 800-47) defines a Service-Level Agreement as follows:</p>
+<div class="callout note">
+<span class="callout-label">NIST CSRC Glossary — Service-Level Agreement</span>
+"Represents a commitment between a service provider and one or more customers and addresses specific aspects of the service, such as responsibilities, details on the type of service, expected performance level (e.g., reliability, acceptable quality, and response times), and requirements for reporting, resolution, and termination."
+</div>
+<p>Notice what's missing: triage, evidentiary rigor, what "resolved" means. It's structural, not technical — exactly how an SLA can be met on paper while an investigation was shallow, or breached while it was exemplary.</p>
+
+<h3 class="h3">What an SLA Is Not</h3>
+<p>An SLA guarantees none of detection accuracy, investigation depth, or root-cause correctness: a closed-on-time case may reflect efficient work, or an analyst who simply stopped when pressure took over. Whether that work was sound is a separate question for quality assurance, not the SLA.</p>
+
+<h3 class="h3">No Governing Body Has Set "The" Number</h3>
+<p>No NIST figure, FIRST recommendation, or ISO clause backs vendor SLA numbers. FIRST's own framework says so directly:</p>
+<div class="callout note">
+<span class="callout-label">FIRST CSIRT Services Framework v2.1</span>
+The framework describes what a CSIRT or SOC <em>may</em> provide, but declines to prescribe a capability level, maturity tier, or timing target — that's left to each team's own context.
+</div>
+<p>NIST SP 800-61 does the same for the incident-response lifecycle: phases, no stopwatch. Federal deadlines are narrow and regulatory, not SOC SLAs — CISA: one hour; CIRCIA: 72 hours (24 if ransom paid); FISMA: seven days to Congress. None is a triage benchmark; every SLA number is negotiated, not technical.</p>
+
+<div class="quote-block">
+<p>An SLA measures elapsed time. A SOC manages uncertainty, evidence, and risk. Confusing the two is where most SLA disputes begin.</p>
+</div>
+
+</div>
+<!-- ==== 03-four-slas.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 3</span>
+<h2 class="h2">Four SLAs, One Word</h2>
+
+<p class="lede">Everyone says "SLA," but a trainer, a lawyer, a ticketing system, and a customer are reading different documents. The confusion isn't communication failure — it's structural. Four things share one name; none measures the same thing.</p>
+
+<h3 class="h3">3.1 The Book SLA</h3>
+<p>The Book SLA is what gets taught: one analyst, one incident, walked through a phase model — NIST SP 800-61's lifecycle, or SANS's PICERL (Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned). Neither assigns minutes to a phase; it assumes full context and no queue — a teaching simplification, not reality.</p>
+
+<h3 class="h3">3.2 The Contractual SLA</h3>
+<p>The Contractual SLA carries legal weight, and it's the one fewest analysts read end to end. Buried in the MSA: severity definitions, clock conditions, capped penalties, and exclusions. ITIL formalizes SLA, OLA, and UC as a structure, but the number is negotiated per contract and severity tier.</p>
+
+<h3 class="h3">3.3 The Operational SLA</h3>
+<p>The Operational SLA is what SOC tooling measures minute to minute — a looser proxy for the Contractual SLA, rarely reconciled against the contract's actual language. A click-triggered ticketing stage isn't the same event as "identification" defined as confirmed malicious activity — whichever clock a manager watches becomes, functionally, "the SLA."</p>
+
+<h3 class="h3">3.4 Customer Expectation</h3>
+<p>The fourth lane is unwritten, which is why it causes the most friction. A customer who reads "one hour response" often assumes resolution within the hour; the contract usually just means acknowledgment. That gap can make a technically-met SLA and a furious customer coexist — and sink an account even when the other three lanes look clean.</p>
+
+<div class="callout note"><span class="callout-label">Reading the lanes together</span>Four instruments on one incident, each accurate on its own terms: Book teaches structure, Contractual allocates risk, Operational drives the shift, Customer Expectation decides renewal.</div>
+
+<div class="figure"><img src="../assets/mockups/four-lanes-sla.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 3.1</span><span class="figtext">The same incident, read through four lanes, produces four plausible but different answers to "did we meet the SLA" — illustrative layout, not live SOC data.</span></div></div>
+
+<table class="clean">
+<tr><th>Lane</th><th>Who defines it</th><th>What it measures</th><th>Who reads it</th></tr>
+<tr><td>Book SLA</td><td>Trainers, vendor curricula</td><td>Idealized phase model (NIST, SANS PICERL) — structure, not a commitment</td><td>Analysts in training</td></tr>
+<tr><td>Contractual SLA</td><td>Legal teams, via the MSA</td><td>Severity tiers, clock conditions, penalties, exclusions — real risk allocation</td><td>Account managers, legal</td></tr>
+<tr><td>Operational SLA</td><td>SOC tooling configuration</td><td>Real-time proxy, loosely reconciled with contract language</td><td>Analysts, shift leads</td></tr>
+<tr><td>Customer Expectation</td><td>Nobody — forms informally</td><td>What the customer believes the number means; conflates acknowledgment with resolution</td><td>Whoever explains the gap</td></tr>
+</table>
+
+<p>These lanes are why one incident can be simultaneously "met" and "failed," depending on which lane you're reading.</p>
+
+</div></div>
+<!-- ==== 04-nine-clocks.html ==== -->
+<div class="flow">
+<div class="section">
+<span class="kicker">The Clock Stack</span>
+<h2 class="h2">Nine Clocks, Not One</h2>
+<p class="lede">A contract shows one word — "SLA." Inside the SOC, that word decomposes into a stack of separately-triggered timers, each started and stopped by a different party, which is why a report can read green while an incident is still open, or red on a case handled well.</p>
+</div>
+
+<div class="figure">
+<img src="../assets/mockups/sla-clock-diagram.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 4.1</span><span class="figtext">The incident lifecycle produces nine stages, which most contracts collapse into five reported clocks sitting downstream of two pre-SLA stages — detection and ingestion — that the SOC rarely controls.</span></div>
+</div>
+
+<p>Contracts typically report six of these clocks to the customer — acknowledge, investigate, notify, contain, resolve, close — while escalation stays an internal handoff governed by OLA, not a line item in the customer contract. Inside the SOC's own case system the taxonomy is finer still, because each split marks a handoff of timer control: ticketing system, analyst, Tier 2 lead, legal, customer.</p>
+
+<h3 class="h3">Acknowledgement Clock</h3>
+<p>Starts when an alert is created, stops when an analyst claims it — Microsoft's MTTA metric uses exactly this boundary, not any finding, so an analyst can acknowledge in seconds and then sit idle for an hour without breaching anything.</p>
+
+<h3 class="h3">Initial Triage / Investigation Clock</h3>
+<p>Starts at ownership, stops when the analyst assigns a first categorization and severity — the pivot for the entire stack, since every downstream target keys off it, so an under-called severity quietly loosens every SLA that follows.</p>
+
+<h3 class="h3">Customer Notification Clock</h3>
+<p>Starts when a case crosses the contract's notification threshold, stops when the customer is formally informed — but legal and PR review of permitted language routinely sits inside this window, so the analyst who found the issue rarely controls the stop timestamp.</p>
+
+<h3 class="h3">Escalation Clock</h3>
+<p>Starts when a Tier 1 analyst determines a case exceeds their authority, stops when Tier 2/3 acknowledges the handoff — governed by an internal operational-level agreement (OLA) rather than the customer SLA, though a slow escalation usually turns a borderline downstream clock into an outright breach.</p>
+
+<h3 class="h3">Containment Clock</h3>
+<p>Starts when the decision to act is made and is supposed to stop the moment the threat is "contained" — a judgment call, not an instrument-measurable event, so the analyst, the IR lead, and the customer can each reasonably assert a different timestamp.</p>
+
+<h3 class="h3">Investigation (Deep) Clock</h3>
+<p>Starts once containment is asserted and covers root-cause and scope work, stopping when that scope is established — it consumes the largest share of analyst hours on most cases, yet is the clock most often excluded from the SLA entirely, because contracts are written for triage-and-respond, not forensics.</p>
+
+<h3 class="h3">Resolution Clock</h3>
+<p>Supposed to start at containment and stop at "resolved" — but resolved is overloaded: contained, eradicated, and fully recovered are three distinct states, and a contract that doesn't specify which one closes the clock leaves the earliest defensible option free to be picked.</p>
+
+<h3 class="h3">Closure Clock</h3>
+<p>Starts at resolution, stops at formal sign-off — often gated on the customer confirming the case is done, so a fully resolved case can sit open on the dashboard, accumulating time against a metric the SOC can no longer influence.</p>
+
+<h3 class="h3">Post-Incident Report Clock</h3>
+<p>Starts at closure, stops when a formal RCA is delivered, paced by the SOC's own capacity rather than external pressure — the deadline most often quietly missed, because it competes directly with time an analyst could spend on a case still counting down.</p>
+
+<div class="figure">
+<img src="../assets/mockups/cockpit-dashboard.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 4.2</span><span class="figtext">A live SLA countdown view of the kind a shift lead watches in real time, showing several clocks in flight across different cases — illustrative and not a real tenant or incident.</span></div>
+</div>
+
+<p>A single "SLA compliance: 94%" summary hides that a shift lead manages a portfolio of countdowns, each owned by a different person — a case can be healthy on acknowledgement while quietly burning through containment in the next row down, which only a nine-clock view shows in time to act.</p>
+
+<h3 class="h3">A Sample SLA Model</h3>
+<div class="callout illustrative">
+<span class="callout-label">Illustrative Example — Not a Universal Industry Standard</span>
+One hypothetical MSSP/SOC contract model shown only to demonstrate how a severity-to-time table is typically <em>structured</em> — no source (NIST, FIRST, ITIL, CISA, SANS) publishes a fixed cross-industry version, and real numbers vary by contract, customer tier, and severity definition (e.g. Microsoft Azure support plans map the same "Sev A" label to different response times depending on the support plan purchased).
+</div>
+
+<table class="clean" style="table-layout:fixed;width:100%;">
+<thead>
+<tr>
+<th style="width:22%;">Severity (illustrative)</th>
+<th style="width:13%;">Acknowledge</th>
+<th style="width:13%;">Investigation Begins</th>
+<th style="width:13%;">Notification</th>
+<th style="width:13%;">Containment</th>
+<th style="width:13%;">Resolution</th>
+<th style="width:13%;">Closure / RCA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="pill p1">P1</span>&nbsp;Critical — confirmed active compromise, business-critical system, exfiltration suspected</td>
+<td>15 min</td>
+<td>30 min</td>
+<td>1 hr (then every 2 hrs)</td>
+<td>4 hrs</td>
+<td>24 hrs</td>
+<td>Within 5 business days</td>
+</tr>
+<tr>
+<td><span class="pill p2">P2</span>&nbsp;High — likely malicious, contained blast radius, no confirmed exfiltration</td>
+<td>30 min</td>
+<td>1 hr</td>
+<td>4 hrs</td>
+<td>8 hrs</td>
+<td>3 business days</td>
+<td>Within 10 business days</td>
+</tr>
+<tr>
+<td><span class="pill p3">P3</span>&nbsp;Medium — suspicious activity, low immediate business impact</td>
+<td>2 hrs</td>
+<td>4 hrs</td>
+<td>1 business day</td>
+<td>N/A (monitor)</td>
+<td>5 business days</td>
+<td>Within 15 business days</td>
+</tr>
+<tr>
+<td><span class="pill p4">P4</span>&nbsp;Low — informational, policy violation, benign-positive candidate</td>
+<td>1 business day</td>
+<td>2 business days</td>
+<td>On closure</td>
+<td>N/A</td>
+<td>10 business days</td>
+<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p class="muted">These severity definitions, values, and business-day conventions are invented for illustration only. Real contracts define "acknowledge" versus "respond" differently, define an hour as business-hours versus 24×7 differently, and layer pause/stop-clock conditions — customer non-response, scheduled maintenance windows, disputed severity — that a simple table like this one cannot show.</p>
+
+</div>
+
+<!-- ==== 05-book-vs-217am.html ==== -->
+
+<div class="flow">
+
+<div class="section">
+<span class="kicker">The Textbook vs. the Shift</span>
+<h2 class="h2">The SLA in the Book vs. the SLA at 2:17&nbsp;AM</h2>
+</div>
+
+<p class="lede">Every SLA document describes the same incident: alert, analyst, escalation, close. That version runs on a quiet Tuesday with a fully staffed floor. The version that actually decides whether the SLA is met arrives at 2:17&nbsp;AM — and the clock cannot tell the difference.</p>
+
+<h3 class="h3">Same Incident, Told Twice</h3>
+<p>As a training deck: one alert, one analyst, clean triage, escalation, disposition — no contention. That is the version every SLA clause is quietly written against.</p>
+
+<p>As a Tuesday night shift: fifteen alerts land in one window, two un-deduplicated into separate records for one chain, the EDR console lags, the customer's contact doesn't answer, a threat-intel lookup times out, the analyst is mid-P1 elsewhere with forty minutes left in the shift, and the endpoint turns out to belong to another team — so containment authority isn't even the SOC's. No single item breaks the case; all of them together is what a real shift looks like, and the timer does not pause.</p>
+
+<div class="figure">
+<img src="../assets/mockups/split-book-vs-reality.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 5.1</span><span class="figtext">The textbook workflow and a representative 2:17&nbsp;AM shift, side by side — an illustrative composite, not a transcript of one ticket.</span></div>
+</div>
+
+<p>Both run on the same clock — elapsed time between two timestamps — which cannot tell minutes spent investigating from minutes lost to contention. That gap is where most SLA disputes live.</p>
+
+<h3 class="h3">Why the Floor Doesn't Run Like the Page</h3>
+<p>Not a staffing failure — four properties a runbook cannot model:</p>
+
+<table class="clean">
+<thead><tr><th>Factor</th><th>Runbook assumes</th><th>Shift delivers</th></tr></thead>
+<tbody>
+<tr><td><strong>Information</strong></td><td>Evidence is ready when needed.</td><td>Evidence arrives piecemeal; phases overlap and re-open.</td></tr>
+<tr><td><strong>Staffing</strong></td><td>One analyst, one case.</td><td>Concurrent cases, shift boundaries, an unbroken queue.</td></tr>
+<tr><td><strong>Tooling</strong></td><td>Console actions return instantly.</td><td>Correlation/enrichment latency is real, not contractually published.</td></tr>
+<tr><td><strong>Human factors</strong></td><td>No clock on the wall.</td><td>Fatigue sets in; handover content is loosely standardized.</td></tr>
+</tbody>
+</table>
+
+<div class="callout note">
+<span class="callout-label">Tooling latency, documented rather than assumed</span>
+IBM's QRadar documentation describes correlation as occurring near real-time, without a published numeric latency guarantee; flow telemetry often reaches SIEMs in per-minute batches, consuming SLA budget before an analyst sees the alert — with no vendor contractually committing to how much.
+</div>
+
+<p>Kent, Tuptuk, and Becker (2026), in an academic study of cybersecurity incident-response shift handovers, found limited industry-wide guidance on handover practice — so a case crossing a shift boundary keeps only what the outgoing analyst thought to write down.</p>
+
+<h3 class="h3">Where the Minutes Actually Go</h3>
+<p>Each factor above consumes traceable minutes, reconstructed below for one P1-class case:</p>
+
+<div class="figure">
+<img src="../assets/mockups/sla-breach-anatomy.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 5.2</span><span class="figtext">Illustrative example, not a universal industry standard — synthetic reconstruction of where one case's 70 elapsed minutes went against a 60-minute internal target specific to this walk-through, unrelated to the illustrative severity table in Section&nbsp;4.</span></div>
+</div>
+
+<p>Active triage accounts for twelve of the case's seventy minutes; the rest is queue wait, telemetry lag, a customer-side dependency, and an escalation delay confirming ownership. A reviewer seeing only the 70-minute total concludes the SOC was slow; one seeing the breakdown finds working time well inside target, with the overage sitting almost entirely in categories no analyst controls.</p>
+
+<div class="quote-block">
+<p>The book teaches phases. The shift teaches triage math under contention.</p>
+</div>
+
+</div>
+
+<!-- ==== 06-divider-case-studies.html ==== -->
+
+<div class="page dark divider" style="page-break-after:always;">
+  <div class="num">II</div>
+  <span class="kicker">Part Two</span>
+  <h1>Ten Case Studies Under Real Conditions</h1>
+  <div class="desc">Twenty alerts at once. A P1 crossing a shift boundary. A customer who won't answer. A SIEM that reports the world twenty-nine minutes late. Each case follows the same shape: what the contract's clock says, what actually happens, where the SLA number quietly becomes misleading — and the takeaway that survives contact with a real shift.</div>
+</div>
+
+<!-- ==== 07-case01-twenty-alerts.html ==== -->
+<div class="flow"><div class="section">
+
+<span class="kicker">Section 06</span>
+<h2 class="h2">Ten Case Studies Under Real Conditions</h2>
+
+<p class="lede">These composites are reconstructed from managed-SOC patterns, anonymized so the mechanics stay legible. Each case follows the same arc: setup, the contract's clock, what the shift does, and where the SLA number stops describing the investigation. Figures below are illustrative, not a published standard.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <span class="case-num">CASE 01</span>
+      <h3>Twenty Alerts, One Analyst Shift</h3>
+    </div>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Queue</b>20 alerts</div>
+    <div><b>Severities</b>3 P1 / 7 P2 / 10 P3</div>
+    <div><b>Analysts on shift</b>3</div>
+    <div><b>Time remaining on oldest SLA</b>~2 min</div>
+  </div>
+
+  <div class="case-body">
+
+    <p><strong>Setup.</strong> At 14:01 a port-scan sweep lands in the SIEM alongside an impossible-travel login at CUST-A and a beacon at CUST-B. Within six minutes the queue holds twenty tickets across five customers — 3 P1, 7 P2, 10 P3 — worked by three analysts.</p>
+
+    <p><strong>What the contract's clock says.</strong> Each ticket runs its own ack/investigation clock, independent of the rest. CUST-D's encryption alert has about four minutes left before P1 breach; CUST-A's login has six, CUST-B's beacon two. The contract is twenty stopwatches ticking in parallel, unaware three people must stop them.</p>
+
+    <p><strong>What actually happens.</strong> Severity alone doesn't say which alert is real: CUST-A's P1 login is thin evidence, CUST-B's P1 beacon is corroborated by DNS pattern and ASN reputation, and CUST-C's nominal P2 — an admin role change with no ticket behind it — is a credential attack in disguise. Worked strictly by severity, an analyst opens the wrong door first. The shift lead sees what severity can't, and reprioritizes accordingly — defensible calls that still read as late tickets weeks later.</p>
+
+    <div class="figure">
+      <img src="../assets/mockups/queue-board-20-alerts.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.1</span><span class="figtext">Synthetic reconstruction of the queue, sorted by SLA time remaining.</span></div>
+    </div>
+
+    <p>This surge lands by day, but the same mechanism is worse overnight, where alert volume clusters by hour and outruns fixed headcount.</p>
+
+    <div class="figure">
+      <img src="../assets/mockups/alert-queue-heatmap.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.2</span><span class="figtext">Illustrative alert volume by hour (synthetic data): concentrated overnight, when staffing is thinnest.</span></div>
+    </div>
+
+    <p><strong>Where the SLA number becomes misleading.</strong> CUST-D's four minutes is real, but it describes a queue position, not a threat — not whether the alert is a false-positive or a live compromise, nor that the analysts are already committed elsewhere. The report may show two breaches from the same window, neither a story about competence.</p>
+
+    <p><strong>Takeaway.</strong> Contractual SLA time is denominated per ticket; operational capacity per shift. Under surge those two systems stop reconciling — that mismatch, not analyst judgment, is usually the real driver of the breach on the report.</p>
+
+  </div>
+</div>
+
+</div></div>
+<!-- ==== 08-case02-shift-handover.html ==== -->
+<div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 02</div>
+      <h3>P1 During Shift Handover</h3>
+    </div>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Scenario</b>Illustrative composite — not a captured incident</div>
+    <div><b>P1 Confirmed</b>05:46, 14 min before shift change</div>
+    <div><b>Handover Window</b>05:46 – 06:10 (06:00 boundary)</div>
+    <div><b>Analyst Continuity</b>Analyst A (outgoing, night) → Analyst B (incoming, day)</div>
+  </div>
+
+  <div class="case-body">
+
+    <p>Analyst A confirms a P1 at 05:46, fourteen minutes before shift change, having already correlated the alert, pulled the process tree, and opened containment with the endpoint team — that work is the case, and the SLA clock has no concept of a roster. The common failure isn't an outgoing analyst who did nothing; it's one who did the work and left, forcing the incoming analyst to reconstruct reasoning from a record that captured actions but not intent. Good handover needs a short synchronous overlap, transferring judgment, not just facts.</p>
+
+    <div class="figure">
+      <img src="../assets/mockups/shift-handover-board.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.3</span><span class="figtext">One shared case record spanning the 06:00 shift boundary, visible to both outgoing and incoming analyst (illustrative/synthetic board).</span></div>
+    </div>
+
+    <p>A 2026 UCL study of SOC handover practice (arXiv:2601.07788) found that what transfers between shifts varies analyst-to-analyst, shaped by habit more than fixed procedure — a fair description of most SOCs' actual shift change. Its draft checklist of minimum handover elements appears below.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Handover Element</th><th>What Should Be Visible to the Incoming Analyst</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Case / decision state and evidence trail</td><td>What's confirmed vs. assumed, plus supporting artifacts.</td></tr>
+        <tr><td>Active alert / case status with timestamps</td><td>Which alerts are open, acknowledged, or escalated, and when.</td></tr>
+        <tr><td>Impacted assets and containment steps taken</td><td>What's isolated or blocked already vs. still pending.</td></tr>
+        <tr><td>Open questions and dependencies</td><td>What the outgoing analyst was still waiting on.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout critical">
+      <span class="callout-label">SLA ownership does not reset at handover</span>
+      The 06:00 boundary is a staffing event, not an SLA event. The clock recognizes the alert's timestamp, not the roster: at 06:10 the case is already 24 minutes old, owned continuously, not split into two half-obligations.
+    </div>
+
+    <p>The gap this case surfaces rarely shows at 06:10. It shows around 09:00, when Analyst B — working from a record that looked complete — re-asks a question already answered, or re-runs a check already confirmed, because the open-question field didn't carry over. It only becomes visible in hindsight, as SLA time spent rediscovering ground already covered.</p>
+
+  </div>
+</div>
+
+</div>
+<!-- ==== 09-case03-customer-noresponse.html ==== -->
+
+<div class="flow">
+
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-num">CASE 03</div>
+        <h3>The Customer Who Won't Answer</h3>
+      </div>
+      <span class="illustrative-tag">Illustrative</span>
+    </div>
+    <div class="case-meta">
+      <div><b>Trigger</b>Anomalous account-privilege change flagged for validation</div>
+      <div><b>SOC Action</b>Escalate to customer contact, request confirm/deny</div>
+      <div><b>Customer Response Time</b>3 hours elapsed before reply</div>
+      <div><b>Open Question</b>Was the SLA clock running that whole time?</div>
+    </div>
+    <div class="case-body">
+      <p>A SOC analyst flags an ambiguous account event — a privilege change, a new device enrollment — that could be routine administration or an account takeover in progress. Only the customer can say which. The analyst escalates and waits three hours: legitimate, a laptop provisioning. Routine false positive.</p>
+
+      <p>What isn't routine is the clock. <strong>Did the SLA keep running while the SOC sat idle, waiting on someone outside its control?</strong> There's no universal answer — it lives entirely in whether the contract defines a "stop-clock" pause condition at all.</p>
+
+      <table class="clean">
+        <thead>
+          <tr><th>Question the contract must answer</th><th>Why it decides the outcome</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Is "awaiting customer" a defined pause state, or does the SLA only stop for the SOC's own internal dependencies?</td>
+            <td>Silence means the clock runs against the SOC by default, regardless of who caused the delay.</td>
+          </tr>
+          <tr>
+            <td>Is the pause logged with a timestamp and a named contact attempt, not just a status flag?</td>
+            <td>An undocumented flag is indistinguishable from the SOC parking a ticket to buy itself time.</td>
+          </tr>
+          <tr>
+            <td>Does the tier define a maximum response window after which the SOC's obligation is met regardless?</td>
+            <td>Without one, a three-hour wait and a three-day wait are contractually identical: unbounded.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Absent that language, assume the clock ran the full three hours — a pause the contract never anticipated earns no credit. This is why the SOC's own behavior during the wait matters on its own: a message timestamped at the one-hour mark, noting the customer confirmation still pending, is both fair and evidentiary. A pause claimed for the first time in a post-incident review, with no message trail behind it, rarely survives scrutiny.</p>
+
+      <div class="callout note">
+        <span class="callout-label">Bridges to Section 9</span>
+        This case turns on one mechanical question — what counts as a valid stop-clock condition and how it must be documented — that Section 9 addresses directly.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==== 10-case04-siem-ingestion.html ==== -->
+<div class="flow">
+
+<p>An SLA clock does not start itself. A definitions clause does — one sentence, written months before any incident exists to test it. Case Study 4 shows why that sentence matters most.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 04 <span class="illustrative-tag" style="margin-left:6px;">Illustrative</span></div>
+      <h3>The SIEM Ingestion Delay</h3>
+    </div>
+  </div>
+  <div class="case-meta">
+    <div><b>SLA metric in dispute</b>Time-to-acknowledge</div>
+    <div><b>Elapsed window</b>01:00 – 01:29 (29 min)</div>
+    <div><b>Platform layer</b>Log collection → SIEM correlation → analyst queue</div>
+    <div><b>Candidate clock-start points</b>4</div>
+  </div>
+  <div class="case-body">
+
+    <p>Four systems, four timestamps, one incident:</p>
+
+    <table class="clean">
+      <thead><tr><th>Clock time</th><th>Event</th><th>Where the timestamp lives</th></tr></thead>
+      <tbody>
+        <tr><td>01:00</td><td>Attacker action on the source host</td><td>Nowhere yet — reconstructed later from forensics</td></tr>
+        <tr><td>01:21</td><td>Logs reach the SIEM</td><td>Collector ingestion timestamp</td></tr>
+        <tr><td>01:24</td><td>Correlation rule fires an alert</td><td>SIEM alert-creation timestamp</td></tr>
+        <tr><td>01:29</td><td>Analyst acknowledges the alert</td><td>SOC ticketing acknowledgement timestamp</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>When did the SLA clock start?</strong> All four timestamps are defensible, and each yields a different reported time for the same 29 minutes.</p>
+
+    <table class="clean">
+      <thead><tr><th>Candidate clock-start</th><th>Time</th><th>Why it's defensible</th><th>Why it's contested</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Start of attack</td>
+          <td>01:00</td>
+          <td>Measures the customer's actual exposure window.</td>
+          <td>Unknowable until forensic reconstruction.</td>
+        </tr>
+        <tr>
+          <td>Log arrival</td>
+          <td>01:21</td>
+          <td>First visibility the SOC's tooling has at all.</td>
+          <td>Bakes in logging and transit lag beyond analyst control.</td>
+        </tr>
+        <tr>
+          <td>Alert generation</td>
+          <td>01:24</td>
+          <td>First moment a human could plausibly act.</td>
+          <td>Excludes the 21-minute ingestion lag before it.</td>
+        </tr>
+        <tr>
+          <td>Analyst acknowledgement</td>
+          <td>01:29</td>
+          <td>Cleanest, fully SOC-controlled timestamp.</td>
+          <td>Makes "time-to-acknowledge" a tautology: clock starts when it stops.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>This isn't invented for this paper. IBM's own documentation for QRadar — a widely deployed SIEM — defines <strong>Device Time</strong> as the timestamp parsed from the event payload itself: the source's own report of when the activity happened. QRadar's <strong>Start Time</strong> is essentially that same source-reported timestamp — it falls back to arrival time only when the source provides none, so it is not when QRadar received the event. The field that actually marks when QRadar wrote the record is <strong>Storage Time</strong>, and it's the Start Time versus Storage Time gap that measures ingestion delay. IBM calls QRadar's correlation <em>near real time</em> — a qualitative phrase, not a numeric guarantee. Even inside one well-documented platform, "when did the clock start" stays unsolved.</p>
+
+    <div class="figure">
+      <img src="../assets/mockups/siem-ingestion-pipeline.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.4</span><span class="figtext">The four elapsed gaps in one alert's path, from attacker action to acknowledgement, as a single pipeline; timestamps are illustrative, not pulled from a live tenant.</span></div>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-label">Takeaway</span>
+      The SOC performed once, not four ways — yet its SLA number reads 8, 5, or 29 minutes depending on which timestamp the contract quietly calls clock zero: a one-line definition, buried in an appendix, that rarely reaches the customer's scorecard.
+    </div>
+
+  </div>
+</div>
+
+</div>
+<!-- ==== 11-case05-wrong-severity.html ==== -->
+<div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 05</div>
+      <h3>Wrong Severity, Later Reclassified<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+    <span class="pill p1">P3 &rarr; P1</span>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Initial Triage</b>P3 &mdash; isolated scripting anomaly</div>
+    <div><b>Reclassified To</b>P1 &mdash; active ransomware behavior</div>
+    <div><b>Trigger For Reclassification</b>Shadow-copy deletion + mass file rename observed on follow-up</div>
+    <div><b>Open Question</b>Which clock governs the SLA record?</div>
+  </div>
+
+  <div class="case-body">
+    <p>An EDR alert on one workstation shows no beaconing, no privilege escalation, no threat-intel hits &mdash; triaged P3. Hours later, a second analyst finds deleted shadow copies, mass file renames, and lateral attempts to two hosts &mdash; reclassified P1. Nothing about the intrusion changed; only the SOC's understanding of it did.</p>
+
+    <p>The correction is right. But reclassification raises three questions most contracts never answer:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Question</th><th>Why there's no single default</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Retroactive P1 clock from the original alert, or fresh from reclassification?</td>
+          <td>Retroactive charges the misjudged time; fresh timing erases it entirely.</td>
+        </tr>
+        <tr>
+          <td>Does the original P3 clock get discarded, or stay on record?</td>
+          <td>Discarding looks cleaner; kept, it's the only evidence of how long the misjudgment lasted.</td>
+        </tr>
+        <tr>
+          <td>Does it count as a P3 breach, P1 breach, both, or neither?</td>
+          <td>Same event, four possible dashboard numbers &mdash; no default is obviously right.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The three most common resolutions, none a standard, just explicit load-bearing choices:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Approach</th><th>P1 clock starts</th><th>Original P3 clock</th><th>SLA reporting outcome</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Retroactive merge</td>
+          <td>Original alert time</td>
+          <td>Overwritten into P1</td>
+          <td>Single P1 case, likely a breach</td>
+        </tr>
+        <tr>
+          <td>Fresh clock</td>
+          <td>Reclassification time</td>
+          <td>Closed separately</td>
+          <td>Closed P3 + new P1, two clocks</td>
+        </tr>
+        <tr>
+          <td>Dual clock <em>(recommended)</em></td>
+          <td>Reclassification, logged with original</td>
+          <td>Retained, superseded</td>
+          <td>Both visible, linked by the reclassification event</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <span class="callout-label">Where correction and gaming look identical</span>
+      Legitimate correction and deliberate SLA gaming leave the same paper trail without a written rule and a timestamped reclassification log. Section 7 returns to this.
+    </div>
+
+    <p>Severity is fixed at intake in most tooling, but it's a live judgment that stays revisable while a case is open &mdash; punishing analysts for updating it discourages exactly what a SOC should want.</p>
+
+    <div class="callout note">
+      <span class="callout-label">Authorial guidance</span>
+      Whichever rule a SOC adopts, apply it consistently. Recommended: dual clocks, linked by a timestamped event recording who changed severity, when, and why. That doesn't decide whether the case counts as a P3, P1, both, or neither breach &mdash; that's a policy call for the SOC and stakeholders to make explicitly.
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- ==== 12-case06-false-positive-noise.html ==== -->
+<div class="flow">
+
+<p>Not every SLA breach starts with the incident that breaches it. Sometimes it starts hours earlier, with an untuned rule quietly consuming the shift's real resource: analyst attention.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">Case 06</div>
+      <h3>False Positive Consumes the Budget<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+  </div>
+  <div class="case-meta">
+    <div><b>Trigger Rule</b>Outbound-connection correlation rule ("beaconing")</div>
+    <div><b>Shift Volume</b>637 alerts, one rule, one shift</div>
+    <div><b>Root Cause</b>No exclusion for periodic traffic (backups, EDR, patch)</div>
+    <div><b>Concurrent Incident</b>P2 auth anomaly queued mid-triage</div>
+  </div>
+  <div class="case-body">
+    <p>The rule flagged regular outbound connections as beaconing, with no allowlist for traffic every endpoint already generates — backups, EDR heartbeats, patch check-ins. It closed 637 such alerts, competing with a concurrent P2 authentication anomaly that needed human review — and nearly breached its own SLA because the noisy rule had already spent the budget it needed.</p>
+  </div>
+</div>
+
+<h3 class="h3">Disposition Tracking Is the Feedback Loop, Not an Afterthought</h3>
+<p>Disposition tracking is a documented SIEM/SOAR discipline: Microsoft Sentinel requires every closed incident to carry one of five classifications — separating wrong logic from wrong data and from expected activity. This shift's 637 closures:</p>
+
+<table class="clean">
+<thead>
+<tr><th>Closure Category</th><th>Alerts</th><th>Share</th><th>What It Means</th></tr>
+</thead>
+<tbody>
+<tr><td>True Positive</td><td>3</td><td>0.5%</td><td>Correctly escalated</td></tr>
+<tr><td>Benign Positive – Expected</td><td>22</td><td>3.5%</td><td>Known and authorized</td></tr>
+<tr><td>False Positive – Incorrect Logic</td><td>391</td><td>61.4%</td><td>The rule's criteria are the defect</td></tr>
+<tr><td>False Positive – Inaccurate Data</td><td>118</td><td>18.5%</td><td>Data/enrichment defect</td></tr>
+<tr><td>Undetermined</td><td>103</td><td>16.2%</td><td>No conclusive evidence</td></tr>
+</tbody>
+</table>
+<p class="muted">A synthetic composite for illustration, not measured data from any real SOC or Sentinel deployment.</p>
+
+<p>Six in ten closures are "Incorrect Logic": a tuning failure, not a triage one.</p>
+
+<h3 class="h3">Tuning Is a Detection-Engineering Problem</h3>
+<p>The fix isn't exotic: IBM QRadar documents building blocks and reference sets natively — exclusion logic lives in a building block, and hosts to exclude live in a reference set, updated without rewriting the rule. Add this to the set the rule already consults, and the load disappears. That exclusion should be scoped to specific verified hosts or IPs rather than a generic traffic category, reviewed on a fixed cadence, and checked for volume and timing drift — ongoing detection-engineering maintenance, not a one-time fix, since attackers can time C2 or beaconing traffic to mimic allowlisted periodic maintenance windows.</p>
+<p>SLA and detection-quality metrics are one dataset: alone, the SLA report shows a P2 that barely made its clock; alongside the disposition breakdown, it shows a rule burning analyst attention on a defect engineering could have fixed first — attention that could have gone to real triage instead.</p>
+
+<div class="quote-block">
+  <p>Excellent SLA compliance with a terrible false-positive rate isn't success — it's drowning efficiently.</p>
+</div>
+
+<div class="callout note">
+  <span class="callout-label">Takeaway</span>
+  A high "Incorrect Alert Logic" share signals detection engineering, not analyst coaching.
+</div>
+
+</div>
+<!-- ==== 13-case07-l2-ola.html ==== -->
+<div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 07</div>
+      <h3>The L2 Dependency<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+    <span class="pill p2">57 min vs. 30</span>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Trigger</b>P2 alert triaged by L1, requires L2-level correlation</div>
+    <div><b>L1 Triage Time</b>12 minutes, handoff clean</div>
+    <div><b>L2 Acceptance Wait</b>45 minutes, ticket unopened in queue</div>
+    <div><b>Customer SLA</b>Escalate to L2 within 30 minutes</div>
+    <div><b>Open Question</b>Which team owns the resulting breach?</div>
+  </div>
+
+  <div class="case-body">
+    <p>An L1 analyst triages a P2 alert requiring L2 correlation and hands off a clean case in twelve minutes &mdash; inside the account's 30-minute SLA. L2, mid-shift on its own backlog, leaves it unaccepted for 45 minutes; 57 minutes elapse before acceptance, nearly double the target, L1 responsible for barely a fifth. The breach report shows only that number &mdash; both teams are technically right, since no process segment owned the actual gap.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Segment</th><th>Elapsed</th><th>Internal owner</th><th>Governed by an OLA?</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Alert open &rarr; L1 triage complete</td>
+          <td>12 min</td>
+          <td>L1</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Handoff &rarr; L2 acceptance</td>
+          <td>45 min</td>
+          <td>L2 (once accepted)</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Total to L2 acceptance</td>
+          <td>57 min</td>
+          <td>&mdash;</td>
+          <td>SLA target: 30 min</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>This is the gap an Operational Level Agreement (OLA) exists to close: an SLA is the provider's commitment to the customer; an OLA is the same kind of commitment between internal teams, facing no customer and, unlike the SLA, rarely carrying a contractual penalty, existing only to give each internal step an owner and a clock. Here, an OLA covers L1 triage but none was ever written for L2 acceptance, so that unclocked interval is exactly where time disappears under queue pressure.</p>
+
+    <div class="callout illustrative">
+      <span class="callout-label">Where the accountability gap actually lives</span>
+      The 45 unaccepted minutes are most of the breach the customer experiences, yet invisible to internal reporting since no OLA measures them.
+    </div>
+
+    <div class="callout note">
+      <span class="callout-label">Bridges to Section 10</span>
+      Section 10 shows how a customer SLA chains internal targets &mdash; triage, acceptance, incident-manager engagement, margin. This case is what happens when one link is left out.
+    </div>
+
+    <p>The honest answer to "which team owns this breach" is neither &mdash; it is the SOC's own design, which promised the customer without writing the internal agreements to keep it. <strong>A customer SLA without matching internal OLAs is a promise with no owner for the time in between.</strong></p>
+  </div>
+</div>
+
+</div>
+<!-- ==== 14-case08-third-party-uc.html ==== -->
+
+<div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <span class="case-num">CASE 08</span>
+      <h3>The Third-Party Dependency</h3>
+    </div>
+  </div>
+
+  <div class="case-meta">
+    <div><b>SOC Role</b>Detect, decide, request, escalate, track</div>
+    <div><b>Blocking Action</b>Held outside the SOC's authority</div>
+    <div><b>Governing Instrument</b>Underpinning Contract (UC) or customer-side dependency</div>
+    <div><b>Reporting Value</b>Isolates elapsed time outside SOC control</div>
+  </div>
+
+  <div class="case-body">
+    <p>By this point the SOC has detected, triaged, and decided — on time. The clock keeps running because someone else must act.</p>
+
+    <ul>
+      <li><strong>Cloud provider.</strong> A control-plane fix needs the vendor's own desk.</li>
+      <li><strong>Upstream ISP.</strong> Only the ISP's null-route stops an in-flight flood.</li>
+      <li><strong>MDR sub-vendor.</strong> Isolation is a ticket into their queue, not the SOC's console.</li>
+      <li><strong>Customer's own teams.</strong> A credential reset or firewall change needs the customer's own approval, not the SOC's.</li>
+    </ul>
+
+    <p>The first three are external; the last is the customer's own staff — equally outside SOC authority.</p>
+
+    <h3 class="h3">The Underpinning Contract Behind the SLA</h3>
+
+    <p>ITIL's <strong class="accent">Underpinning Contract (UC)</strong> covers an external supplier underpinning the SLA, with a turnaround the SOC can't shorten; its <strong>Operational Level Agreement (OLA)</strong> covers internal departments it fully controls. The customer's own teams fit neither label — a dependency, same effect: a process the SOC doesn't own.</p>
+
+    <div class="split">
+      <div class="side book">
+        <h4>What the SLA Names</h4>
+        <ol>
+          <li>One clock: time from detection to containment</li>
+          <li>One accountable party: the SOC</li>
+          <li>One outcome: met or breached</li>
+        </ol>
+      </div>
+      <div class="side reality">
+        <h4>What Actually Gates Containment</h4>
+        <ol>
+          <li>A chain of UCs and dependencies</li>
+          <li>Each hop: its own queue, no guaranteed commitment</li>
+          <li>A clock running through every hop</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="h3">Tracking the Dependency, Not Just the Clock</h3>
+
+    <p>Since the SOC can't compress a third party's time, its discipline is logging it precisely.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Field</th><th>What It Captures</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Engagement timestamp</td><td>First contact with the party</td></tr>
+        <tr><td>Request detail</td><td>The verbatim ask</td></tr>
+        <tr><td>Channel used</td><td>Portal, TAM, or ticketing</td></tr>
+        <tr><td>Acknowledgment timestamp</td><td>Receipt confirmed, distinct from action</td></tr>
+        <tr><td>Action timestamp — or non-response</td><td>Completion, or record of none in-window</td></tr>
+        <tr><td>Escalation path used</td><td>Whether it exceeded the standard channel</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout note">
+      <span class="callout-label">Why this matters after the fact</span>
+      A dependency log isn't an excuse — it separates the SOC's own time from time spent waiting on a third party. Even CIRCIA's 72-hour reporting deadline is a disclosure clock, not a triage SLA; the log proves the SOC moved as fast as the case allowed.
+    </div>
+
+    <p>None of this changes a breach against the provider clock — only the conversation after.</p>
+  </div>
+</div>
+
+<div class="quote-block">
+  <p>Every SLA has a silent co-signer: the OLA and UC chain behind it. No SOC can out-perform a promise a third party's contract already broke.</p>
+</div>
+
+</div>
+
+<!-- ==== 15-case09-three-p1s.html ==== -->
+<div class="flow">
+
+<p>The SLA clock assumes one incident at a time. It has no term for three P1s landing in one shift against two qualified leads — whether the SOC practices incident command or reverts to first-come-first-served depends on writing that call down.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">Case 09</div>
+      <h3>Three P1s, Two Analysts</h3>
+    </div>
+    <span class="illustrative-tag">ILLUSTRATIVE</span>
+  </div>
+  <div class="case-meta">
+    <div><b>Scenario</b>Three concurrent P1 declarations, one shift</div>
+    <div><b>Domains</b>Identity · Endpoint · Cloud IAM</div>
+    <div><b>Constraint</b>Two analysts qualified to lead a P1</div>
+    <div><b>Mechanism</b>Incident commander triages the triage</div>
+  </div>
+  <div class="case-body">
+
+    <p>Within eleven minutes, three detections cross the P1 threshold: domain-controller lateral movement, file-server ransomware encryption, and an anomalous IAM role creation in production AWS. All three page P1; only two analysts on shift are qualified to lead one.</p>
+
+    <div class="figure">
+      <img src="../assets/mockups/p1-resource-allocation.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.5</span><span class="figtext">Illustrative, synthetic snapshot of the coverage gap: two qualified analysts against three P1s spanning identity, endpoint, and cloud IAM.</span></div>
+    </div>
+
+    <p>The trap: whoever is free grabs the loudest or first-paged ticket, and the other two wait by accident, not decision. An incident commander exists to interrupt that — triaging the triage before assigning anyone. That role has to come from somewhere other than the two scarce leads: the shift lead, a role distinct from the two analysts qualified to run a P1, carries it, since spending one of only two qualified leads on pure coordination is the shortage repeating itself one level up.</p>
+
+    <p>That assessment reorders everything here. The file-server host was already isolated by automated containment — one host, contained. The IAM change traces to a stale-credential automation account, fully reconstructable from logs. The domain-controller movement has no such ceiling — success compromises every credential trusting that domain, so it gets the primary analyst's full attention while the second triages ransomware in parallel and the IAM finding goes to cloud platform.</p>
+
+    <table class="clean">
+      <tr><th>Incident</th><th>Domain</th><th>Confirmed impact / blast radius</th><th>Disposition</th></tr>
+      <tr><td>Lateral movement, domain controller</td><td>Identity</td><td>Unbounded if successful</td><td>Primary analyst</td></tr>
+      <tr><td>Ransomware encryption, file server</td><td>Endpoint</td><td>Isolated by automation</td><td>Second analyst, parallel</td></tr>
+      <tr><td>Anomalous IAM role creation</td><td>Cloud IAM</td><td>Stale credential, logged</td><td>Cloud platform team</td></tr>
+    </table>
+    <p class="muted">Illustrative reconstruction of the incident commander's assessment, not a specific customer engagement.</p>
+
+    <p>Reassignment draws on more than the two free leads: lower-priority queue work pauses, its owner pulled into overflow for evidence collection. Each incident also gets the team that owns its domain — AD engineering, EDR, cloud platform.</p>
+
+    <div class="figure">
+      <img src="../assets/mockups/sla-war-room.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.6</span><span class="figtext">Illustrative, synthetic excerpt of a duty manager's live decision log — reassignments and each incident's SLA clock timestamped as they happen, from a scenario distinct from Figure 6.5.</span></div>
+    </div>
+
+    <p>The artifact that makes this defensible is a decision log kept live: what was reassigned, when, on whose authority, and which incident was left with less coverage and why.</p>
+
+    <div class="callout note">
+      <span class="callout-label">Takeaway</span>
+      Contractual SLA math assumes independent, uncontended clocks. Operational reality is a shared, finite pool that three P1s can exhaust at once. Someone must make an explicit, evidence-based call about which clock gets less attention, and why.
+    </div>
+
+  </div>
+</div>
+
+</div>
+<!-- ==== 16-case10-premature-close.html ==== -->
+<div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 10</div>
+      <h3>The Premature Close<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+    <span class="pill p2">Clock Stopped, Not Solved</span>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Trigger</b>SLA timer running down to single-digit minutes before breach</div>
+    <div><b>Analyst Action</b>Case marked resolved before evidence review is complete</div>
+    <div><b>Dashboard Outcome</b>Case shows green &mdash; no breach recorded</div>
+    <div><b>Open Question</b>Did the investigation finish, or did the clock just stop?</div>
+  </div>
+
+  <div class="case-body">
+    <p>An overloaded analyst's routine case &mdash; an outbound connection still needing correlation and a reputation check &mdash; hits single digits on its SLA timer, unreviewed. The analyst writes a boilerplate note, marks it resolved, and closes it. The clock stops; the dashboard reads green. Unlike Case 05, where severity changed because evidence changed, here the case closed <em>instead of</em> the evidence being reviewed.</p>
+
+    <div class="callout critical">
+      <span class="callout-label">Naming the pattern: SLA gaming</span>
+      SLA gaming is any action that makes the SLA record look compliant without making the response correspondingly good, distinct from a good-faith wrong call under uncertainty. It reads identical to a well-handled case on any elapsed-time-only dashboard.
+    </div>
+
+    <p>It recurs in a recognizable set, each gaming a different part of the clock:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Gaming behavior</th><th>What it actually manipulates</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Premature closure</td><td>Resolved before the justifying analysis exists.</td></tr>
+        <tr><td>Incorrect false-positive call</td><td>Labeled benign to exit the breach count, not on evidence.</td></tr>
+        <tr><td>Close, then reopen</td><td>Closed for a timestamp, reopened later for the deferred work.</td></tr>
+        <tr><td>Severity downgrade</td><td>Looser tier without new evidence &mdash; Case 05's reclassification, inverted.</td></tr>
+        <tr><td>False "waiting on customer"</td><td>Stop-clock with no logged contact attempt (contrast Case 03).</td></tr>
+        <tr><td>Delayed ticket creation</td><td>Record opened after the alert, delaying the clock's start.</td></tr>
+        <tr><td>Copy-paste comments</td><td>Boilerplate mimics analysis with no case-specific substance.</td></tr>
+      </tbody>
+    </table>
+
+    <p>None require a dishonest individual &mdash; measuring analysts mainly on elapsed time predictably produces this. Catching it needs routine checks on signals the clock itself doesn't carry:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Governance control</th><th>What it catches</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Reopen-rate tracking</td><td>Quick reopens, by analyst and shift, signal premature or reopen-gamed closures. Broadened to a recurrence rate &mdash; new cases opened on the same asset, account, or indicator within a defined window of a prior closure &mdash; this also catches the closure abandoned and re-alerted as a brand-new ticket rather than a literal reopen.</td></tr>
+        <tr><td>Quality / root-cause audits</td><td>Sampled cases checked against evidence catch unreviewed, boilerplate closures.</td></tr>
+        <tr><td>Reclassification-rate monitoring</td><td>Severity moves plotted against time-to-breach surface deadline-correlated downgrades.</td></tr>
+      </tbody>
+    </table>
+
+    <p>These sit alongside the dashboard, not in place of it, checking what it structurally cannot: whether the work behind each stopped clock happened.</p>
+
+    <div class="callout note">
+      <span class="callout-label">Bridges to Section 7</span>
+      This case states plainly what Section 7 addresses in full: SLA gaming as an incentive-design failure, and the governance program that separates measuring response from managing metrics.
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- ==== 17-gaming.html ==== -->
+<div class="flow"><div class="section">
+
+<span class="kicker">Section 7</span>
+<h2 class="h2">When SLA Becomes the Wrong Incentive</h2>
+
+<p class="lede">An SLA holds a SOC accountable to a customer, not analysts judged every shift. Once those collapse into one figure, it stops measuring what it was built to measure — not from dishonesty, but because that's what happens to any measure turned into a target.</p>
+
+<h3 class="h3">7.1 Two Laws Older Than the SOC</h3>
+<p>This isn't SOC-specific. Charles Goodhart described it in 1975: a targeted statistic gets managed to, not tracked — <strong class="accent">Goodhart's Law</strong>. Donald T. Campbell said the same a year later, as <strong class="accent">Campbell's Law</strong>: the more an indicator drives decisions, the more it invites corruption that distorts what it monitors. Neither implies bad faith; the analyst is responding to the SOC's own incentive.</p>
+
+<h3 class="h3">7.2 What Gaming Looks Like on a Real Shift</h3>
+<p>Case Study 10 is this pattern taken to its conclusion: a case closed on a one-line note nobody followed up on, timed just ahead of breach. The list below generalizes it — moves any rational analyst makes once the dashboard, not the incident, decides how their shift is judged.</p>
+
+<table class="clean">
+<thead>
+<tr><th>Gaming behavior</th><th>On the floor</th><th>Optimizes for</th></tr>
+</thead>
+<tbody>
+<tr><td>Blanket acknowledgment</td><td>Alert acked unread</td><td>Stops clock, no triage</td></tr>
+<tr><td>Closing early</td><td>Resolved on thin evidence</td><td>Elapsed time, not resolution</td></tr>
+<tr><td>"Awaiting customer," no contact</td><td>Paused, no message sent</td><td>Unearned stop-clock, unlike Case 03</td></tr>
+<tr><td>Severity downgrade</td><td>Cut pre-breach, no evidence</td><td>Looser clock, not truer risk</td></tr>
+<tr><td>Fresh case, not the hot one</td><td>Old ticket left to lapse</td><td>Clean clock, lost continuity (Case 05)</td></tr>
+<tr><td>Copy/paste notes</td><td>Only the ticket number changes</td><td>Looks like investigation, isn't</td></tr>
+<tr><td>Reflexive escalation</td><td>Pushed up fast, unread</td><td>Transfers clock, not understanding</td></tr>
+<tr><td>Managing the dashboard</td><td>Watching board, not queue</td><td>Reported number, not real risk</td></tr>
+<tr><td>Ticket splitting / incident fragmentation</td><td>One long incident cut into parallel tickets</td><td>Each fragment's clock in-window, not total duration</td></tr>
+<tr><td>Clock restart via repeated reclassification</td><td>Reclassified again each time breach nears</td><td>Fresh clock, not a fresh case</td></tr>
+<tr><td>Denominator gaming</td><td>Exclusions widened, thresholds raised, quietly</td><td>Compliance %, not faster cases</td></tr>
+<tr><td>Type reclassification</td><td>Retyped as service request, not incident</td><td>Exits the SLA population, not just its clock</td></tr>
+</tbody>
+</table>
+
+<p>Individually, several of these look like ordinary triage. Only a timestamped, evidence-linked record, per Sections 2 and 5, separates a gamed decision from a legitimate one.</p>
+
+<h3 class="h3">7.3 The Standard-Setter's Own Warning</h3>
+<p>This isn't an outside objection — NIST SP 800-61 Rev. 2 (since superseded by Rev. 3) warned against using incident metrics to judge individual analysts, since that discourages honest reporting. NIST still backs SOC-wide metrics for trend visibility; the caution is only against pointing one at an individual.</p>
+
+<div class="figure"><img src="../assets/mockups/sla-gaming-xray.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 7.1</span><span class="figtext">Two views of one period: a 99% SLA-compliance dashboard on top, the behaviors above underneath it — an illustrative composite, not a live measurement.</span></div></div>
+
+<div class="quote-block">
+<p>A response-time number that becomes a performance target gets optimized instead of the incident — Goodhart's Law doesn't ask permission.</p>
+</div>
+
+<div class="callout note">
+<span class="callout-label">The uncomfortable half of this section</span>
+A beautiful SLA dashboard can hide a weak SOC: 99% compliance is compatible with every row above happening underneath it, every shift.
+</div>
+
+<p>That's uncomfortable, not an argument for abandoning SLA measurement — elapsed-time tracking still gives customers an auditable basis for accountability and leadership visibility no manager could hold in their head. Being gameable doesn't erase that value; it just means the number alone can't prove the work was good. Section 8 pairs the clock with quality signals that measure what it can't see.</p>
+
+</div></div>
+<!-- ==== 18-quality-quadrant.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 8</span>
+<h2 class="h2">SLA vs. Quality: A Framework</h2>
+
+<p class="lede">Every closed case gets two verdicts: a procedural one (did it close inside the clock) and a substantive one (was the investigation actually good). A monthly SLA report collapses both into one compliance percentage. Plotted as SLA Met/Breached against Quality High/Low, four combinations emerge — only one is unambiguously a management problem.</p>
+
+<div class="figure"><img src="../assets/mockups/sla-quality-quadrant.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 8.1</span><span class="figtext">Illustrative example, not a universal standard — case markers are synthetic, shown only to illustrate the framework's structure.</span></div></div>
+
+<table class="clean">
+<tr><th>Quadrant</th><th>Clock</th><th>Quality</th><th>Represents</th><th>Corrective action?</th></tr>
+<tr><td><strong>1 — Target State</strong></td><td>Met</td><td>High</td><td>Claimed outcome — verify, don't assume</td><td>No</td></tr>
+<tr><td><strong>2 — Lucky, Not Good</strong></td><td>Met</td><td>Low</td><td>Premature closure dressed as success</td><td>Yes — process review</td></tr>
+<tr><td><strong>3 — Safe But At Breach Risk</strong></td><td>Breached</td><td>High</td><td>Hard case, correctly worked</td><td>No — check the SLA's scoping</td></tr>
+<tr><td><strong>4 — Worst Case</strong></td><td>Breached</td><td>Low</td><td>Slow and wrong together</td><td>Yes — the one quadrant that warrants it</td></tr>
+</table>
+
+<h3 class="h3">8.1 Quadrant 1 — Target State: the Rarest Combination Anyone Can Actually Verify</h3>
+<p>Quadrant 1 is the least-verified claim in SLA reporting: "met" is recorded automatically, "high quality" is not. Verifying it takes evidence the clock never produces — RCA completeness, a second-reviewer audit score, a near-zero reopen rate.</p>
+
+<h3 class="h3">8.2 Quadrant 2 — Lucky, Not Good: Clock Theater</h3>
+<p>Quadrant 2 is clock theater: the timer stopped because the investigation stopped <em>looking</em>, not because it finished. Case Study 10, elsewhere in this paper, shows exactly this — a clean, on-time close a second reviewer later found rested on triage too thin for the evidence.</p>
+
+<h3 class="h3">8.3 Quadrant 3 — Safe But At Breach Risk: the Thesis Made Concrete</h3>
+<p>A genuinely novel incident can take longer to work correctly than any generic clock allows — the SLA breaches, but scope is correctly mapped and root cause confirmed, not assumed. The risk is reputational, not investigative: an x-axis-only report records this identically to Quadrant 4, erasing the difference between "hard" and "bad."</p>
+
+<h3 class="h3">8.4 Quadrant 4 — Worst Case: the Only Quadrant That Should Trigger Corrective Action</h3>
+<p>Here the clock breached and the investigation was also weak — scope incomplete, root cause unconfirmed. No complexity narrative to invoke, no clean dashboard row to hide behind: this is the one quadrant where management response — staffing, playbook, or queue-prioritization fixes — is actually justified, because both signals agree something went wrong.</p>
+
+<div class="callout warning">
+<span class="callout-label">What the compliance percentage cannot tell you</span>
+Compliance percentage can't distinguish Quadrant 1 from 2 (both "met"), or 3 from 4 (both "breached") — an x-axis-only dashboard is blind to the y-axis. Quality signals must sit <em>alongside</em> the clock, not be derived <em>from</em> it, or they just reproduce the x-axis under a new label.
+</div>
+
+<div class="callout critical">
+<span class="callout-label">The fifth case the grid can't plot</span>
+All four quadrants presuppose an alert fired and a clock started. None has a cell for the intrusion that triggers no alert at all — a false negative, a missed detection. There, the clock never starts, so SLA compliance reads 100% by default, while investigation quality is effectively zero: nothing was ever opened to investigate. That is a fifth, off-grid case a four-quadrant model is structurally unable to see, and it is the most extreme version of this section's own thesis — a fully "met" clock next to fully absent quality. Nothing on a compliance dashboard defends against it; the real countermeasures are threat hunting, purple-teaming, and detection-coverage audits, not SLA mechanisms.
+</div>
+
+<div class="quote-block">
+<p>Meeting the SLA does not mean the investigation was good. Breaching the SLA does not mean the SOC failed. The clock and the case are two different stories, and only one of them made it into the contract.</p>
+</div>
+
+</div></div>
+<!-- ==== 19-pause-clock.html ==== -->
+<div class="flow">
+<div class="section-unforced">
+<span class="kicker">Section 9</span>
+<h2 class="h2">SLA Pause / Stop-the-Clock</h2>
+<p class="lede">A clock measures elapsed time, not who could act on it. Stop-the-clock records that a stretch belonged to someone else's queue &mdash; the framework's most honest instrument; claimed only after the fact, the same artifact Section 7 documents under a different name.</p>
+</div>
+
+<h3 class="h3">9.1 &mdash; Six States Worth Pausing For</h3>
+<p>Six wait-states recur across SOC operations, each one blocked on someone else.</p>
+
+<table class="clean">
+<thead>
+<tr><th>Pause state</th><th>Waiting on</th><th>Ends when</th></tr>
+</thead>
+<tbody>
+<tr><td>Customer response</td><td>Named customer contact</td><td>Reply, or contracted response ceiling</td></tr>
+<tr><td>Vendor action</td><td>Vendor, under its Underpinning Contract</td><td>Vendor confirms complete</td></tr>
+<tr><td>Missing telemetry</td><td>Log-source or pipeline owner</td><td>Log arrives, or decision to proceed</td></tr>
+<tr><td>Maintenance window</td><td>Change-advisory board / infra owner</td><td>Window opens, closes, or cancels</td></tr>
+<tr><td>Account-owner validation</td><td>The alert's triggering account owner</td><td>Owner confirms or denies</td></tr>
+<tr><td>Internal team action</td><td>Named team under an internal OLA, outside the case owner's own chain</td><td>Team logs action complete</td></tr>
+</tbody>
+</table>
+
+<p>Unlike Case Study 4's clock-zero dispute, this is literal: the data hasn't arrived.</p>
+
+<p>The internal-team-action row applies only when the named team sits outside the case owner's own reporting chain; an ordinary delay from the owner's own closely-coupled team is an OLA gap, not a pause. Case Study 7's unaccepted L2 handoff is exactly that kind of delay &mdash; it belongs on a breach report as an OLA gap, not hidden behind a stopped clock.</p>
+
+<h3 class="h3">9.2 &mdash; Legitimate Pause vs. Contract-Violating Pause</h3>
+<p>A pause earns its name only when a real, contactable dependency exists when it begins, not when the analyst is busy.</p>
+
+<div class="split">
+<div class="side book">
+<h4>What Makes a Pause Legitimate</h4>
+<ol>
+<li>Contacted a named party, via the agreed channel, before logging it</li>
+<li>Reason and start time logged as the wait began</li>
+<li>A resume trigger was defined in advance</li>
+</ol>
+</div>
+<div class="side reality">
+<h4>What Makes "Pausing" Just Clock Erasure</h4>
+<ol>
+<li>Status flips to "pending" with no outreach attempted</li>
+<li>The pause appears only after breach, backdated</li>
+<li>"Pending" sits indefinitely, with no resume condition defined</li>
+</ol>
+</div>
+</div>
+
+<h3 class="h3">9.3 &mdash; The Four-Part Documentation Standard</h3>
+<p>Every state above reduces to one test; missing any part, the SOC has stopped measuring.</p>
+
+<table class="clean">
+<thead>
+<tr><th>Required element</th><th>Must contain</th><th>Absence permits</th></tr>
+</thead>
+<tbody>
+<tr><td>Timestamped reason</td><td>Exact start moment, checkable cause</td><td>A length invented after the fact</td></tr>
+<tr><td>Named owner</td><td>The specific person/team/vendor blocked on</td><td>An unfalsifiable, unnamed excuse</td></tr>
+<tr><td>Resume trigger</td><td>The exact ending event</td><td>Closure whenever convenient, not when cleared</td></tr>
+<tr><td>Resume latency</td><td>Gap between the trigger event and the resumed-timestamp, measured</td><td>A pause that outlives its own trigger &mdash; one contact attempt, no timely follow-up, unflagged</td></tr>
+</tbody>
+</table>
+
+<div class="callout warning">
+<span class="callout-label">Where pause becomes indistinguishable from gaming</span>
+Section 7 catalogs maneuvers &mdash; clock restarts, type reclassification, ticket splitting &mdash; that fake a met SLA. Missing any element above, a pause yields the same result: unproven time removed.
+</div>
+
+<h3 class="h3">9.4 &mdash; The State Machine and the Audit Trail</h3>
+<p>A pause is a state transition a system should model explicitly, per Figure 9.1's worked example.</p>
+
+<div class="figure"><img src="../assets/mockups/sla-pause-state-machine.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 9.1</span><span class="figtext">The SLA clock's running/paused state machine with a synthetic case-log excerpt; names and timestamps are constructed, not real.</span></div></div>
+
+<p>J. Tan acknowledges at 02:14, pauses at 02:24 for "awaiting customer AD admin confirmation," and closes MET at 04:31. Elapsed time reads as a breach at two hours seventeen; the trail shows the SOC's actual work was thirty-nine minutes, the rest the administrator's. The machine enforces only the state, not the reason's truth.</p>
+
+<div class="quote-block">
+<p>Pausing the clock isn't cheating the SLA &mdash; it's the only way the SLA can ever tell the truth about who was actually waiting on whom.</p>
+</div>
+
+</div>
+<!-- ==== 20-sla-ola-uc.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 10</span>
+<h2 class="h2">SLA vs. OLA vs. UC: The Hidden Contract Stack</h2>
+
+<p class="lede">A customer SLA reads as one promise, but a chain of agreements behind it — invisible to the customer — decides whether it holds. ITIL structures that chain as three instruments, each with its own owner, each able to break the number.</p>
+
+<h3 class="h3">10.1 Three Agreements, One Word</h3>
+
+<p>Per ITIL: an <strong class="accent">SLA</strong> is the commercial, externally-visible promise; an <strong class="accent">OLA</strong> supports it internally — L1 to L2, SOC to platform — no penalty, just an owner and clock; a <strong class="accent">UC</strong> is with an external supplier the SLA depends on, e.g. an EDR vendor's isolation turnaround. This chain shows whether a breach traces to an OLA, a UC, or slow analysts.</p>
+
+<table class="clean">
+<tr><th>Instrument</th><th>Relationship</th><th>What a breach means</th></tr>
+<tr><td>SLA</td><td>Provider &harr; customer</td><td>Credits, penalties, trust erosion</td></tr>
+<tr><td>OLA</td><td>Provider's own teams</td><td>Invisible to the customer; the SLA's buffer</td></tr>
+<tr><td>UC</td><td>Provider &harr; external supplier</td><td>Elapsed time the provider never controlled</td></tr>
+</table>
+
+<h3 class="h3">10.2 Same Engine, Different Field</h3>
+
+<p>Per ServiceNow's own Service Level Management documentation, SLA/OLA/UC records run on the same timer/task engine, differentiated only by a "Type" field &mdash; a missing OLA is a configuration gap, not a platform limit. Case Study 7 is exactly that gap.</p>
+
+<h3 class="h3">10.3 Worked Example: The 30-Minute Promise, Decomposed</h3>
+
+<p>Take a customer SLA promising P1 escalation to L2 within thirty minutes: delivering it means decomposing that clock into owned segments plus a buffer.</p>
+
+<div class="figure"><img src="../assets/mockups/ola-buffer-breakdown.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 10.1</span><span class="figtext">A 30-minute customer SLA decomposed into four chained OLA segments — illustrative, not live-account data.</span></div></div>
+
+<div class="stat-grid">
+  <div class="stat-tile"><div class="label">L1 Triage Target</div><div class="value">10 MIN</div></div>
+  <div class="stat-tile"><div class="label">L2 Acceptance Target</div><div class="value">5 MIN</div></div>
+  <div class="stat-tile"><div class="label">IM Engagement Target</div><div class="value">5 MIN</div></div>
+  <div class="stat-tile"><div class="label">Buffer / Margin</div><div class="value">10 MIN</div></div>
+</div>
+
+<div class="callout illustrative">
+  <span class="callout-label">Illustrative example &mdash; not a universal industry standard</span>
+  This 10/5/5/10 split is illustrative, not prescriptive. No framework here &mdash; ITIL, NIST SP 800-61, FIRST's CSIRT Services Framework, or other &mdash; sets these durations; it's negotiated per account.
+</div>
+
+<p>L2's five minutes accepts the ticket, not resolves it. Each segment should be its own OLA, so a red number points to which segment ate the buffer.</p>
+
+<h3 class="h3">10.4 Why an SLA Without Matching OLAs Is Structurally Unsound</h3>
+
+<p>An SLA without a backing OLA chain is unmeasured, not conservative: no leg is bounded, so time can vanish at any handoff. Case Study 7: L1 triaged in twelve minutes, inside that account's own OLA target (a separate figure from the illustrative 10-minute example above); no OLA covered L2 acceptance, so the ticket sat unopened forty-five more minutes &mdash; fifty-seven total against a thirty-minute SLA, from one unowned segment.</p>
+
+<p>Case Study 8 mirrors this one layer out: a flawless OLA chain can still miss the SLA if resolution depends on an external UC &mdash; a cloud control-plane action, an ISP null-route &mdash; the last mile the provider never controlled. Soundness needs both halves.</p>
+
+<div class="quote-block">
+  <p>Every SLA a customer signs has a silent co-signer: the OLA and UC chain behind it. No SOC can out-perform a promise that a third party's contract already broke.</p>
+</div>
+
+</div></div>
+<!-- ==== 21-buffer.html ==== -->
+<div class="flow">
+
+<span class="kicker">Engineering Margin</span>
+<h2 class="h2">The SLA Buffer</h2>
+<p class="lede">A process that just barely meets its SLA on a normal day has no margin left — the gap between a clean close and a breach is ordinary variance.</p>
+
+<h3 class="h3">Zero-Margin Planning Fails on the First Ordinary Bad Day</h3>
+<p>No engineer sizes a beam to fail at its expected load; margin absorbs normal variation. A SOC paced exactly to the SLA line has none — a shift handling one P2 can still miss a second landing minutes later, no mistake required. "Usually" is not "will."</p>
+
+<h3 class="h3">The Internal Target: Built to Absorb the Variance the Contract Never Sees</h3>
+<p>The fix is an internal target set inside the contractual number — instrumentation, not a second promise. Crossing it tells a lead to reassign within the current shift, pull from lower-priority queue work, or escalate to a lead or incident commander while it still matters; crossing the contract leaves only the report. Adding headcount is not a lever available in the moment — it is a structural roster-planning decision made ahead of time from percentile data, not a live response option.</p>
+
+<div class="callout illustrative"><span class="callout-label">Illustrative example — not a universal industry standard</span>A 30-minute SLA might carry a 20-minute internal target — a 10-minute buffer to catch slow cases first. Figures are illustrative; no standard prescribes them.</div>
+
+<h3 class="h3">Averages Look Safe; the Tail Is Where the SLA Actually Breaks</h3>
+<p>Checking a target against the mean or median is close to useless: triage-time distributions are right-skewed, and breaches happen in the tail, not at the median. Percentile-based views of time-to-triage and time-to-closure (e.g., 50th/90th/99th) can be built in SOC dashboards — including Microsoft Sentinel workbooks via KQL's percentile functions — for this reason.</p>
+
+<div class="figure"><img src="../assets/mockups/percentile-buffer-chart.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 11.1</span><span class="figtext">An illustrative, synthetic 90-day time-to-triage sample (n&nbsp;&asymp;&nbsp;1,050 events), not real data, where the median (24&nbsp;min) exceeds the 20-minute target and the 99th percentile (71&nbsp;min) is more than double the 30-minute SLA.</span></div></div>
+
+<p>The median already eats four minutes of the buffer before anything goes wrong; the 99th-percentile case blows through the contract regardless of discipline, so that tail needs explicit management.</p>
+
+<h3 class="h3">How Much Buffer? A Capacity Decision, Not a Rule</h3>
+<p>There is no single correct size: margin is a cost-and-capacity trade-off decided per SOC from its own data, not a vendor deck. Too tight burns attention on cases that would have closed fine; too loose turns variance into breach.</p>
+
+<div class="callout note"><span class="callout-label">Takeaway</span>A buffer is margin sized against a SOC's own measured variance and its tolerance for holding that margin in reserve — set from percentile data, and revisited, not fixed once and forgotten.</div>
+
+</div>
+<!-- ==== 22-staffing.html ==== -->
+<div class="flow"><div class="section">
+
+<span class="kicker">Section 12</span>
+<h2 class="h2">SLA Is Also a Capacity Problem</h2>
+
+<p class="lede">Every clock in this paper ends at a person on a finite roster and shift, not the constant capacity an SLA assumes. Many SLA failures are staffing failures in disguise.</p>
+
+<h3 class="h3">12.1 Headcount, Shifts, and the Coverage Nobody Standardized</h3>
+<p>A contract promising round-the-week coverage implies a roster staffed every hour of it. No standards body has solved that arithmetic: FIRST's CSIRT Services Framework catalogs the services a CSIRT provides but explicitly leaves staffing models, shift design, and roster logistics for each team to work out on its own.</p>
+
+<div class="callout note">
+<span class="callout-label">Out of scope, by the framework's own admission</span>
+The field's own professional body files staffing under logistics each organization handles alone — a standard was never attempted.
+</div>
+
+<p>Thinner night-and-weekend rosters and planned leave cut headcount on a schedule the contract never adjusts for.</p>
+
+<h3 class="h3">12.2 Concurrency, Queue Depth, and Why "Alerts Per Analyst" Is a Bad Metric</h3>
+<p>Alerts-per-analyst-per-shift means little without the mix: a domain-admin compromise consumes hours, a benign positive a minute, yet both count as one alert. The SLA clock cannot tell an easy alert from a hard one — the roster can.</p>
+
+<h3 class="h3">12.3 Skills, Specialization, and the Training Tax</h3>
+<p>Headcount answers how many people, not who can work a case well — routing by queue position rather than specialty just adds investigation time, and ramp-up or certification pulls that same capacity off the floor.</p>
+
+<h3 class="h3">12.4 Surge Events and Tool Outages: When Demand or Capacity Moves Without Warning</h3>
+<p>A widely exploited vulnerability can multiply alert volume within hours, and every clock slows together — simply more open cases. A tool outage adds a second shock: its backlog lands all at once on recovery, on a roster sized for ordinary volume.</p>
+
+<div class="callout warning">
+<span class="callout-label">When demand and capacity move in opposite directions</span>
+A surge raises demand while capacity stays fixed; an outage removes capacity while demand builds unseen. The two together are the default failure mode, not a coincidence.
+</div>
+
+<div class="figure"><img src="../assets/mockups/soc-floor-plan.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 12.1</span><span class="figtext">A diagrammatic SOC layout with analyst pods and a war room for major-incident coordination — illustrative, not an actual SOC's layout.</span></div></div>
+
+<p>Isolated pods have no place to coordinate a multi-pod response; a war room does, at a real cost in analyst time.</p>
+
+<h3 class="h3">12.5 Three Staffing Models, No Universal Answer</h3>
+<p>If one correct SOC staffing structure existed, the largest vendors would have converged on it. They have not.</p>
+
+<table class="clean">
+<tr><th>Organization</th><th>Model</th><th>Structure</th><th>Rationale</th></tr>
+<tr><td>Microsoft</td><td>Tiers + temporary surge team</td><td>Standing tiers handle triage/investigation/hunting; a temporary cross-functional team is assembled for major incidents (distinct from Sentinel's unrelated "Fusion" correlation feature)</td><td>Routine work suits tiers; incidents need cross-team coordination</td></tr>
+<tr><td>CrowdStrike</td><td>Three-tier model + permanent hunt team</td><td>Tier 1 triages, Tier 2 remediates, Falcon OverWatch — a standing, dedicated team — hunts proactively</td><td>Matches workload to skill depth</td></tr>
+<tr><td>Palo Alto Networks</td><td>Rejects the four-tier SOC</td><td>Cross-trained analysts handle cases end-to-end; automation absorbs first-pass work</td><td>Self-described: hand-offs cost more than specialization gained</td></tr>
+</table>
+
+<p>Microsoft layers a temporary cross-functional team atop fixed tiers, CrowdStrike keeps its tiers — including a permanent hunt team — fixed, and Palo Alto Networks removes tiers by default: the real three-way split is tiered-with-surge-team versus tiered-permanent versus tier-less-with-automation, none calling the others wrong.</p>
+
+<div class="callout note">
+<span class="callout-label">A planning heuristic — not an attributed Microsoft figure</span>
+A reasonable planning heuristic — echoed informally in some Microsoft SOC guidance — is that effective available capacity often runs closer to half of paper headcount once PTO, training, attrition, and non-case work are netted out.
+</div>
+
+<p>None of this means staffing is unsolvable — the SLA and the roster simply run on different disciplines and timelines. A contract signed without visibility into coverage, concurrency, and surge planning has priced a promise without pricing what delivers it.</p>
+
+<div class="quote-block">
+<p>A roster is not elastic. A queue is. An SLA that assumes otherwise is measuring a promise the staffing plan was never sized to keep.</p>
+</div>
+
+</div></div>
+<!-- ==== 23-communication.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">The Communication Layer</span>
+<h2 class="h2">Customer Communication</h2>
+
+<p class="lede">An SLA and a customer's peace of mind are measured by different instruments: a ticket can be acknowledged in minutes, clock stopped, contract met, while the customer hears nothing for two hours and gets only an incident number. The SLA was met; the relationship still took damage.</p>
+
+<h3 class="h3">13.1 Four Moments, Easily Conflated</h3>
+<p>"Keeping the customer informed" is one obligation in name but four in practice: an <strong>initial notification</strong>, an ongoing <strong>status-update cadence</strong>, <strong>major-incident communications</strong> once a severity threshold is crossed, and a retrospective <strong>closure summary</strong>.</p>
+
+<table class="clean">
+<tr><th>Moment</th><th>Communicates</th><th>Timing</th><th>Conflation failure</th></tr>
+<tr><td>Initial notification</td><td>"On it"</td><td>Ack clock</td><td>Read as "handled"</td></tr>
+<tr><td>Status-update cadence</td><td>State, next contact</td><td>SOC commitment</td><td>Ack treated as sufficient</td></tr>
+<tr><td>Major-incident comms</td><td>Wider updates</td><td>Declaration</td><td>Cadence left routine</td></tr>
+<tr><td>Closure summary</td><td>What happened, changes</td><td>Ticket closure</td><td>Mistaken for first update</td></tr>
+</table>
+
+<div class="callout illustrative"><span class="callout-label">Illustrative — not a documented incident</span>The two-hour scenario is composite; the pattern is common.</div>
+
+<h3 class="h3">13.2 Lead With Status, Not With Clock Language</h3>
+<p>A status update's opening line does most of the work: "within SLA" reassures the audit trail, not the customer; leading with status and a next-update time does, without asking for blind trust.</p>
+
+<div class="split">
+  <div class="side book">
+    <h4>Clock-Compliance Framing</h4>
+    <ul>
+      <li>"Acknowledged at 09:02, within window."</li>
+    </ul>
+  </div>
+  <div class="side reality">
+    <h4>Status-Forward Framing</h4>
+    <ul>
+      <li>"09:02 — investigating. Next update 09:30."</li>
+    </ul>
+  </div>
+</div>
+
+<p>Neither takes longer to write; the left answers the auditor, the right the customer.</p>
+
+<h3 class="h3">13.3 "Acknowledged" Is Not "Resolved"</h3>
+<p>A technically-met SLA often damages a relationship when a fast acknowledgment reads as proof the problem is already fixed, since nothing distinguished "responded" from "resolved" (Section 3). The fix: state plainly, every time, which has happened and which hasn't — left implicit, the gap defaults to blame on the SOC.</p>
+
+<div class="callout warning"><span class="callout-label">The gap that ages worst</span>A customer never told the difference experiences the correction as being misled, even though nothing said was false.</div>
+
+<h3 class="h3">13.4 When the Delay Is the Customer's</h3>
+<p>Communication runs both ways: the neglected direction is documenting delay the customer caused (Case Study 3; Section 9). An unanswered validation request belongs in the same audit trail as any clock pause — timestamped, surfaced proactively, not raised only later. The update and the record can be the same line: "waiting on your confirmation" serves both.</p>
+
+<p>None of this needs new tooling — just treating the message as a work product judged by whether the reader understood their situation, not whether a timer was respected.</p>
+
+</div></div>
+<!-- ==== 24-breach-management.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 14</span>
+<h2 class="h2">SLA Breach Management</h2>
+
+<p class="lede">Most SLA programs discover a breach at month-end — too late to do anything but explain it. Programs that hold up flag risk early, log the time, and only then judge the failure.</p>
+
+<h3 class="h3">Before the Clock Lapses: Flagging Risk and Reallocating</h3>
+
+<p>Whoever works a case flags risk before the clock lapses, as a warning rather than an accusation. A team lead then decides whether shift resources can clear it, or the constraint is external — documented at the time, since reconstructed later it reads as an excuse.</p>
+
+<p>Where practice calls for it, the customer is told before the deadline is the story. Each dependency gets logged as it happens; unlogged, it reads as the SOC's own delay.</p>
+
+<div class="callout note">
+<span class="callout-label">The clock does not get to decide when the investigation is finished</span>
+A flagged risk, a reallocation, a dependency log manage exposure to the clock — not permission to stop looking sooner. This is Section&nbsp;8's Quadrant&nbsp;3: a breached clock with a sound investigation.
+</div>
+
+<h3 class="h3">After the Breach: Classification, Review, and Corrective Action</h3>
+
+<p>The clock decides whether a breach occurred, not what it means. A missed target is classified against a root-cause taxonomy — using the dependency log and risk flag as evidence — then reviewed by the manager, who assigns an owner to corrective action. Without that, a root cause is a diagnosis with no treatment.</p>
+
+<h3 class="h3">A Seven-Branch Root-Cause Taxonomy</h3>
+
+<p>The taxonomy is this paper's own synthesis, generalized from Section&nbsp;6's case studies — not drawn from NIST, ITIL, FIRST, or any other cited framework. Treat it as a structure to adapt, not a checklist — meant to name a mechanism, not just say "the SLA was breached."</p>
+
+<div class="figure"><img src="../assets/mockups/root-cause-taxonomy.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 14.1</span><span class="figtext">The seven-branch taxonomy used in this paper, mapped illustratively to its clearest case; authorial synthesis, not an external standard.</span></div></div>
+
+<table class="clean">
+<thead><tr><th>Branch</th><th>On the floor</th><th>Case</th></tr></thead>
+<tbody>
+<tr><td><strong>Capacity</strong></td><td>Too many cases, too few hands.</td><td><span class="tag">Case 01</span></td></tr>
+<tr><td><strong>Detection noise</strong></td><td>An untuned rule eats real minutes.</td><td><span class="tag">Case 06</span></td></tr>
+<tr><td><strong>Tool failure / telemetry delay</strong></td><td>Latency in a pipeline, not analysts.</td><td><span class="tag">Case 04</span></td></tr>
+<tr><td><strong>Customer dependency</strong></td><td>A reply the SOC can't compel.</td><td><span class="tag">Case 03</span></td></tr>
+<tr><td><strong>Third-party / vendor dependency</strong></td><td>A vendor's own queue, not the SOC's.</td><td><span class="tag">Case 08</span></td></tr>
+<tr><td><strong>Definitional</strong></td><td>Severity shifts; the start point is disputed.</td><td><span class="tag">Case 05</span></td></tr>
+<tr><td><strong>Process / escalation failure</strong></td><td>A handoff with no owner or clock.</td><td><span class="tag">Case 07</span></td></tr>
+</tbody>
+</table>
+
+<div class="callout warning">
+<span class="callout-label">Tag the branch before anyone reads the number</span>
+A breach's branch matters before its performance verdict: Third-party or Definitional suggests Quadrant&nbsp;3; Capacity or Process failure with a thin investigation suggests Quadrant&nbsp;4 — the one warranting corrective action.
+</div>
+
+<div class="quote-block">
+<p>The severity table lives in a conference room at 2 PM. The actual severity gets decided at 2:17 AM by whoever is on shift, with half the evidence in and the customer not picking up.</p>
+</div>
+
+<p>Run this way, breach management doesn't make breaches disappear — it makes them legible, which is the only accountability that survives a real shift.</p>
+
+</div></div>
+<!-- ==== 25-metrics.html ==== -->
+<div class="flow">
+<div class="section-unforced">
+<span class="kicker">Measurement Discipline</span>
+<h2 class="h2">Real SLA Metrics</h2>
+<p class="lede">A customer report collapses an incident lifecycle into one number: percent compliant. Running the floor needs separate, defined measurements — which requires agreeing what each metric actually means, something the industry largely hasn't done.</p>
+</div>
+
+<h3 class="h3">The Vocabulary Problem</h3>
+<p>"MTTR" is the clearest case: PagerDuty notes the same letters mean Repair, Recovery, Respond, or Resolve by vendor; IBM defines it narrowly as repair-and-recovery, excluding detection and triage. Some Sentinel-based SOCs sidestep the ambiguous acronym entirely, naming their dashboard boundaries in plain language — "time to triage," "time to closure" — rather than reusing an overloaded "MTTR."</p>
+<div class="callout note">
+<span class="callout-label">Note</span>
+No primary source here formally defines "MTTI" or "MTTC" with a stated boundary — both circulate freely in SOC dashboards regardless.
+</div>
+<p>MTTD (Mean Time to Detect) sits one stage earlier and carries the same problem. Its boundary is usually stated as attacker action to alert generation — but Case Study 4 showed four candidate timestamps for that same span (attacker action, log arrival, alert creation, analyst acknowledgement), each defensible and each producing a different "detection" time for one incident. An MTTD figure without a stated clock-start is exposed to the identical ambiguity as MTTR, MTTI, and MTTC.</p>
+<p>A term becomes rigorous once its boundary is fixed and travels with the number; otherwise "MTTR improved 20%" is a claim, not a measurement.</p>
+
+<h3 class="h3">What a Real SOC Should Track</h3>
+<p>A SOC managing the work tracks these in parallel, each boundary fixed in-house first.</p>
+
+<h3 class="h3">Compliance and Backlog Signals</h3>
+<p>What a shift lead checks first, not a past average.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>SLA compliance %</td><td>Share of cases whose clock stopped in window.</td><td>Hides one clock failing beneath it.</td></tr>
+<tr><td>At-risk case count</td><td>Open cases under an in-house time-to-breach threshold.</td><td>Shows what's about to breach in time to act.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">Per-Stage Clock Performance</h3>
+<p>Acknowledgement, triage, notification, containment, and closure are reported individually.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>MTTA</td><td>Mean time from creation to claim.</td><td>Can be 100% compliant on a loose target while this drifts upward.</td></tr>
+<tr><td>Containment performance</td><td>% contained inside target, against a preset stop condition.</td><td>A judgment call, inconsistent without a written condition.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">Dependency and Waiting Time</h3>
+<p>Can't tell working slowly from waiting on someone else.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>Customer waiting time</td><td>Duration caused by the customer's non-response.</td><td>Penalizes a delay the SOC couldn't shorten.</td></tr>
+<tr><td>Internal/external dependency time</td><td>Time waiting on a team (OLA) or supplier (underpinning contract, UC).</td><td>Traces a breach to a dependency, not the analyst.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">Quality and Integrity Signals</h3>
+<p>Speed answers how fast, not whether the work was good.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>Reopened-case rate</td><td>% of closed cases reopened within a set window.</td><td>Signals closure happened before the work was done.</td></tr>
+<tr><td>Quality-audit score</td><td>Structured case-review score, independent of speed.</td><td>Measures soundness directly, not inferred from time.</td></tr>
+<tr><td>% closed in final 5 minutes before breach</td><td>Compliant closures landing in the last five minutes.</td><td>A possible SLA-gaming signal, not efficiency.</td></tr>
+</tbody>
+</table>
+
+<div class="callout warning">
+<span class="callout-label">Read This One With Suspicion, Not Pride</span>
+Consistently closing minutes before breach fits beating the clock as well as finishing the work — check it against reopened-case rate and quality-audit score first.
+</div>
+
+<p>Each metric above answers a question the others can't. What most SOCs skip is naming which clock each one measures: "SLA compliance: 94%" isn't a definition; "94% of acknowledgement clocks stopped creation-to-claim inside the window" is.</p>
+
+</div>
+<!-- ==== 26-manager-view.html ==== -->
+<div class="flow"><div class="section">
+
+<span class="kicker">Section 16</span>
+<h2 class="h2">What I Would Watch as a SOC Manager</h2>
+
+<p class="lede">This is operational judgment, not a cited standard. The question: what belongs on a manager's screen in real time, to catch a problem before a customer does?</p>
+
+<p>The compliance percentage is lagging, gameable, and quality-blind: it reflects only closed cases, a clock stopped early looks identical to one genuinely met (Section 8's Quadrant 2), and "on time" differs from "investigated well."</p>
+
+<div class="callout note">
+<span class="callout-label">Scope of this section</span>
+This is the leading-indicator set I would want visible during a shift, not a certification requirement — the category of watching matters, not this exact inventory.
+</div>
+
+<h3 class="h3">16.1 The Indicators That Actually Precede a Breach</h3>
+<p>A compliance percentage says what already happened; the rows below tend to move <em>before</em> a breach shows up in it, while a case can still be acted on.</p>
+
+<table class="clean">
+<tr><th>Indicator</th><th>What it tells a manager</th></tr>
+<tr><td>Current P1 / P2 case load</td><td>Pressure on the shift right now</td></tr>
+<tr><td>Cases within ~20% of SLA deadline</td><td>Time to intervene, before the clock</td></tr>
+<tr><td>Unassigned alerts</td><td>Nobody has started it yet</td></tr>
+<tr><td>Oldest alert in queue</td><td>What an average age hides</td></tr>
+<tr><td>Analyst workload imbalance</td><td>Whether the queue is even</td></tr>
+<tr><td>Repeatedly-breached use cases</td><td>A detection-engineering fix, not an analyst one</td></tr>
+<tr><td>Repeatedly-noisy detections</td><td>Burns time now, breaches later</td></tr>
+<tr><td>Live customer dependencies</td><td>Delays the SOC can't fix</td></tr>
+<tr><td>L2 / escalation queue depth</td><td>Whether the next tier is backed up</td></tr>
+<tr><td>Shift-handover risk</td><td>Ambiguity near a shift boundary</td></tr>
+<tr><td>Tool / pipeline health</td><td>Meaningless clock if detection lags</td></tr>
+<tr><td>Staffing gaps, coming shift</td><td>Can the next shift absorb it</td></tr>
+<tr><td>Live major incidents</td><td>Pulls resourcing outside SLA logic</td></tr>
+</table>
+
+<h3 class="h3">16.2 Reading a Live Dashboard</h3>
+<p>The mockup below assembles several tiles onto one dashboard; figures are synthetic, not a real measurement.</p>
+
+<div class="figure"><img src="../assets/mockups/management-dashboard.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 16.1</span><span class="figtext">A composite, illustrative SOC management dashboard: synthetic KPI tiles above a breach root-cause breakdown.</span></div></div>
+
+<p>MTTA/MTTI/MTTC split the clock into the phase causing delay; Queue Depth, Reopened Case Rate, and Quality Audit Score do Section 8's job live — a rising reopen rate beside a green compliance number is Quadrant 2, in real time. Quality Audit Score itself isn't free to produce: a systematic case-audit or second-review program is a capacity line item — dedicated QA headcount, or a fixed, budgeted percentage of analyst time — not a tile that appears on the dashboard for free, and Section 12's staffing math has to carry it. The root-cause chart answers "why," not "how much": customer dependency and telemetry delay lead, pointing at contracts and pipelines, not the floor; only a small fraction — capacity, process/escalation failure — points back at the queue.</p>
+
+<div class="callout illustrative">
+<span class="callout-label">Not every indicator lives on one screen</span>
+Handover risk, staffing, and major-incident status live on a handover board, roster tool, and incident bridge, not this dashboard (see Case Study 2).
+</div>
+
+<h3 class="h3">16.3 Why This Is the Payoff of the Framework, Not a Separate Checklist</h3>
+<p>Section 8's grid argued compliance alone can't separate Quadrant 1 from 2, or Quadrant 3 from 4, since each pair reports identically. Every indicator here makes that separation possible during the shift, not in a retrospective audit.</p>
+
+<div class="quote-block">
+<p>SLA compliance answers one question: did it close on time. This section answers the only other one that matters: was that good news, or borrowed time?</p>
+</div>
+
+</div></div>
+<!-- ==== 27-divider-platforms.html ==== -->
+
+<div class="page dark divider" style="page-break-after:always;">
+  <div class="num">III</div>
+  <span class="kicker">Part Three</span>
+  <h1>Inside the Platforms</h1>
+  <div class="desc">QRadar's magnitude score, Google SecOps' five-phase case lifecycle, ServiceNow's Task SLA engine — three real, differently-built systems that all quietly agree on one thing: none of them publish a universal number for how fast a human has to move.</div>
+</div>
+
+<!-- ==== 28-qradar.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 17</span>
+<h2 class="h2">Platform Walkthrough: QRadar</h2>
+
+<p class="lede">IBM QRadar, among the most widely deployed SIEM platforms, illustrates a point this paper keeps returning to: it prioritizes what an analyst sees, not how fast a human must act.</p>
+
+<h3 class="h3">The offense: correlation, not raw alerting</h3>
+
+<p>QRadar's core investigative unit is the <strong>offense</strong>: the record created when correlation rules judge related events or flows worth investigating together, rather than as separate queue items. That consolidation is QRadar's value as a SIEM; it carries no numeric handling target.</p>
+
+<h3 class="h3">Magnitude: a prioritization heuristic, not a severity contract</h3>
+
+<p>Every offense carries a <strong>magnitude</strong> score, weighted from three inputs — <strong>relevance</strong> (network impact), <strong>credibility</strong> (source corroboration), and <strong>severity</strong> (threat versus readiness) — into one normalized number, usually a ten-segment bar. IBM notes magnitude <strong>might not align to any single event</strong> inside an offense: high event volume doesn't guarantee high magnitude, as the figure below shows. It ranks IBM's queue, not a customer severity tier, with no response-time mapping.</p>
+
+<div class="figure">
+  <img src="../assets/mockups/qradar-illustrative-mock.png" style="width:100%;display:block;">
+  <div class="figcap"><span class="fignum">FIGURE 17.1</span><span class="figtext">A synthetic offense console modeled on QRadar's layout (illustrative, not a real tenant): an 8,742-event offense scores near the bottom while an 88-event offense scores highest — magnitude reflects relevance, credibility, and severity, not volume.</span></div>
+</div>
+
+<div class="callout warning">
+  <span class="callout-label">Do not read magnitude as an SLA tier</span>
+  A magnitude of 9/10 reflects QRadar's internal weighting — not an IBM-certified response window or a contractual P1. Mapping magnitude bands onto SLA tiers without an explicit policy decision imports a vendor heuristic as negotiated severity.
+</div>
+
+<h3 class="h3">The Custom Rules Engine, building blocks, and reference sets</h3>
+
+<p>Offenses and magnitude exist because of the <strong>Custom Rules Engine (CRE)</strong>, which tests events, flows, and offenses against defined conditions and generates a response, typically an offense. Two constructs get mistaken for detections themselves: a <strong>building block</strong> is reusable rule logic — a tuning aid, generating no offense alone; a <strong>reference set</strong> is a dynamic, rule-populated watchlist (IPs, usernames) rules check automatically, making its tuning ongoing maturity work.</p>
+
+<h3 class="h3">Start time versus storage time — and "near real-time"</h3>
+
+<p>The earlier SIEM Ingestion Delay case study introduced QRadar's <strong>Device Time</strong> (the timestamp parsed from the event payload itself: the source's own report of when the activity happened) and <strong>Start Time</strong> (essentially that same source-reported timestamp — it falls back to arrival time only when the source provides none, so it is not when QRadar received the event). The field that actually marks when QRadar wrote the record is <strong>Storage Time</strong>, and it's the Start Time versus Storage Time gap — driven by network transit, source batching, queue depth, and license throttling, all before the CRE evaluates the record — that measures ingestion delay. IBM calls default correlation <strong>near real-time</strong>, a phrase, not a number, with no published latency guarantee.</p>
+
+<div class="callout note">
+  <span class="callout-label">What this section is not saying</span>
+  None of this criticizes QRadar's design — coalescing, throttling, and near-real-time correlation are reasonable trade-offs at this scale. Even QRadar's own vendor, with full pipeline visibility, won't commit to a numeric latency figure; SLA language shouldn't claim more certainty than IBM itself does.
+</div>
+
+</div></div>
+<!-- ==== 29-chronicle.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 18</span>
+<h2 class="h2">Platform Walkthrough: Google SecOps / Chronicle</h2>
+
+<p class="lede">Google Security Operations — still widely called Chronicle — publishes an explicit five-phase lifecycle: Collect, Detect, Investigate, Respond, Manage/Monitor. Google's documentation never attaches a numeric time target to any phase — it describes sequence, not contractual speed.</p>
+
+<h3 class="h3">18.1 The Five-Phase Lifecycle</h3>
+<p>Collect normalizes logs into the Unified Data Model. Detect correlates via YARA-L 2.0, curated packs, and threat-intel matching into an alert, not a case. Investigate hands off to a human — Section 4's investigation clock, started and stopped by analyst judgment alone. Respond runs SOAR playbooks, automated or approval-gated. Manage/Monitor tunes those rules from performance feedback.</p>
+
+<h3 class="h3">18.2 What a "Case" Actually Is</h3>
+<p>A "case" isn't a fixed unit — it's a container that administrator-configured grouping and overflow settings roll alerts into. Too loose, unrelated volume collapses into one case; too tight, a real attack chain scatters unseen.</p>
+<div class="callout note"><span class="callout-label">Why this distinction matters to the SLA argument</span>Because case boundaries are configured, not fixed, "case resolution time" isn't stable across tenants or across one tenant's own configuration changes — a clause citing it without specifying thresholds measures a moving boundary, not the work.</div>
+
+<h3 class="h3">18.3 One Alert Chain Through All Five Phases</h3>
+<p>The sequence below is a composite, not a real breach, threaded through Figure 18.1: an anomalous login trips correlated credential-stuffing and impossible-travel rules, a follow-on OAuth grant, a mailbox-forwarding rule, and a bulk export each correlate against the same entities — grouping settings (18.2) decide whether they join one case — reading as one entity's access-persistence-exfiltration chain, not four isolated alerts.</p>
+
+<div class="figure"><img src="../assets/mockups/chronicle-illustrative-mock.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 18.1</span><span class="figtext">An illustrative case-investigation console modeled on Google SecOps' structure — synthetic data, not an actual screenshot or real tenant.</span></div></div>
+
+<p>Respond could revoke the grant, disable forwarding, and force a reset, automated or approval-gated by confidence; Manage/Monitor tightens or loosens the fired rules afterward.</p>
+
+<h3 class="h3">18.4 Two Clocks, Not One</h3>
+<p>Detection execution time is a compute-pipeline property, governed by ingestion latency and rule complexity. Investigation time is a human property — how long an analyst needs to establish scope and root cause with confidence. No vendor documentation reviewed here, Google's included, attaches a universal target to either, individually or combined. Blending "time to detect" and "time to investigate" into one SLA figure erases the distinction that determines who owns a delay.</p>
+
+<div class="callout warning"><span class="callout-label">Two clocks, one dashboard</span>Telemetry can tell you exactly how long detection took. It cannot tell you how long investigation should have taken — that belongs to the case file, not the pipeline, and treating pipeline speed as a proxy for diligence repeats the substitution Section 8 warned against.</div>
+
+</div></div>
+<!-- ==== 30-servicenow.html ==== -->
+<div class="flow">
+<div class="section-unforced">
+
+<span class="kicker">Section 19</span>
+<h2 class="h2">Platform Walkthrough: ServiceNow Case Management</h2>
+
+<p class="lede">ServiceNow underlies much SOC case management, and its documentation is blunt: its "SLA" feature is a generic commitment-timer engine, and what it measures depends entirely on configuration, not the software.</p>
+
+</div>
+
+<h3 class="h3">One Engine, Three Labels: SLA, OLA, and UC Share a Timer</h3>
+<p>Per ServiceNow Community discussion and the platform's own documentation, SLA, OLA, and UC records run on the same Task SLA engine &mdash; identical mechanics, differentiated only by an administrative <strong>Type</strong> field.</p>
+
+<div class="callout warning">
+<span class="callout-label">What "same engine" means operationally</span>
+Because the record is identical regardless of Type, mislabeling an OLA as a customer SLA won't be caught &mdash; ServiceNow runs the timer exactly as configured, contract or not.
+</div>
+
+<h3 class="h3">Stage: In Progress, Paused, Completed, Cancelled</h3>
+<p>Every Task SLA record tracks a stage: In Progress, Paused, Completed, or Cancelled. Paused <strong>suspends</strong> elapsed time rather than discarding it &mdash; the clock resumes where it stopped, not zero.</p>
+
+<h3 class="h3">Breach: 100% of Allotted Duration Against a Moving "Planned End Date"</h3>
+<p>ServiceNow computes breach against a <strong>planned end date</strong> that recalculates as paused time accumulates, not a fixed deadline &mdash; so identical records can close with different deadlines, a moving number no static severity table can show in advance.</p>
+
+<h3 class="h3">A Case Record, Field by Field</h3>
+<p>The fields ServiceNow surfaces on a case are what a shift lead would check. An illustrative, reconstructed example:</p>
+
+<table class="clean">
+<thead><tr><th>Field</th><th>Value (illustrative)</th></tr></thead>
+<tbody>
+<tr><td>Case ID</td><td>INC0012345</td></tr>
+<tr><td>Severity</td><td><span class="pill p2">P2 &middot; HIGH</span></td></tr>
+<tr><td>Created</td><td>2026-09-25&nbsp;09:42:18 SGT</td></tr>
+<tr><td>Acknowledged</td><td>2026-09-25&nbsp;09:47:03 SGT</td></tr>
+<tr><td>Owner</td><td>SOC Analyst &mdash; Tier 1</td></tr>
+<tr><td>SLA deadline (planned end)</td><td>Investigation stage &mdash; 00:14:22 remaining</td></tr>
+<tr><td>State</td><td>In Progress</td></tr>
+<tr><td>Customer-waiting flag</td><td>ON</td></tr>
+<tr><td>Escalation flag</td><td>OFF</td></tr>
+<tr><td>Investigation notes</td><td>EDR alert correlated to flagged IP; isolation requested.</td></tr>
+<tr><td>Next update due</td><td>2026-09-25&nbsp;11:15:00 SGT</td></tr>
+</tbody>
+</table>
+<p class="muted">Case ID, timestamps, and notes are synthetic, not from a real tenant.</p>
+
+<div class="figure"><img src="../assets/mockups/servicenow-illustrative-mock.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 19.1</span><span class="figtext">The same illustrative record as a form view &mdash; Customer Waiting ON means "00:14:22 remaining" may already be a suspended clock.</span></div></div>
+
+<h3 class="h3">The Practitioner's Workaround: Building Around the Native Timer</h3>
+<p>A pattern practitioners describe in ServiceNow forums and implementation guides: enforcing a response commitment that must survive a ticket being reopened often requires a custom Business Rule layered on top of the native Task SLA construct, which does not natively track commitments across reopen/close cycles.</p>
+
+<div class="callout critical">
+<span class="callout-label">Why this pattern matters more than the feature list</span>
+This is not a defect report. It is a recurring practitioner account that having a native SLA object and that object correctly encoding a real commitment are separate claims.
+</div>
+
+<p>None of this makes ServiceNow's engine poorly designed &mdash; one reusable timer, differentiated by Type, reasonably serves SLAs, OLAs, and UCs with one code path. The point holds regardless of platform: a field labeled "SLA" is a configuration object, not a certification that the number matches the contract. <strong>Reading it correctly requires knowing how the timer was built, not just what it displays.</strong></p>
+
+</div>
+<!-- ==== 31-divider-playbook.html ==== -->
+
+<div class="page dark divider" style="page-break-after:always;">
+  <div class="num">IV</div>
+  <span class="kicker">Part Four</span>
+  <h1>The Playbook</h1>
+  <div class="desc">Six statements worth remembering, one page an analyst can actually pin to a desk, and the answer this paper set out to give: is the SLA in the book the same as the SLA at 2:17 AM?</div>
+</div>
+
+<!-- ==== 32-cheat-sheet-page.html ==== -->
+
+<div class="page alt no-pad" style="page-break-after:always; padding:0;">
+  <img src="../assets/mockups/cheat-sheet.png" style="width:100%;height:100%;display:block;object-fit:cover;">
+</div>
+
+<!-- ==== 33-memorable-statements.html ==== -->
+<div class="flow"><div class="section">
+
+<div class="kicker">Section 21</div>
+<h2 class="h2">Memorable Statements</h2>
+<p class="lede">Six lines from this paper, isolated from their surrounding argument. Each is a compression of a section's evidence into a single claim -- not a new argument, and not a slogan meant to stand alone.</p>
+
+<div class="quote-block">
+<p>An SLA measures elapsed time. A SOC manages uncertainty, dependencies, evidence, and risk &mdash; only one of those four fits neatly on a countdown clock.</p>
+</div>
+<p class="muted">Grounded in Section 1: the structural mismatch between what a service-level agreement can measure and what a security operations center actually does during an investigation.</p>
+
+<div class="quote-block">
+<p>Meeting the SLA does not mean the investigation was good. Breaching the SLA does not mean the SOC failed. The clock and the case are two different stories, and only one of them made it into the contract.</p>
+</div>
+<p class="muted">Grounded in Section 8: the gap between timer compliance and investigative quality, and why the two are scored separately in practice.</p>
+
+<div class="quote-block">
+<p>The moment a response-time number becomes a performance target, analysts start optimizing the number instead of the incident &mdash; Goodhart's Law does not ask the SOC's permission first.</p>
+</div>
+<p class="muted">Grounded in Section 7: how timer-based metrics quietly shift analyst behavior once they become the thing being managed rather than the thing being measured.</p>
+
+<div class="quote-block">
+<p>The severity table lives in a conference room at 2 PM. The actual severity gets decided at 2:17 AM by whoever is on shift, with half the evidence in and the customer not picking up.</p>
+</div>
+<p class="muted">Grounded in Section 14: the distance between a static severity-classification table and the judgment call an on-shift analyst has to make in real time, with incomplete information.</p>
+
+<div class="quote-block">
+<p>Pausing the clock isn't cheating the SLA &mdash; it's the only way the SLA can ever tell the truth about who was actually waiting on whom.</p>
+</div>
+<p class="muted">Grounded in Section 9: clock-pause and pending-customer states as the mechanism that keeps an elapsed-time metric honest about which party caused the delay.</p>
+
+<div class="quote-block">
+<p>Every SLA a customer signs has a silent co-signer: the OLA and UC chain behind it. No SOC can out-perform a promise that a third party's contract already broke.</p>
+</div>
+<p class="muted">Grounded in Sections 10, 7, and 8: the dependency chain of internal OLAs and third-party underpinning contracts that a customer-facing SLA quietly rests on, and the ceiling that chain places on SOC performance.</p>
+
+</div></div>
+<!-- ==== 34-conclusion.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<span class="kicker">Section 22</span>
+<h2 class="h2">Conclusion: Does the Book SLA Equal the Real-Life SLA?</h2>
+
+<p class="lede">No. The two were never measuring the same thing. The book SLA is a negotiated proxy for accountability; the real-life SLA is what happens to it on a contentious, evidence-incomplete floor. What sits between them, so neither lies to the people relying on it, is the real question.</p>
+
+<p>The book fixes a start, a stop, and a duration, treating every case in a tier as one generic event — the only way a contract can work. The real-life SLA is what that event actually becomes: fifteen overlapping alerts, as Section 5 showed by telling one incident twice. Neither version is the villain: the fix for a gameable timer (Section 7) is a better metric, not none — and the book without the floor is a billing document, the floor without the book an anecdote.</p>
+
+<h3 class="h3">What Actually Closes the Gap</h3>
+<p>No clause can anticipate every dependency stall a real case produces. What closes the gap are three disciplines already built in this paper.</p>
+
+<table class="clean">
+<thead><tr><th>Mechanism</th><th>What it does</th><th>What it cannot do alone</th></tr></thead>
+<tbody>
+<tr><td><strong>Disciplined pause and audit</strong><br><span class="muted">Section 9</span></td><td>Stops the clock for uncontrolled time, if logged.</td><td>Proves who waited, not quality.</td></tr>
+<tr><td><strong>Root-cause-tagged breach management</strong><br><span class="muted">Section 14</span></td><td>Classifies breach by cause, not blanket overage.</td><td>Fires after a breach; early closures skip it.</td></tr>
+<tr><td><strong>Quality metrics alongside compliance</strong><br><span class="muted">Sections 8 and 16</span></td><td>Adds a quality axis a timer can't produce.</td><td>Can't replace the clock alone.</td></tr>
+</tbody>
+</table>
+
+<p>None of the three works alone. A pause with no quality signal can legitimize an unearned stop-clock; a quality score with no honest breach classification can't say whether a slow case was hard, or just badly worked.</p>
+
+<h3 class="h3">The Clock and the Cloud, One More Time</h3>
+<p>Section 1 opened this paper with two shapes: a clock, timing an event from start to stop; and a cloud, the analyst's actual working material — unresolved questions about telemetry, scope, and who else must act before a case can close. They are two instruments measuring two different things, and a SOC that reports only one is discarding half the truth.</p>
+
+<div class="callout note">
+<span class="callout-label">The answer, stated once more</span>
+The book SLA and the real-life SLA are not in disagreement; they measure different variables entirely — elapsed time, and the state of an uncertain investigation — produced by the same incident and reported side by side. That mismatch is the permanent condition of running a business on a clock while doing work that is not, by nature, clock-shaped.
+</div>
+
+<div class="quote-block">
+<p>An SLA measures elapsed time. A SOC manages uncertainty, dependencies, evidence, and risk &mdash; only one of those four fits neatly on a countdown clock.</p>
+</div>
+
+</div></div>
+<!-- ==== 35-references.html ==== -->
+<div class="flow"><div class="section-unforced">
+
+<div class="kicker">References</div>
+<h2 class="h2">References</h2>
+<p class="lede">The following are the real, live-fetched sources this paper's research drew on. Not every source below is cited by name in the body text, but every numeric figure, regulatory deadline, or standards claim made anywhere in this paper traces back to one of these.</p>
+
+<ul>
+<li>NIST SP 800-61 Rev.3 &mdash; <a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">https://csrc.nist.gov/pubs/sp/800/61/r3/final</a></li>
+<li>NIST SP 800-61 Rev.2, withdrawn April 2025 &mdash; <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf</a></li>
+<li>NIST CSRC Glossary &mdash; Incident Response &mdash; <a href="https://csrc.nist.gov/glossary/term/incident_response">https://csrc.nist.gov/glossary/term/incident_response</a></li>
+<li>NIST CSRC Glossary &mdash; Service Level Agreement &mdash; <a href="https://csrc.nist.gov/glossary/term/service_level_agreement">https://csrc.nist.gov/glossary/term/service_level_agreement</a></li>
+<li>NIST Cybersecurity Framework &mdash; <a href="https://www.nist.gov/cyberframework/getting-started">https://www.nist.gov/cyberframework/getting-started</a></li>
+<li>CISA Federal Incident Notification Guidelines &mdash; <a href="https://www.cisa.gov/federal-incident-notification-guidelines">https://www.cisa.gov/federal-incident-notification-guidelines</a></li>
+<li>CISA CIRCIA &mdash; <a href="https://www.cisa.gov/circia">https://www.cisa.gov/circia</a></li>
+<li>FIRST CSIRT Services Framework v2.1 &mdash; <a href="https://www.first.org/standards/frameworks/csirts/csirt_services_framework_v2.1">https://www.first.org/standards/frameworks/csirts/csirt_services_framework_v2.1</a></li>
+<li>FIRST CSIRT Services Framework overview &mdash; <a href="https://www.first.org/standards/frameworks/csirts/">https://www.first.org/standards/frameworks/csirts/</a></li>
+<li>FIRST CVSS &mdash; <a href="https://www.first.org/cvss/">https://www.first.org/cvss/</a></li>
+<li>SANS Incident Handler's Handbook &mdash; <a href="https://www.sans.org/white-papers/33901/">https://www.sans.org/white-papers/33901/</a></li>
+<li>SANS 2026 SOC Survey (Spanish-language edition) &mdash; <a href="https://www.sans.org/white-papers/sans-soc-2026-hallazgos-decada-evolucion-ciberdefensa">https://www.sans.org/white-papers/sans-soc-2026-hallazgos-decada-evolucion-ciberdefensa</a></li>
+<li>CrowdStrike Incident Response overview &mdash; <a href="https://www.crowdstrike.com/en-us/cybersecurity-101/incident-response/">https://www.crowdstrike.com/en-us/cybersecurity-101/incident-response/</a></li>
+<li>CrowdStrike SOC overview &mdash; <a href="https://www.crowdstrike.com/cybersecurity-101/security-operations-center-soc/">https://www.crowdstrike.com/cybersecurity-101/security-operations-center-soc/</a></li>
+<li>CrowdStrike Falcon Complete &mdash; <a href="https://www.crowdstrike.com/en-us/products/managed-services/falcon-complete/">https://www.crowdstrike.com/en-us/products/managed-services/falcon-complete/</a></li>
+<li>CrowdStrike Global Threat Report &mdash; <a href="https://www.crowdstrike.com/global-threat-report/">https://www.crowdstrike.com/global-threat-report/</a></li>
+<li>IBM &mdash; What is a SOC? &mdash; <a href="https://www.ibm.com/topics/security-operations-center">https://www.ibm.com/topics/security-operations-center</a></li>
+<li>IBM QRadar SOAR &mdash; <a href="https://www.ibm.com/products/qradar-soar">https://www.ibm.com/products/qradar-soar</a></li>
+<li>IBM Documentation &mdash; QRadar Offense investigation &mdash; <a href="https://www.ibm.com/docs/en/qsip/7.5.0?topic=offenses-offense-investigation">https://www.ibm.com/docs/en/qsip/7.5.0?topic=offenses-offense-investigation</a></li>
+<li>IBM Documentation &mdash; QRadar Offense prioritization &mdash; <a href="https://www.ibm.com/docs/en/qsip/7.5.0?topic=management-offense-prioritization">https://www.ibm.com/docs/en/qsip/7.5.0?topic=management-offense-prioritization</a></li>
+<li>IBM Documentation &mdash; QRadar rules overview &mdash; <a href="https://www.ibm.com/docs/en/SS42VS_7.5/com.ibm.qradar.doc/c_qradar_gs_rules.html">https://www.ibm.com/docs/en/SS42VS_7.5/com.ibm.qradar.doc/c_qradar_gs_rules.html</a></li>
+<li>IBM Documentation &mdash; Building blocks &mdash; <a href="https://www.ibm.com/docs/en/SS42VS_7.5/com.ibm.qradar.doc/c_qradar_gs_srv_bblcks.html">https://www.ibm.com/docs/en/SS42VS_7.5/com.ibm.qradar.doc/c_qradar_gs_srv_bblcks.html</a></li>
+<li>IBM Documentation &mdash; Reference sets &mdash; <a href="https://www.ibm.com/docs/en/qsip/7.5.0?topic=qradar-reference-sets-overview">https://www.ibm.com/docs/en/qsip/7.5.0?topic=qradar-reference-sets-overview</a></li>
+<li>IBM Documentation &mdash; QRadar events and flows &mdash; <a href="https://www.ibm.com/docs/en/qsip/7.5.0?topic=overview-qradar-events-flows">https://www.ibm.com/docs/en/qsip/7.5.0?topic=overview-qradar-events-flows</a></li>
+<li>IBM Documentation &mdash; Historical correlation &mdash; <a href="https://www.ibm.com/docs/en/qsip/7.5.0?topic=siem-historical-correlation">https://www.ibm.com/docs/en/qsip/7.5.0?topic=siem-historical-correlation</a></li>
+<li>Microsoft Learn &mdash; Security operations overview &mdash; <a href="https://learn.microsoft.com/en-us/security/operations/overview">https://learn.microsoft.com/en-us/security/operations/overview</a></li>
+<li>Microsoft Learn &mdash; Incident response overview &mdash; <a href="https://learn.microsoft.com/en-us/security/operations/incident-response-overview">https://learn.microsoft.com/en-us/security/operations/incident-response-overview</a></li>
+<li>Microsoft Learn &mdash; Cloud Adoption Framework, Security Teams Roles and Functions &mdash; <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/secure/teams-roles">https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/secure/teams-roles</a></li>
+<li>Microsoft Learn &mdash; Investigate incidents with Microsoft Sentinel &mdash; <a href="https://learn.microsoft.com/en-us/azure/sentinel/investigate-cases">https://learn.microsoft.com/en-us/azure/sentinel/investigate-cases</a></li>
+<li>Microsoft Learn &mdash; Automate threat response with automation rules &mdash; <a href="https://learn.microsoft.com/en-us/azure/sentinel/automate-incident-handling-with-automation-rules">https://learn.microsoft.com/en-us/azure/sentinel/automate-incident-handling-with-automation-rules</a></li>
+<li>Microsoft Learn &mdash; Manage your SOC with incident metrics &mdash; <a href="https://learn.microsoft.com/en-us/azure/sentinel/manage-soc-with-incident-metrics">https://learn.microsoft.com/en-us/azure/sentinel/manage-soc-with-incident-metrics</a></li>
+<li>Microsoft Azure &mdash; Support scope and responsiveness &mdash; <a href="https://azure.microsoft.com/en-us/support/plans/response/">https://azure.microsoft.com/en-us/support/plans/response/</a></li>
+<li>Google Cloud Blog &mdash; M-Trends 2024 &mdash; <a href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2024">https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2024</a></li>
+<li>Google Cloud &mdash; Google SecOps overview &mdash; <a href="https://docs.cloud.google.com/chronicle/docs/secops/secops-overview">https://docs.cloud.google.com/chronicle/docs/secops/secops-overview</a></li>
+<li>Google Cloud &mdash; Google SecOps SOAR case management &mdash; <a href="https://docs.cloud.google.com/chronicle/docs/soar/investigate/working-with-cases/cases-overview">https://docs.cloud.google.com/chronicle/docs/soar/investigate/working-with-cases/cases-overview</a></li>
+<li>Google Cloud &mdash; YARA-L 2.0 overview &mdash; <a href="https://docs.cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview">https://docs.cloud.google.com/chronicle/docs/detection/yara-l-2-0-overview</a></li>
+<li>Google SRE Book &mdash; Managing Incidents &mdash; <a href="https://sre.google/sre-book/managing-incidents/">https://sre.google/sre-book/managing-incidents/</a></li>
+<li>Palo Alto Networks &mdash; Cortex XSOAR &mdash; <a href="https://www.paloaltonetworks.com/cortex/xsoar">https://www.paloaltonetworks.com/cortex/xsoar</a></li>
+<li>Palo Alto Networks &mdash; What Is a SOC? &mdash; <a href="https://www.paloaltonetworks.com/cyberpedia/what-is-a-soc">https://www.paloaltonetworks.com/cyberpedia/what-is-a-soc</a></li>
+<li>SentinelOne &mdash; Platform Packages &mdash; <a href="https://www.sentinelone.com/platform-packages">https://www.sentinelone.com/platform-packages</a></li>
+<li>Splunk &mdash; Enterprise Security &mdash; <a href="https://www.splunk.com/en_us/products/enterprise-security.html">https://www.splunk.com/en_us/products/enterprise-security.html</a></li>
+<li>Splunk Lantern &mdash; Managing cases in SOAR &mdash; <a href="https://lantern.splunk.com/Security_Use_Cases/Automation_and_Orchestration/Managing_cases_in_SOAR">https://lantern.splunk.com/Security_Use_Cases/Automation_and_Orchestration/Managing_cases_in_SOAR</a></li>
+<li>PagerDuty &mdash; What is MTTR? &mdash; <a href="https://www.pagerduty.com/resources/learn/what-is-mttr/">https://www.pagerduty.com/resources/learn/what-is-mttr/</a></li>
+<li>ServiceNow Community &mdash; What is Underpinning Contract? &mdash; <a href="https://www.servicenow.com/community/it-service-management-forum/what-is-underpinning-contract/m-p/550005">https://www.servicenow.com/community/it-service-management-forum/what-is-underpinning-contract/m-p/550005</a></li>
+<li>ServiceNow Community &mdash; SLA Definition Type for Incident Response &mdash; <a href="https://www.servicenow.com/community/platform-analytics-forum/sla-definition-type-for-incident-response/m-p/1272717">https://www.servicenow.com/community/platform-analytics-forum/sla-definition-type-for-incident-response/m-p/1272717</a></li>
+<li>GuideVision &mdash; Service Level Management &mdash; <a href="https://www.guidevision.eu/insights/service-level-management-part-1-2">https://www.guidevision.eu/insights/service-level-management-part-1-2</a></li>
+<li>IT Process Wiki &mdash; Service Level Management &mdash; <a href="https://wiki.en.it-processmaps.com/index.php/Service_Level_Management">https://wiki.en.it-processmaps.com/index.php/Service_Level_Management</a></li>
+<li>IT Process Wiki &mdash; ITIL Glossary Terms U &mdash; <a href="https://wiki.en.it-processmaps.com/index.php/ITIL_Glossary/_ITIL_Terms_U">https://wiki.en.it-processmaps.com/index.php/ITIL_Glossary/_ITIL_Terms_U</a></li>
+<li>Wikipedia &mdash; Goodhart's law &mdash; <a href="https://en.wikipedia.org/wiki/Goodhart%27s_law">https://en.wikipedia.org/wiki/Goodhart%27s_law</a></li>
+<li>Wikipedia &mdash; Campbell's law &mdash; <a href="https://en.wikipedia.org/wiki/Campbell%27s_law">https://en.wikipedia.org/wiki/Campbell%27s_law</a></li>
+<li>Wikipedia &mdash; Operational-level agreement &mdash; <a href="https://en.wikipedia.org/wiki/Operational-level_agreement">https://en.wikipedia.org/wiki/Operational-level_agreement</a></li>
+<li>Wikipedia &mdash; Service-level agreement &mdash; <a href="https://en.wikipedia.org/wiki/Service-level_agreement">https://en.wikipedia.org/wiki/Service-level_agreement</a></li>
+<li>Kent, Tuptuk and Becker (UCL) &mdash; Passing the Baton: Shift Handovers within Cybersecurity Incident Response Teams, arXiv:2601.07788 &mdash; <a href="https://arxiv.org/abs/2601.07788">https://arxiv.org/abs/2601.07788</a></li>
+<li>FEMA Incident Command System IS-100.c &mdash; <a href="https://training.fema.gov/is/courseoverview.aspx?code=is-100.c">https://training.fema.gov/is/courseoverview.aspx?code=is-100.c</a></li>
+</ul>
+
+</div></div>
+</body></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body>
+<div class="flow">
+
+<div class="section">
+<span class="kicker">The Textbook vs. the Shift</span>
+<h2 class="h2">The SLA in the Book vs. the SLA at 2:17&nbsp;AM</h2>
+</div>
+
+<p class="lede">Every SLA document describes the same incident: alert, analyst, escalation, close. That version runs on a quiet Tuesday with a fully staffed floor. The version that actually decides whether the SLA is met arrives at 2:17&nbsp;AM — and the clock cannot tell the difference.</p>
+
+<h3 class="h3">Same Incident, Told Twice</h3>
+<p>As a training deck: one alert, one analyst, clean triage, escalation, disposition — no contention. That is the version every SLA clause is quietly written against.</p>
+
+<p>As a Tuesday night shift: fifteen alerts land in one window, two un-deduplicated into separate records for one chain, the EDR console lags, the customer's contact doesn't answer, a threat-intel lookup times out, the analyst is mid-P1 elsewhere with forty minutes left in the shift, and the endpoint turns out to belong to another team — so containment authority isn't even the SOC's. No single item breaks the case; all of them together is what a real shift looks like, and the timer does not pause.</p>
+
+<div class="figure">
+<img src="../../assets/mockups/split-book-vs-reality.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 5.1</span><span class="figtext">The textbook workflow and a representative 2:17&nbsp;AM shift, side by side — an illustrative composite, not a transcript of one ticket.</span></div>
+</div>
+
+<p>Both run on the same clock — elapsed time between two timestamps — which cannot tell minutes spent investigating from minutes lost to contention. That gap is where most SLA disputes live.</p>
+
+<h3 class="h3">Why the Floor Doesn't Run Like the Page</h3>
+<p>Not a staffing failure — four properties a runbook cannot model:</p>
+
+<table class="clean">
+<thead><tr><th>Factor</th><th>Runbook assumes</th><th>Shift delivers</th></tr></thead>
+<tbody>
+<tr><td><strong>Information</strong></td><td>Evidence is ready when needed.</td><td>Evidence arrives piecemeal; phases overlap and re-open.</td></tr>
+<tr><td><strong>Staffing</strong></td><td>One analyst, one case.</td><td>Concurrent cases, shift boundaries, an unbroken queue.</td></tr>
+<tr><td><strong>Tooling</strong></td><td>Console actions return instantly.</td><td>Correlation/enrichment latency is real, not contractually published.</td></tr>
+<tr><td><strong>Human factors</strong></td><td>No clock on the wall.</td><td>Fatigue sets in; handover content is loosely standardized.</td></tr>
+</tbody>
+</table>
+
+<div class="callout note">
+<span class="callout-label">Tooling latency, documented rather than assumed</span>
+IBM's QRadar documentation describes correlation as occurring near real-time, without a published numeric latency guarantee; flow telemetry often reaches SIEMs in per-minute batches, consuming SLA budget before an analyst sees the alert — with no vendor contractually committing to how much.
+</div>
+
+<p>Kent, Tuptuk, and Becker (2026), in an academic study of cybersecurity incident-response shift handovers, found limited industry-wide guidance on handover practice — so a case crossing a shift boundary keeps only what the outgoing analyst thought to write down.</p>
+
+<h3 class="h3">Where the Minutes Actually Go</h3>
+<p>Each factor above consumes traceable minutes, reconstructed below for one P1-class case:</p>
+
+<div class="figure">
+<img src="../../assets/mockups/sla-breach-anatomy.png" style="width:100%;display:block;">
+<div class="figcap"><span class="fignum">FIGURE 5.2</span><span class="figtext">Illustrative example, not a universal industry standard — synthetic reconstruction of where one case's 70 elapsed minutes went against a 60-minute internal target specific to this walk-through, unrelated to the illustrative severity table in Section&nbsp;4.</span></div>
+</div>
+
+<p>Active triage accounts for twelve of the case's seventy minutes; the rest is queue wait, telemetry lag, a customer-side dependency, and an escalation delay confirming ownership. A reviewer seeing only the 70-minute total concludes the SOC was slow; one seeing the breakdown finds working time well inside target, with the overage sitting almost entirely in categories no analyst controls.</p>
+
+<div class="quote-block">
+<p>The book teaches phases. The shift teaches triage math under contention.</p>
+</div>
+
+</div>
+</body></html>

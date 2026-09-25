@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<p>An SLA clock does not start itself. A definitions clause does — one sentence, written months before any incident exists to test it. Case Study 4 shows why that sentence matters most.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 04 <span class="illustrative-tag" style="margin-left:6px;">Illustrative</span></div>
+      <h3>The SIEM Ingestion Delay</h3>
+    </div>
+  </div>
+  <div class="case-meta">
+    <div><b>SLA metric in dispute</b>Time-to-acknowledge</div>
+    <div><b>Elapsed window</b>01:00 – 01:29 (29 min)</div>
+    <div><b>Platform layer</b>Log collection → SIEM correlation → analyst queue</div>
+    <div><b>Candidate clock-start points</b>4</div>
+  </div>
+  <div class="case-body">
+
+    <p>Four systems, four timestamps, one incident:</p>
+
+    <table class="clean">
+      <thead><tr><th>Clock time</th><th>Event</th><th>Where the timestamp lives</th></tr></thead>
+      <tbody>
+        <tr><td>01:00</td><td>Attacker action on the source host</td><td>Nowhere yet — reconstructed later from forensics</td></tr>
+        <tr><td>01:21</td><td>Logs reach the SIEM</td><td>Collector ingestion timestamp</td></tr>
+        <tr><td>01:24</td><td>Correlation rule fires an alert</td><td>SIEM alert-creation timestamp</td></tr>
+        <tr><td>01:29</td><td>Analyst acknowledges the alert</td><td>SOC ticketing acknowledgement timestamp</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>When did the SLA clock start?</strong> All four timestamps are defensible, and each yields a different reported time for the same 29 minutes.</p>
+
+    <table class="clean">
+      <thead><tr><th>Candidate clock-start</th><th>Time</th><th>Why it's defensible</th><th>Why it's contested</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Start of attack</td>
+          <td>01:00</td>
+          <td>Measures the customer's actual exposure window.</td>
+          <td>Unknowable until forensic reconstruction.</td>
+        </tr>
+        <tr>
+          <td>Log arrival</td>
+          <td>01:21</td>
+          <td>First visibility the SOC's tooling has at all.</td>
+          <td>Bakes in logging and transit lag beyond analyst control.</td>
+        </tr>
+        <tr>
+          <td>Alert generation</td>
+          <td>01:24</td>
+          <td>First moment a human could plausibly act.</td>
+          <td>Excludes the 21-minute ingestion lag before it.</td>
+        </tr>
+        <tr>
+          <td>Analyst acknowledgement</td>
+          <td>01:29</td>
+          <td>Cleanest, fully SOC-controlled timestamp.</td>
+          <td>Makes "time-to-acknowledge" a tautology: clock starts when it stops.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>This isn't invented for this paper. IBM's own documentation for QRadar — a widely deployed SIEM — defines <strong>Device Time</strong> as the timestamp parsed from the event payload itself: the source's own report of when the activity happened. QRadar's <strong>Start Time</strong> is essentially that same source-reported timestamp — it falls back to arrival time only when the source provides none, so it is not when QRadar received the event. The field that actually marks when QRadar wrote the record is <strong>Storage Time</strong>, and it's the Start Time versus Storage Time gap that measures ingestion delay. IBM calls QRadar's correlation <em>near real time</em> — a qualitative phrase, not a numeric guarantee. Even inside one well-documented platform, "when did the clock start" stays unsolved.</p>
+
+    <div class="figure">
+      <img src="../../assets/mockups/siem-ingestion-pipeline.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.4</span><span class="figtext">The four elapsed gaps in one alert's path, from attacker action to acknowledgement, as a single pipeline; timestamps are illustrative, not pulled from a live tenant.</span></div>
+    </div>
+
+    <div class="callout note">
+      <span class="callout-label">Takeaway</span>
+      The SOC performed once, not four ways — yet its SLA number reads 8, 5, or 29 minutes depending on which timestamp the contract quietly calls clock zero: a one-line definition, buried in an appendix, that rarely reaches the customer's scorecard.
+    </div>
+
+  </div>
+</div>
+
+</div></body></html>

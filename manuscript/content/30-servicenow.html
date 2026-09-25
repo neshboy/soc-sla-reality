@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+<div class="section-unforced">
+
+<span class="kicker">Section 19</span>
+<h2 class="h2">Platform Walkthrough: ServiceNow Case Management</h2>
+
+<p class="lede">ServiceNow underlies much SOC case management, and its documentation is blunt: its "SLA" feature is a generic commitment-timer engine, and what it measures depends entirely on configuration, not the software.</p>
+
+</div>
+
+<h3 class="h3">One Engine, Three Labels: SLA, OLA, and UC Share a Timer</h3>
+<p>Per ServiceNow Community discussion and the platform's own documentation, SLA, OLA, and UC records run on the same Task SLA engine &mdash; identical mechanics, differentiated only by an administrative <strong>Type</strong> field.</p>
+
+<div class="callout warning">
+<span class="callout-label">What "same engine" means operationally</span>
+Because the record is identical regardless of Type, mislabeling an OLA as a customer SLA won't be caught &mdash; ServiceNow runs the timer exactly as configured, contract or not.
+</div>
+
+<h3 class="h3">Stage: In Progress, Paused, Completed, Cancelled</h3>
+<p>Every Task SLA record tracks a stage: In Progress, Paused, Completed, or Cancelled. Paused <strong>suspends</strong> elapsed time rather than discarding it &mdash; the clock resumes where it stopped, not zero.</p>
+
+<h3 class="h3">Breach: 100% of Allotted Duration Against a Moving "Planned End Date"</h3>
+<p>ServiceNow computes breach against a <strong>planned end date</strong> that recalculates as paused time accumulates, not a fixed deadline &mdash; so identical records can close with different deadlines, a moving number no static severity table can show in advance.</p>
+
+<h3 class="h3">A Case Record, Field by Field</h3>
+<p>The fields ServiceNow surfaces on a case are what a shift lead would check. An illustrative, reconstructed example:</p>
+
+<table class="clean">
+<thead><tr><th>Field</th><th>Value (illustrative)</th></tr></thead>
+<tbody>
+<tr><td>Case ID</td><td>INC0012345</td></tr>
+<tr><td>Severity</td><td><span class="pill p2">P2 &middot; HIGH</span></td></tr>
+<tr><td>Created</td><td>2026-09-25&nbsp;09:42:18 SGT</td></tr>
+<tr><td>Acknowledged</td><td>2026-09-25&nbsp;09:47:03 SGT</td></tr>
+<tr><td>Owner</td><td>SOC Analyst &mdash; Tier 1</td></tr>
+<tr><td>SLA deadline (planned end)</td><td>Investigation stage &mdash; 00:14:22 remaining</td></tr>
+<tr><td>State</td><td>In Progress</td></tr>
+<tr><td>Customer-waiting flag</td><td>ON</td></tr>
+<tr><td>Escalation flag</td><td>OFF</td></tr>
+<tr><td>Investigation notes</td><td>EDR alert correlated to flagged IP; isolation requested.</td></tr>
+<tr><td>Next update due</td><td>2026-09-25&nbsp;11:15:00 SGT</td></tr>
+</tbody>
+</table>
+<p class="muted">Case ID, timestamps, and notes are synthetic, not from a real tenant.</p>
+
+<div class="figure"><img src="../../assets/mockups/servicenow-illustrative-mock.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 19.1</span><span class="figtext">The same illustrative record as a form view &mdash; Customer Waiting ON means "00:14:22 remaining" may already be a suspended clock.</span></div></div>
+
+<h3 class="h3">The Practitioner's Workaround: Building Around the Native Timer</h3>
+<p>A pattern practitioners describe in ServiceNow forums and implementation guides: enforcing a response commitment that must survive a ticket being reopened often requires a custom Business Rule layered on top of the native Task SLA construct, which does not natively track commitments across reopen/close cycles.</p>
+
+<div class="callout critical">
+<span class="callout-label">Why this pattern matters more than the feature list</span>
+This is not a defect report. It is a recurring practitioner account that having a native SLA object and that object correctly encoding a real commitment are separate claims.
+</div>
+
+<p>None of this makes ServiceNow's engine poorly designed &mdash; one reusable timer, differentiated by Type, reasonably serves SLAs, OLAs, and UCs with one code path. The point holds regardless of platform: a field labeled "SLA" is a configuration object, not a certification that the number matches the contract. <strong>Reading it correctly requires knowing how the timer was built, not just what it displays.</strong></p>
+
+</div></body></html>

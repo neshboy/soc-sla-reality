@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section">
+
+<span class="kicker">Section 16</span>
+<h2 class="h2">What I Would Watch as a SOC Manager</h2>
+
+<p class="lede">This is operational judgment, not a cited standard. The question: what belongs on a manager's screen in real time, to catch a problem before a customer does?</p>
+
+<p>The compliance percentage is lagging, gameable, and quality-blind: it reflects only closed cases, a clock stopped early looks identical to one genuinely met (Section 8's Quadrant 2), and "on time" differs from "investigated well."</p>
+
+<div class="callout note">
+<span class="callout-label">Scope of this section</span>
+This is the leading-indicator set I would want visible during a shift, not a certification requirement — the category of watching matters, not this exact inventory.
+</div>
+
+<h3 class="h3">16.1 The Indicators That Actually Precede a Breach</h3>
+<p>A compliance percentage says what already happened; the rows below tend to move <em>before</em> a breach shows up in it, while a case can still be acted on.</p>
+
+<table class="clean">
+<tr><th>Indicator</th><th>What it tells a manager</th></tr>
+<tr><td>Current P1 / P2 case load</td><td>Pressure on the shift right now</td></tr>
+<tr><td>Cases within ~20% of SLA deadline</td><td>Time to intervene, before the clock</td></tr>
+<tr><td>Unassigned alerts</td><td>Nobody has started it yet</td></tr>
+<tr><td>Oldest alert in queue</td><td>What an average age hides</td></tr>
+<tr><td>Analyst workload imbalance</td><td>Whether the queue is even</td></tr>
+<tr><td>Repeatedly-breached use cases</td><td>A detection-engineering fix, not an analyst one</td></tr>
+<tr><td>Repeatedly-noisy detections</td><td>Burns time now, breaches later</td></tr>
+<tr><td>Live customer dependencies</td><td>Delays the SOC can't fix</td></tr>
+<tr><td>L2 / escalation queue depth</td><td>Whether the next tier is backed up</td></tr>
+<tr><td>Shift-handover risk</td><td>Ambiguity near a shift boundary</td></tr>
+<tr><td>Tool / pipeline health</td><td>Meaningless clock if detection lags</td></tr>
+<tr><td>Staffing gaps, coming shift</td><td>Can the next shift absorb it</td></tr>
+<tr><td>Live major incidents</td><td>Pulls resourcing outside SLA logic</td></tr>
+</table>
+
+<h3 class="h3">16.2 Reading a Live Dashboard</h3>
+<p>The mockup below assembles several tiles onto one dashboard; figures are synthetic, not a real measurement.</p>
+
+<div class="figure"><img src="../../assets/mockups/management-dashboard.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 16.1</span><span class="figtext">A composite, illustrative SOC management dashboard: synthetic KPI tiles above a breach root-cause breakdown.</span></div></div>
+
+<p>MTTA/MTTI/MTTC split the clock into the phase causing delay; Queue Depth, Reopened Case Rate, and Quality Audit Score do Section 8's job live — a rising reopen rate beside a green compliance number is Quadrant 2, in real time. Quality Audit Score itself isn't free to produce: a systematic case-audit or second-review program is a capacity line item — dedicated QA headcount, or a fixed, budgeted percentage of analyst time — not a tile that appears on the dashboard for free, and Section 12's staffing math has to carry it. The root-cause chart answers "why," not "how much": customer dependency and telemetry delay lead, pointing at contracts and pipelines, not the floor; only a small fraction — capacity, process/escalation failure — points back at the queue.</p>
+
+<div class="callout illustrative">
+<span class="callout-label">Not every indicator lives on one screen</span>
+Handover risk, staffing, and major-incident status live on a handover board, roster tool, and incident bridge, not this dashboard (see Case Study 2).
+</div>
+
+<h3 class="h3">16.3 Why This Is the Payoff of the Framework, Not a Separate Checklist</h3>
+<p>Section 8's grid argued compliance alone can't separate Quadrant 1 from 2, or Quadrant 3 from 4, since each pair reports identically. Every indicator here makes that separation possible during the shift, not in a retrospective audit.</p>
+
+<div class="quote-block">
+<p>SLA compliance answers one question: did it close on time. This section answers the only other one that matters: was that good news, or borrowed time?</p>
+</div>
+
+</div></div></body></html>

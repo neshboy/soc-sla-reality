@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  html,body{margin:0;padding:0;}
+  body{
+    width:1500px;
+    height:900px;
+    background:var(--d-page);
+    font-family:var(--font);
+  }
+  .wr-shell{
+    min-height:900px;
+    padding:38px 42px 40px;
+    background:
+      radial-gradient(circle at 88% 4%, rgba(214,73,72,0.10), transparent 42%),
+      radial-gradient(circle at 4% 98%, rgba(57,135,229,0.12), transparent 42%),
+      var(--d-page);
+  }
+  .wr-header{ margin-bottom:28px; }
+  .wr-kicker{
+    display:flex; align-items:center; gap:10px;
+    font-size:10.5px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--c2-orange-d); margin-bottom:11px;
+  }
+  .wr-title{
+    font-size:28px; font-weight:800; line-height:1.22; color:var(--d-ink);
+    border-left:4px solid var(--c1-blue-d); padding-left:15px; margin:0;
+    letter-spacing:-.005em;
+  }
+  .wr-grid{ display:grid; grid-template-columns:610px 1fr; gap:30px; align-items:start; }
+
+  .wr-col-label{
+    font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--d-ink-muted); margin-bottom:13px;
+  }
+
+  .wr-card{ background:var(--d-surface); border:1px solid var(--d-border); border-radius:10px;
+    padding:16px 19px; margin-bottom:15px; }
+  .wr-card-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:11px;}
+  .wr-card-id{ font-family:var(--mono); font-weight:800; font-size:17px; color:var(--d-ink); letter-spacing:.01em;}
+  .wr-card-desc{ font-size:13.3px; color:var(--d-ink-2); line-height:1.5; margin:0 0 16px; min-height:40px;}
+  .wr-card-stats{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .wr-stat{ background:rgba(255,255,255,0.035); border-radius:7px; padding:11px 13px; }
+  .wr-stat .label{ font-size:8.8px; text-transform:uppercase; letter-spacing:.06em; color:var(--d-ink-muted); font-weight:700; margin-bottom:5px;}
+  .wr-stat .value{ font-family:var(--mono); font-size:18px; font-weight:800; color:var(--d-ink); }
+  .wr-stat .value.good{ color:var(--s-good); }
+  .wr-stat .value.warn{ color:var(--s-warning); }
+  .wr-stat .value.crit{ color:var(--s-critical); }
+  .wr-stat .status-row{ margin-top:7px; }
+
+  .wr-feed{ position:relative; padding-left:25px; margin:6px 6px 2px; }
+  .wr-feed::before{ content:""; position:absolute; left:5px; top:3px; bottom:3px; width:2px; background:var(--d-grid); }
+  .wr-feed-item{ position:relative; padding-bottom:33px; }
+  .wr-feed-item:last-child{ padding-bottom:2px; }
+  .wr-feed-item::before{ content:""; position:absolute; left:-25px; top:2px; width:11px; height:11px; border-radius:50%;
+    background:var(--c1-blue-d); border:2px solid var(--d-surface); }
+  .wr-feed-item.urgent::before{ background:var(--c2-orange-d); }
+  .wr-feed-time{ font-family:var(--mono); font-size:12px; font-weight:700; color:var(--c1-blue-d); letter-spacing:.02em; }
+  .wr-feed-item.urgent .wr-feed-time{ color:var(--c2-orange-d); }
+  .wr-feed-text{ font-size:13.8px; color:var(--d-ink); line-height:1.5; margin-top:4px; }
+  .wr-feed-text b{ color:var(--d-ink); font-weight:700; }
+
+  .wr-footnote{ margin-top:14px; font-size:9.5px; color:var(--d-ink-muted); letter-spacing:.02em; }
+  .wr-substat-label{ font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--d-ink-muted); margin:20px 0 12px; }
+</style>
+</head>
+<body>
+<div class="wr-shell">
+
+  <div class="wr-header">
+    <div class="wr-kicker">Live Incident Command <span class="illustrative-tag">ILLUSTRATIVE SCENARIO</span></div>
+    <h1 class="wr-title">SLA WAR ROOM — 3 concurrent P1s, 1 manager, 1 bridge call</h1>
+  </div>
+
+  <div class="wr-grid">
+    <div class="wr-col-left">
+      <div class="wr-col-label">Active Major Incidents</div>
+
+      <div class="wr-card">
+        <div class="wr-card-top">
+          <span class="wr-card-id">INC-4471</span>
+          <span class="pill p1">P1</span>
+        </div>
+        <p class="wr-card-desc">Core payment API returning HTTP 500s on Customer A checkout — payment processing degraded.</p>
+        <div class="wr-card-stats">
+          <div class="wr-stat">
+            <div class="label">Elapsed</div>
+            <div class="value">01:42:10</div>
+          </div>
+          <div class="wr-stat">
+            <div class="label">SLA Remaining</div>
+            <div class="value good">02:17:50</div>
+            <div class="status-row"><span class="pill ok">On Track</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wr-card">
+        <div class="wr-card-top">
+          <span class="wr-card-id">INC-4472</span>
+          <span class="pill p1">P1</span>
+        </div>
+        <p class="wr-card-desc">Customer B Active Directory sync failure blocking provisioning for 40 new seats.</p>
+        <div class="wr-card-stats">
+          <div class="wr-stat">
+            <div class="label">Elapsed</div>
+            <div class="value">02:36:44</div>
+          </div>
+          <div class="wr-stat">
+            <div class="label">SLA Remaining</div>
+            <div class="value warn">00:23:16</div>
+            <div class="status-row"><span class="pill p3">At Risk</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wr-card">
+        <div class="wr-card-top">
+          <span class="wr-card-id">INC-4473</span>
+          <span class="pill p1">P1</span>
+        </div>
+        <p class="wr-card-desc">EDR agent mass-disconnect across Customer C endpoint fleet — telemetry blind spot.</p>
+        <div class="wr-card-stats">
+          <div class="wr-stat">
+            <div class="label">Elapsed</div>
+            <div class="value">03:58:02</div>
+          </div>
+          <div class="wr-stat">
+            <div class="label">SLA Remaining</div>
+            <div class="value crit">−00:11:38</div>
+            <div class="status-row"><span class="pill p1">Breached</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="wr-col-right">
+      <div class="wr-col-label">Manager Decision Log</div>
+      <div class="console">
+        <div class="console-bar">
+          <span class="dot" style="background:#e34948;"></span>
+          <span class="dot" style="background:#eda100;"></span>
+          <span class="dot" style="background:#1baf7a;"></span>
+          <span class="title">decision-log.feed — manager console</span>
+        </div>
+        <div class="console-body" style="padding:22px 24px 8px;">
+          <div class="wr-feed">
+            <div class="wr-feed-item">
+              <div class="wr-feed-time">02:19</div>
+              <div class="wr-feed-text">Reassigned L2 analyst from queue to <b>INC-4471</b></div>
+            </div>
+            <div class="wr-feed-item">
+              <div class="wr-feed-time">02:22</div>
+              <div class="wr-feed-text">Requested EDR team join bridge for <b>INC-4473</b></div>
+            </div>
+            <div class="wr-feed-item">
+              <div class="wr-feed-time">02:24</div>
+              <div class="wr-feed-text">Notified Customer B of delay; dependency: awaiting their AD admin</div>
+            </div>
+            <div class="wr-feed-item">
+              <div class="wr-feed-time">02:28</div>
+              <div class="wr-feed-text">Pulled L1 off routine triage to cover overflow</div>
+            </div>
+            <div class="wr-feed-item">
+              <div class="wr-feed-time">02:31</div>
+              <div class="wr-feed-text">Declared major incident on <b>INC-4471</b>, bridge opened</div>
+            </div>
+            <div class="wr-feed-item urgent">
+              <div class="wr-feed-time">02:36</div>
+              <div class="wr-feed-text">Escalated staffing gap to duty manager</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wr-substat-label">War Room Snapshot</div>
+      <div class="stat-grid cols-3" style="margin:0;">
+        <div class="stat-tile">
+          <div class="label">P1s Active</div>
+          <div class="value">3</div>
+        </div>
+        <div class="stat-tile">
+          <div class="label">Analysts Reassigned</div>
+          <div class="value">2</div>
+        </div>
+        <div class="stat-tile">
+          <div class="label">Bridge Calls Open</div>
+          <div class="value">1</div>
+        </div>
+      </div>
+
+      <div class="wr-footnote">Timestamps elapsed from major-incident declaration · times illustrative, not a real customer event.</div>
+    </div>
+  </div>
+
+</div>
+</body></html>

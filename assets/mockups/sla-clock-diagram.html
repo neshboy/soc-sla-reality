@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; width:1500px; background:var(--d-surface); }
+  .wrap{ padding:44px 60px 46px; }
+  .hd .kicker{ color:var(--c2-orange-d); }
+  .hd h2{
+    font-size:23pt; font-weight:800; margin:8px 0 6px; letter-spacing:-.01em; color:var(--d-ink);
+  }
+  .hd .sub{ font-size:11.3pt; line-height:1.5; color:var(--d-ink-2); max-width:900px; }
+
+  .row{ display:flex; gap:40px; align-items:flex-start; margin-top:26px; }
+
+  /* ---- SVG label typography ---- */
+  .stage-name{ font-family:var(--font); font-size:15px; font-weight:800; fill:var(--d-ink); }
+  .stage-cat{ font-family:var(--font); font-size:9px; font-weight:700; letter-spacing:.05em; }
+  .center-kicker{ font-family:var(--font); font-size:11px; font-weight:800; letter-spacing:.12em; fill:var(--c1-blue-d); }
+  .center-big{ font-family:var(--font); font-size:25px; font-weight:800; fill:var(--d-ink); letter-spacing:-.01em; }
+  .center-sub{ font-family:var(--font); font-size:10.5px; font-weight:700; letter-spacing:.06em; fill:var(--d-ink-muted); }
+
+  /* ---- legend ---- */
+  .legend-panel{
+    width:400px; background:var(--d-page); border:1px solid var(--d-border);
+    border-radius:10px; padding:20px 22px 18px; flex-shrink:0;
+  }
+  .legend-title{
+    font-size:9.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--d-ink-muted); margin:0 0 14px; padding-bottom:10px; border-bottom:1px solid var(--d-grid);
+  }
+  .legend-row{ display:flex; gap:11px; align-items:flex-start; margin-bottom:13px; }
+  .legend-row:last-child{ margin-bottom:0; }
+  .swatch{ width:12px; height:12px; border-radius:3px; margin-top:2px; flex-shrink:0; }
+  .swatch.hatch{
+    background-image: repeating-linear-gradient(45deg, var(--d-ink-muted) 0 2px, transparent 2px 5px);
+    background-color:#262623; border:1px solid var(--d-ink-muted); opacity:.85;
+  }
+  .legend-name{ font-size:11.3px; font-weight:700; color:var(--d-ink); line-height:1.3; }
+  .legend-desc{ font-size:9.4px; color:var(--d-ink-muted); line-height:1.45; margin-top:2px; }
+  .legend-hr{ height:1px; background:var(--d-grid); margin:14px 0 13px; border:none; }
+
+  .note-card{
+    margin-top:16px; background:rgba(57,135,229,0.08); border:1px solid rgba(57,135,229,0.28);
+    border-left:3px solid var(--c1-blue-d); border-radius:0 8px 8px 0; padding:12px 14px;
+  }
+  .note-card .lbl{ font-size:8.3px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--c1-blue-d); display:block; margin-bottom:4px; }
+  .note-card p{ margin:0; font-size:9.6px; line-height:1.5; color:var(--d-ink-2); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div class="kicker">FIGURE — LIFECYCLE TIMING</div>
+    <h2>THE SOC SLA CLOCK</h2>
+    <div class="sub">One incident produces one elapsed timer on the wall clock — but nine lifecycle stages, grouped into five separately-measured contractual SLA clocks, plus two pre-SLA telemetry stages the SOC does not own.</div>
+  </div>
+
+  <div class="row">
+    <svg id="clock" width="940" height="900" viewBox="0 0 940 900"></svg>
+
+    <div class="legend-panel">
+      <div class="legend-title">SLA Grouping — 5 contractual clocks</div>
+
+      <div class="legend-row">
+        <span class="swatch" style="background:#3987e5"></span>
+        <div>
+          <div class="legend-name">Acknowledgement SLA</div>
+          <div class="legend-desc">Covers Alert Generation → Acknowledgement</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:#d95926"></span>
+        <div>
+          <div class="legend-name">Investigation SLA</div>
+          <div class="legend-desc">Covers Investigation</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:#199e70"></span>
+        <div>
+          <div class="legend-name">Notification SLA</div>
+          <div class="legend-desc">Covers Notification</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:#c98500"></span>
+        <div>
+          <div class="legend-name">Containment SLA</div>
+          <div class="legend-desc">Covers Containment</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:#d55181"></span>
+        <div>
+          <div class="legend-name">Resolution / Closure SLA</div>
+          <div class="legend-desc">Covers Resolution, Closure</div>
+        </div>
+      </div>
+
+      <hr class="legend-hr"/>
+
+      <div class="legend-row">
+        <span class="swatch hatch"></span>
+        <div>
+          <div class="legend-name" style="color:var(--d-ink-2);">Pre-SLA telemetry latency</div>
+          <div class="legend-desc">Detection, Ingestion — network &amp; tooling delay before the SOC's contractual clock even starts. Not owned by the SOC.</div>
+        </div>
+      </div>
+
+      <div class="note-card">
+        <span class="lbl">Reading this diagram</span>
+        <p>"Meeting the SLA" almost never means one thing. Each colored arc is measured, reported, and penalized independently — a case can beat its Acknowledgement SLA and still blow its Containment SLA.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('clock');
+  const cx = 470, cy = 450;
+  const outerR = 250, innerR = 165;
+  const gapDeg = 2.2;
+
+  const colors = {
+    pre:     { fill: "url(#hatch)", stroke: "#898781", line: "#898781", text: "#898781" },
+    ack:     { fill: "#3987e5", line: "#3987e5", text: "#3987e5" },
+    inv:     { fill: "#d95926", line: "#d95926", text: "#d95926" },
+    notif:   { fill: "#199e70", line: "#199e70", text: "#199e70" },
+    contain: { fill: "#c98500", line: "#c98500", text: "#c98500" },
+    res:     { fill: "#d55181", line: "#d55181", text: "#d55181" }
+  };
+
+  const stages = [
+    { name:"Detection",         cat:"pre",     code:"PRE-SLA" },
+    { name:"Ingestion",         cat:"pre",     code:"PRE-SLA" },
+    { name:"Alert Generation",  cat:"ack",     code:"ACK SLA" },
+    { name:"Acknowledgement",   cat:"ack",     code:"ACK SLA" },
+    { name:"Investigation",     cat:"inv",     code:"INVESTIGATION SLA" },
+    { name:"Notification",     cat:"notif",   code:"NOTIFICATION SLA" },
+    { name:"Containment",       cat:"contain", code:"CONTAINMENT SLA" },
+    { name:"Resolution",        cat:"res",     code:"RES / CLOSURE SLA" },
+    { name:"Closure",           cat:"res",     code:"RES / CLOSURE SLA" }
+  ];
+
+  function el(tag, attrs){
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function pt(r, deg){
+    const rad = deg * Math.PI/180;
+    return [cx + r*Math.cos(rad), cy + r*Math.sin(rad)];
+  }
+  function fmt(p){ return p[0].toFixed(2) + "," + p[1].toFixed(2); }
+
+  // defs: hatch pattern for pre-SLA wedges
+  const defs = el('defs', {});
+  const pattern = el('pattern', { id:'hatch', width:7, height:7, patternUnits:'userSpaceOnUse', patternTransform:'rotate(45)' });
+  pattern.appendChild(el('rect', { width:7, height:7, fill:'#232322' }));
+  pattern.appendChild(el('line', { x1:0, y1:0, x2:0, y2:7, stroke:'#4d4c47', 'stroke-width':2.4 }));
+  defs.appendChild(pattern);
+  svg.appendChild(defs);
+
+  // faint outer guide ring
+  svg.appendChild(el('circle', { cx:cx, cy:cy, r:outerR+2, fill:'none', stroke:'#2c2c2a', 'stroke-width':1 }));
+
+  const segDeg = 360/9;
+  const labelR1 = outerR + 5;   // leader line start
+  const labelDotR = outerR + 5;
+  const labelR2 = outerR + 42;  // leader line end
+  const textR = outerR + 52;    // text anchor point
+
+  stages.forEach((s, i) => {
+    const a0 = -90 + i*segDeg + gapDeg/2;
+    const a1 = -90 + (i+1)*segDeg - gapDeg/2;
+    const am = -90 + i*segDeg + segDeg/2;
+    const c = colors[s.cat];
+
+    // donut wedge
+    const P1 = pt(outerR, a0), P2 = pt(outerR, a1), P3 = pt(innerR, a1), P4 = pt(innerR, a0);
+    const d = `M ${fmt(P1)} A ${outerR} ${outerR} 0 0 1 ${fmt(P2)} L ${fmt(P3)} A ${innerR} ${innerR} 0 0 0 ${fmt(P4)} Z`;
+    const wedge = el('path', { d:d, fill:c.fill });
+    if (s.cat === 'pre'){
+      wedge.setAttribute('stroke', c.stroke);
+      wedge.setAttribute('stroke-width', 1.4);
+      wedge.setAttribute('stroke-dasharray', '4 3');
+      wedge.setAttribute('opacity', 0.92);
+    } else {
+      wedge.setAttribute('opacity', 1);
+    }
+    svg.appendChild(wedge);
+
+    // stage number tick inside wedge (near mid radius)
+    const midR = (outerR+innerR)/2;
+    const numP = pt(midR, am);
+    const numColor = (s.cat === 'pre') ? 'rgba(255,255,255,0.30)' : 'rgba(0,0,0,0.32)';
+    const numTxt = el('text', { x:numP[0], y:numP[1]+4, 'text-anchor':'middle',
+      style:`font-family:var(--font);font-size:15px;font-weight:800;fill:${numColor};` });
+    numTxt.textContent = (i+1);
+    svg.appendChild(numTxt);
+
+    // leader line
+    const L1 = pt(labelR1, am), L2 = pt(labelR2, am);
+    svg.appendChild(el('line', { x1:L1[0], y1:L1[1], x2:L2[0], y2:L2[1], stroke:c.line, 'stroke-width':1.6, opacity:0.85 }));
+    svg.appendChild(el('circle', { cx:L1[0], cy:L1[1], r:3, fill:c.line }));
+
+    // label text, anchor + baseline depend on quadrant
+    const rad = am*Math.PI/180;
+    const dx = Math.cos(rad), dy = Math.sin(rad);
+    const TP = pt(textR, am);
+    let anchor = 'middle', x0 = TP[0], nameY = TP[1], codeYoff = 15;
+
+    if (dx > 0.25) { anchor = 'start'; x0 = TP[0] + 6; }
+    else if (dx < -0.25) { anchor = 'end'; x0 = TP[0] - 6; }
+    else { anchor = 'middle'; x0 = TP[0]; }
+
+    if (Math.abs(dx) <= 0.25) {
+      // near-vertical: stack lines above (top) or below (bottom) the point
+      if (dy > 0) { nameY = TP[1] + 16; }        // bottom (Investigation)
+      else        { nameY = TP[1] - 22; }        // top-ish
+    } else {
+      nameY = TP[1] + 4;
+    }
+    const codeY = (Math.abs(dx) <= 0.25 && dy < 0) ? nameY + 15 : nameY + 15;
+
+    const nameEl = el('text', { x:x0, y:nameY, 'text-anchor':anchor, class:'stage-name' });
+    nameEl.textContent = s.name;
+    svg.appendChild(nameEl);
+
+    const codeEl = el('text', { x:x0, y:codeY, 'text-anchor':anchor, class:'stage-cat', fill:c.text });
+    codeEl.textContent = s.code;
+    svg.appendChild(codeEl);
+  });
+
+  // center hole
+  svg.appendChild(el('circle', { cx:cx, cy:cy, r:innerR-2, fill:'#1a1a19', stroke:'#2c2c2a', 'stroke-width':1 }));
+  const t1 = el('text', { x:cx, y:cy-46, 'text-anchor':'middle', class:'center-kicker' });
+  t1.textContent = 'SOC SLA CLOCK';
+  svg.appendChild(t1);
+
+  const t2 = el('text', { x:cx, y:cy-8, 'text-anchor':'middle', class:'center-big' });
+  t2.textContent = 'ONE ELAPSED TIMER';
+  svg.appendChild(t2);
+
+  svg.appendChild(el('line', { x1:cx-56, y1:cy+8, x2:cx+56, y2:cy+8, stroke:'#3987e5', 'stroke-width':2 }));
+
+  const t3 = el('text', { x:cx, y:cy+30, 'text-anchor':'middle', class:'center-sub' });
+  t3.textContent = 'NINE DIFFERENT THINGS';
+  svg.appendChild(t3);
+  const t4 = el('text', { x:cx, y:cy+46, 'text-anchor':'middle', class:'center-sub' });
+  t4.textContent = 'BEING MEASURED';
+  svg.appendChild(t4);
+})();
+</script>
+</body></html>

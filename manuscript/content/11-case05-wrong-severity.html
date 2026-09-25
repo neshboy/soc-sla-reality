@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 05</div>
+      <h3>Wrong Severity, Later Reclassified<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+    <span class="pill p1">P3 &rarr; P1</span>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Initial Triage</b>P3 &mdash; isolated scripting anomaly</div>
+    <div><b>Reclassified To</b>P1 &mdash; active ransomware behavior</div>
+    <div><b>Trigger For Reclassification</b>Shadow-copy deletion + mass file rename observed on follow-up</div>
+    <div><b>Open Question</b>Which clock governs the SLA record?</div>
+  </div>
+
+  <div class="case-body">
+    <p>An EDR alert on one workstation shows no beaconing, no privilege escalation, no threat-intel hits &mdash; triaged P3. Hours later, a second analyst finds deleted shadow copies, mass file renames, and lateral attempts to two hosts &mdash; reclassified P1. Nothing about the intrusion changed; only the SOC's understanding of it did.</p>
+
+    <p>The correction is right. But reclassification raises three questions most contracts never answer:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Question</th><th>Why there's no single default</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Retroactive P1 clock from the original alert, or fresh from reclassification?</td>
+          <td>Retroactive charges the misjudged time; fresh timing erases it entirely.</td>
+        </tr>
+        <tr>
+          <td>Does the original P3 clock get discarded, or stay on record?</td>
+          <td>Discarding looks cleaner; kept, it's the only evidence of how long the misjudgment lasted.</td>
+        </tr>
+        <tr>
+          <td>Does it count as a P3 breach, P1 breach, both, or neither?</td>
+          <td>Same event, four possible dashboard numbers &mdash; no default is obviously right.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The three most common resolutions, none a standard, just explicit load-bearing choices:</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Approach</th><th>P1 clock starts</th><th>Original P3 clock</th><th>SLA reporting outcome</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Retroactive merge</td>
+          <td>Original alert time</td>
+          <td>Overwritten into P1</td>
+          <td>Single P1 case, likely a breach</td>
+        </tr>
+        <tr>
+          <td>Fresh clock</td>
+          <td>Reclassification time</td>
+          <td>Closed separately</td>
+          <td>Closed P3 + new P1, two clocks</td>
+        </tr>
+        <tr>
+          <td>Dual clock <em>(recommended)</em></td>
+          <td>Reclassification, logged with original</td>
+          <td>Retained, superseded</td>
+          <td>Both visible, linked by the reclassification event</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <span class="callout-label">Where correction and gaming look identical</span>
+      Legitimate correction and deliberate SLA gaming leave the same paper trail without a written rule and a timestamped reclassification log. Section 7 returns to this.
+    </div>
+
+    <p>Severity is fixed at intake in most tooling, but it's a live judgment that stays revisable while a case is open &mdash; punishing analysts for updating it discourages exactly what a SOC should want.</p>
+
+    <div class="callout note">
+      <span class="callout-label">Authorial guidance</span>
+      Whichever rule a SOC adopts, apply it consistently. Recommended: dual clocks, linked by a timestamped event recording who changed severity, when, and why. That doesn't decide whether the case counts as a P3, P1, both, or neither breach &mdash; that's a policy call for the SOC and stakeholders to make explicitly.
+    </div>
+  </div>
+</div>
+
+</div></body></html>

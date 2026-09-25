@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head>
+<body>
+<div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <span class="case-num">CASE 08</span>
+      <h3>The Third-Party Dependency</h3>
+    </div>
+  </div>
+
+  <div class="case-meta">
+    <div><b>SOC Role</b>Detect, decide, request, escalate, track</div>
+    <div><b>Blocking Action</b>Held outside the SOC's authority</div>
+    <div><b>Governing Instrument</b>Underpinning Contract (UC) or customer-side dependency</div>
+    <div><b>Reporting Value</b>Isolates elapsed time outside SOC control</div>
+  </div>
+
+  <div class="case-body">
+    <p>By this point the SOC has detected, triaged, and decided — on time. The clock keeps running because someone else must act.</p>
+
+    <ul>
+      <li><strong>Cloud provider.</strong> A control-plane fix needs the vendor's own desk.</li>
+      <li><strong>Upstream ISP.</strong> Only the ISP's null-route stops an in-flight flood.</li>
+      <li><strong>MDR sub-vendor.</strong> Isolation is a ticket into their queue, not the SOC's console.</li>
+      <li><strong>Customer's own teams.</strong> A credential reset or firewall change needs the customer's own approval, not the SOC's.</li>
+    </ul>
+
+    <p>The first three are external; the last is the customer's own staff — equally outside SOC authority.</p>
+
+    <h3 class="h3">The Underpinning Contract Behind the SLA</h3>
+
+    <p>ITIL's <strong class="accent">Underpinning Contract (UC)</strong> covers an external supplier underpinning the SLA, with a turnaround the SOC can't shorten; its <strong>Operational Level Agreement (OLA)</strong> covers internal departments it fully controls. The customer's own teams fit neither label — a dependency, same effect: a process the SOC doesn't own.</p>
+
+    <div class="split">
+      <div class="side book">
+        <h4>What the SLA Names</h4>
+        <ol>
+          <li>One clock: time from detection to containment</li>
+          <li>One accountable party: the SOC</li>
+          <li>One outcome: met or breached</li>
+        </ol>
+      </div>
+      <div class="side reality">
+        <h4>What Actually Gates Containment</h4>
+        <ol>
+          <li>A chain of UCs and dependencies</li>
+          <li>Each hop: its own queue, no guaranteed commitment</li>
+          <li>A clock running through every hop</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="h3">Tracking the Dependency, Not Just the Clock</h3>
+
+    <p>Since the SOC can't compress a third party's time, its discipline is logging it precisely.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Field</th><th>What It Captures</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Engagement timestamp</td><td>First contact with the party</td></tr>
+        <tr><td>Request detail</td><td>The verbatim ask</td></tr>
+        <tr><td>Channel used</td><td>Portal, TAM, or ticketing</td></tr>
+        <tr><td>Acknowledgment timestamp</td><td>Receipt confirmed, distinct from action</td></tr>
+        <tr><td>Action timestamp — or non-response</td><td>Completion, or record of none in-window</td></tr>
+        <tr><td>Escalation path used</td><td>Whether it exceeded the standard channel</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout note">
+      <span class="callout-label">Why this matters after the fact</span>
+      A dependency log isn't an excuse — it separates the SOC's own time from time spent waiting on a third party. Even CIRCIA's 72-hour reporting deadline is a disclosure clock, not a triage SLA; the log proves the SOC moved as fast as the case allowed.
+    </div>
+
+    <p>None of this changes a breach against the provider clock — only the conversation after.</p>
+  </div>
+</div>
+
+<div class="quote-block">
+  <p>Every SLA has a silent co-signer: the OLA and UC chain behind it. No SOC can out-perform a promise a third party's contract already broke.</p>
+</div>
+
+</div>
+</body></html>

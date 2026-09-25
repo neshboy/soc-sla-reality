@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow"><div class="section">
+
+<span class="kicker">Section 06</span>
+<h2 class="h2">Ten Case Studies Under Real Conditions</h2>
+
+<p class="lede">These composites are reconstructed from managed-SOC patterns, anonymized so the mechanics stay legible. Each case follows the same arc: setup, the contract's clock, what the shift does, and where the SLA number stops describing the investigation. Figures below are illustrative, not a published standard.</p>
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <span class="case-num">CASE 01</span>
+      <h3>Twenty Alerts, One Analyst Shift</h3>
+    </div>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Queue</b>20 alerts</div>
+    <div><b>Severities</b>3 P1 / 7 P2 / 10 P3</div>
+    <div><b>Analysts on shift</b>3</div>
+    <div><b>Time remaining on oldest SLA</b>~2 min</div>
+  </div>
+
+  <div class="case-body">
+
+    <p><strong>Setup.</strong> At 14:01 a port-scan sweep lands in the SIEM alongside an impossible-travel login at CUST-A and a beacon at CUST-B. Within six minutes the queue holds twenty tickets across five customers — 3 P1, 7 P2, 10 P3 — worked by three analysts.</p>
+
+    <p><strong>What the contract's clock says.</strong> Each ticket runs its own ack/investigation clock, independent of the rest. CUST-D's encryption alert has about four minutes left before P1 breach; CUST-A's login has six, CUST-B's beacon two. The contract is twenty stopwatches ticking in parallel, unaware three people must stop them.</p>
+
+    <p><strong>What actually happens.</strong> Severity alone doesn't say which alert is real: CUST-A's P1 login is thin evidence, CUST-B's P1 beacon is corroborated by DNS pattern and ASN reputation, and CUST-C's nominal P2 — an admin role change with no ticket behind it — is a credential attack in disguise. Worked strictly by severity, an analyst opens the wrong door first. The shift lead sees what severity can't, and reprioritizes accordingly — defensible calls that still read as late tickets weeks later.</p>
+
+    <div class="figure">
+      <img src="../../assets/mockups/queue-board-20-alerts.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.1</span><span class="figtext">Synthetic reconstruction of the queue, sorted by SLA time remaining.</span></div>
+    </div>
+
+    <p>This surge lands by day, but the same mechanism is worse overnight, where alert volume clusters by hour and outruns fixed headcount.</p>
+
+    <div class="figure">
+      <img src="../../assets/mockups/alert-queue-heatmap.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.2</span><span class="figtext">Illustrative alert volume by hour (synthetic data): concentrated overnight, when staffing is thinnest.</span></div>
+    </div>
+
+    <p><strong>Where the SLA number becomes misleading.</strong> CUST-D's four minutes is real, but it describes a queue position, not a threat — not whether the alert is a false-positive or a live compromise, nor that the analysts are already committed elsewhere. The report may show two breaches from the same window, neither a story about competence.</p>
+
+    <p><strong>Takeaway.</strong> Contractual SLA time is denominated per ticket; operational capacity per shift. Under surge those two systems stop reconciling — that mismatch, not analyst judgment, is usually the real driver of the breach on the report.</p>
+
+  </div>
+</div>
+
+</div></div></body></html>

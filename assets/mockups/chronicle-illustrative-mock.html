@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{ margin:0; width:1500px; background:var(--d-page); color:var(--d-ink); padding:34px 40px 38px; }
+
+  .section-label{
+    font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--d-ink-muted); margin:0 0 10px;
+  }
+
+  .detection-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 4px; border-bottom:1px solid var(--d-grid);
+    font-family:var(--mono); font-size:13px; color:var(--d-ink);
+  }
+  .detection-row:last-child{ border-bottom:none; }
+  .detection-row .rule{ display:flex; align-items:center; gap:10px; }
+  .detection-row .rule .dot{ width:7px; height:7px; border-radius:50%; flex:0 0 auto; }
+
+  .entity-row{ display:flex; gap:9px; flex-wrap:wrap; }
+
+  .timeline{ position:relative; margin-top:8px; padding:18px 6px 0; }
+  .timeline .line{ position:absolute; top:29px; left:16px; right:16px; height:2px; background:var(--d-grid); }
+  .timeline .nodes{ display:flex; justify-content:space-between; position:relative; }
+  .timeline .node{ flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 8px; }
+  .timeline .node .pt{ width:13px; height:13px; border-radius:50%; border:2.5px solid var(--d-page); position:relative; z-index:2; margin-bottom:10px; }
+  .timeline .node .t{ font-family:var(--mono); font-size:11.5px; color:var(--d-ink-muted); letter-spacing:.02em; }
+  .timeline .node .lbl{ font-size:12px; color:var(--d-ink); margin-top:3px; line-height:1.35; max-width:170px; }
+</style>
+</head>
+<body>
+
+  <div class="callout illustrative" style="margin:0 0 18px; padding:14px 18px;">
+    <span class="callout-label" style="font-size:10.5px;">Illustrative mockup — not a real product screenshot</span>
+    <span style="font-size:12.5px; font-weight:700; letter-spacing:.01em;">ILLUSTRATIVE SOC UI — SYNTHETIC EXAMPLE, NOT AN ACTUAL GOOGLE SECOPS SCREENSHOT</span>
+  </div>
+
+  <div class="console">
+    <div class="console-bar">
+      <span class="dot" style="background:var(--d-baseline);"></span>
+      <span class="dot" style="background:var(--d-baseline);"></span>
+      <span class="dot" style="background:var(--d-baseline);"></span>
+      <span class="title">generic-case-console · case-investigation view (illustrative)</span>
+    </div>
+
+    <div class="console-body" style="padding:20px 26px 24px;">
+
+      <!-- Case header -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--d-grid);">
+        <div>
+          <div style="font-family:var(--mono); font-size:22px; font-weight:800; letter-spacing:.01em;">CASE-20394</div>
+          <div class="muted" style="font-size:12px; margin-top:5px;">Suspicious OAuth grant &amp; mailbox activity — opened 03:02 UTC · assigned: analyst_queue_2</div>
+        </div>
+        <span class="pill p1" style="font-size:10.5px; padding:4px 12px;">P1 — CRITICAL</span>
+      </div>
+
+      <!-- Related Detections -->
+      <div style="margin-bottom:22px;">
+        <div class="section-label">Related Detections</div>
+        <div class="detection-row">
+          <span class="rule"><span class="dot" style="background:var(--c1-blue-d);"></span>detection_credential_stuffing_v3</span>
+          <span class="muted" style="font-family:var(--font); font-size:10.5px;">14 events matched</span>
+        </div>
+        <div class="detection-row">
+          <span class="rule"><span class="dot" style="background:var(--c4-yellow);"></span>detection_impossible_travel_login</span>
+          <span class="muted" style="font-family:var(--font); font-size:10.5px;">1 event matched</span>
+        </div>
+        <div class="detection-row">
+          <span class="rule"><span class="dot" style="background:var(--c2-orange-d);"></span>detection_oauth_token_abuse_v2</span>
+          <span class="muted" style="font-family:var(--font); font-size:10.5px;">3 events matched</span>
+        </div>
+      </div>
+
+      <!-- Related Entities -->
+      <div style="margin-bottom:26px;">
+        <div class="section-label">Related Entities</div>
+        <div class="entity-row">
+          <span class="tag">user: j.tan@acme-example.com</span>
+          <span class="tag">host: WKSTN-4471</span>
+          <span class="tag">ip: 203.0.113.44</span>
+          <span class="tag">project: gcp-proj-88271-prod</span>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div>
+        <div class="section-label">Event Timeline</div>
+        <div class="timeline">
+          <div class="line"></div>
+          <div class="nodes">
+            <div class="node">
+              <div class="pt" style="background:var(--c1-blue-d);"></div>
+              <div class="t">03:02</div>
+              <div class="lbl">Anomalous login</div>
+            </div>
+            <div class="node">
+              <div class="pt" style="background:var(--c4-yellow);"></div>
+              <div class="t">03:04</div>
+              <div class="lbl">OAuth token issued</div>
+            </div>
+            <div class="node">
+              <div class="pt" style="background:var(--c2-orange-d);"></div>
+              <div class="t">03:11</div>
+              <div class="lbl">Mail-forwarding rule created</div>
+            </div>
+            <div class="node">
+              <div class="pt" style="background:var(--c8-red);"></div>
+              <div class="t">03:19</div>
+              <div class="lbl">Bulk mailbox export</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p style="margin:20px 6px 0; font-size:14px; font-style:italic; color:var(--d-ink-2); line-height:1.5; max-width:1200px;">
+    Detection execution time and analyst investigation time are not the same clock.
+  </p>
+
+</body></html>

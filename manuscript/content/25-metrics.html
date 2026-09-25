@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+<div class="section-unforced">
+<span class="kicker">Measurement Discipline</span>
+<h2 class="h2">Real SLA Metrics</h2>
+<p class="lede">A customer report collapses an incident lifecycle into one number: percent compliant. Running the floor needs separate, defined measurements — which requires agreeing what each metric actually means, something the industry largely hasn't done.</p>
+</div>
+
+<h3 class="h3">The Vocabulary Problem</h3>
+<p>"MTTR" is the clearest case: PagerDuty notes the same letters mean Repair, Recovery, Respond, or Resolve by vendor; IBM defines it narrowly as repair-and-recovery, excluding detection and triage. Some Sentinel-based SOCs sidestep the ambiguous acronym entirely, naming their dashboard boundaries in plain language — "time to triage," "time to closure" — rather than reusing an overloaded "MTTR."</p>
+<div class="callout note">
+<span class="callout-label">Note</span>
+No primary source here formally defines "MTTI" or "MTTC" with a stated boundary — both circulate freely in SOC dashboards regardless.
+</div>
+<p>MTTD (Mean Time to Detect) sits one stage earlier and carries the same problem. Its boundary is usually stated as attacker action to alert generation — but Case Study 4 showed four candidate timestamps for that same span (attacker action, log arrival, alert creation, analyst acknowledgement), each defensible and each producing a different "detection" time for one incident. An MTTD figure without a stated clock-start is exposed to the identical ambiguity as MTTR, MTTI, and MTTC.</p>
+<p>A term becomes rigorous once its boundary is fixed and travels with the number; otherwise "MTTR improved 20%" is a claim, not a measurement.</p>
+
+<h3 class="h3">What a Real SOC Should Track</h3>
+<p>A SOC managing the work tracks these in parallel, each boundary fixed in-house first.</p>
+
+<h3 class="h3">Compliance and Backlog Signals</h3>
+<p>What a shift lead checks first, not a past average.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>SLA compliance %</td><td>Share of cases whose clock stopped in window.</td><td>Hides one clock failing beneath it.</td></tr>
+<tr><td>At-risk case count</td><td>Open cases under an in-house time-to-breach threshold.</td><td>Shows what's about to breach in time to act.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">Per-Stage Clock Performance</h3>
+<p>Acknowledgement, triage, notification, containment, and closure are reported individually.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>MTTA</td><td>Mean time from creation to claim.</td><td>Can be 100% compliant on a loose target while this drifts upward.</td></tr>
+<tr><td>Containment performance</td><td>% contained inside target, against a preset stop condition.</td><td>A judgment call, inconsistent without a written condition.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">Dependency and Waiting Time</h3>
+<p>Can't tell working slowly from waiting on someone else.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>Customer waiting time</td><td>Duration caused by the customer's non-response.</td><td>Penalizes a delay the SOC couldn't shorten.</td></tr>
+<tr><td>Internal/external dependency time</td><td>Time waiting on a team (OLA) or supplier (underpinning contract, UC).</td><td>Traces a breach to a dependency, not the analyst.</td></tr>
+</tbody>
+</table>
+
+<h3 class="h3">Quality and Integrity Signals</h3>
+<p>Speed answers how fast, not whether the work was good.</p>
+<table class="clean">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Why separate</th></tr>
+</thead>
+<tbody>
+<tr><td>Reopened-case rate</td><td>% of closed cases reopened within a set window.</td><td>Signals closure happened before the work was done.</td></tr>
+<tr><td>Quality-audit score</td><td>Structured case-review score, independent of speed.</td><td>Measures soundness directly, not inferred from time.</td></tr>
+<tr><td>% closed in final 5 minutes before breach</td><td>Compliant closures landing in the last five minutes.</td><td>A possible SLA-gaming signal, not efficiency.</td></tr>
+</tbody>
+</table>
+
+<div class="callout warning">
+<span class="callout-label">Read This One With Suspicion, Not Pride</span>
+Consistently closing minutes before breach fits beating the clock as well as finishing the work — check it against reopened-case rate and quality-audit score first.
+</div>
+
+<p>Each metric above answers a question the others can't. What most SOCs skip is naming which clock each one measures: "SLA compliance: 94%" isn't a definition; "94% of acknowledgement clocks stopped creation-to-claim inside the window" is.</p>
+
+</div></body></html>

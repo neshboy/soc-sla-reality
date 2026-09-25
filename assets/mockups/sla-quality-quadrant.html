@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+  body{margin:0;}
+  .quad-headline{ font-family:var(--font); font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+  .quad-note{ font-family:var(--font); font-weight:600; fill:var(--l-ink-2); }
+  .case-label{ font-family:var(--font); font-weight:700; fill:var(--l-ink); }
+  .axis-title{ font-family:var(--font); font-weight:800; letter-spacing:.09em; text-transform:uppercase; fill:var(--l-ink-2); }
+  .axis-tick{ font-family:var(--font); font-weight:600; fill:var(--l-ink-muted); }
+</style>
+</head>
+<body style="background:var(--l-surface);">
+<div style="width:1400px;background:var(--l-surface);box-sizing:border-box;padding:46px 60px 38px;display:flex;flex-direction:column;">
+
+  <div>
+    <div style="display:flex;align-items:baseline;gap:10px;">
+      <span class="kicker">DETECTION-TO-CLOSURE OUTCOMES</span>
+      <span class="illustrative-tag">ILLUSTRATIVE</span>
+    </div>
+    <h2 class="h2" style="margin:.08in 0 .07in;">SLA vs. Quality Quadrant</h2>
+    <div class="muted" style="font-size:11.5px;max-width:980px;">Where a closed case lands depends on two independent clocks — meeting the SLA and building solid evidence are not the same achievement.</div>
+  </div>
+
+  <div style="margin-top:26px;display:flex;flex-direction:column;align-items:center;">
+    <svg viewBox="0 0 1300 830" width="1300" height="830" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- quadrant tints -->
+      <rect x="130" y="20" width="570" height="360" fill="rgba(74,58,167,0.07)"/>
+      <rect x="700" y="20" width="570" height="360" fill="rgba(42,120,214,0.08)"/>
+      <rect x="130" y="380" width="570" height="360" fill="rgba(227,73,72,0.07)"/>
+      <rect x="700" y="380" width="570" height="360" fill="rgba(237,161,0,0.10)"/>
+
+      <!-- outer frame -->
+      <rect x="130" y="20" width="1140" height="720" fill="none" stroke="#e1e0d9" stroke-width="1.5"/>
+      <!-- mid dividers -->
+      <line x1="700" y1="20" x2="700" y2="740" stroke="#c3c2b7" stroke-width="1.5"/>
+      <line x1="130" y1="380" x2="1270" y2="380" stroke="#c3c2b7" stroke-width="1.5"/>
+
+      <!-- quadrant labels -->
+      <text x="150" y="50" text-anchor="start" font-size="16" class="quad-headline" fill="#4a3aa7">SAFE BUT AT BREACH RISK</text>
+      <text x="150" y="73" text-anchor="start" font-size="12.5" class="quad-note">Good investigation, clock still running.</text>
+
+      <text x="1250" y="50" text-anchor="end" font-size="16" class="quad-headline" fill="#2a78d6">TARGET STATE</text>
+      <text x="1250" y="73" text-anchor="end" font-size="12.5" class="quad-note">SLA met, evidence solid.</text>
+
+      <text x="150" y="697" text-anchor="start" font-size="16" class="quad-headline" fill="#e34948">WORST CASE</text>
+      <text x="150" y="720" text-anchor="start" font-size="12.5" class="quad-note">Breached AND weak — the case governance must catch.</text>
+
+      <text x="1250" y="697" text-anchor="end" font-size="16" class="quad-headline" fill="#d95926">LUCKY, NOT GOOD</text>
+      <text x="1250" y="720" text-anchor="end" font-size="12.5" class="quad-note">SLA met, but only because corners were cut.</text>
+
+      <!-- case dots (one categorical color: identity, not category) -->
+      <circle cx="980" cy="140" r="8" fill="var(--c1-blue)" stroke="#fff" stroke-width="2"/>
+      <text x="994" y="144" font-size="13" class="case-label">Case 2</text>
+
+      <circle cx="330" cy="170" r="8" fill="var(--c1-blue)" stroke="#fff" stroke-width="2"/>
+      <text x="344" y="174" font-size="13" class="case-label">Case 5</text>
+
+      <circle cx="740" cy="335" r="8" fill="var(--c1-blue)" stroke="#fff" stroke-width="2"/>
+      <text x="754" y="327" font-size="13" class="case-label">Case 9</text>
+
+      <circle cx="990" cy="615" r="8" fill="var(--c1-blue)" stroke="#fff" stroke-width="2"/>
+      <text x="1004" y="611" font-size="13" class="case-label">Case 10</text>
+
+      <circle cx="300" cy="600" r="8" fill="var(--c1-blue)" stroke="#fff" stroke-width="2"/>
+      <text x="314" y="596" font-size="13" class="case-label">Case 7</text>
+
+      <!-- axis ticks -->
+      <text x="130" y="764" text-anchor="start" font-size="13" class="axis-tick">Slow</text>
+      <text x="1270" y="764" text-anchor="end" font-size="13" class="axis-tick">Fast</text>
+      <text x="118" y="34" text-anchor="end" font-size="13" class="axis-tick">Strong</text>
+      <text x="118" y="736" text-anchor="end" font-size="13" class="axis-tick">Poor</text>
+
+      <!-- axis titles -->
+      <text x="700" y="805" text-anchor="middle" font-size="14" class="axis-title">Speed</text>
+      <text x="46" y="380" text-anchor="middle" font-size="14" class="axis-title" transform="rotate(-90 46 380)">Investigation Quality</text>
+
+    </svg>
+    <div class="muted" style="font-size:11px;margin-top:8px;">Each point represents one closed case, plotted illustratively — not a real dataset.</div>
+  </div>
+
+</div>
+</body></html>

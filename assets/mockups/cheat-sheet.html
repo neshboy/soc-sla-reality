@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../theme.css">
+<style>
+body{margin:0;}
+
+.sheet-head{ margin-bottom:2px; }
+.sheet-head .kicker{ display:block; margin-bottom:4px; }
+.sheet-head h1.h1{
+  font-size:19.5pt; line-height:1.2; margin:0 0 .08in; letter-spacing:-.01em;
+  border-bottom:1.5px solid var(--l-baseline); padding-bottom:11px;
+}
+
+.sheet-grid{ display:grid; grid-template-columns:1fr 1fr; column-gap:28px; margin-top:7px; }
+
+.block{ margin-bottom:4px; }
+.block h3.h3{
+  font-size:11pt; font-weight:800; margin:.17in 0 .07in; color:var(--l-ink);
+  display:flex; align-items:baseline; gap:6px;
+}
+.block:first-of-type h3.h3{ margin-top:0; }
+.block h3.h3 .num{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:16px; height:16px; border-radius:3px; background:var(--c1-blue); color:#fff;
+  font-size:8.3pt; font-weight:800; flex:none;
+}
+
+ul.tight, ol.tight{ margin:0 0 4px; padding-left:15px; }
+ul.tight li, ol.tight li{ font-size:9.2pt; line-height:1.48; margin:0 0 4px; color:var(--l-ink); }
+ol.tight{ padding-left:17px; }
+ol.tight li::marker{ font-weight:800; color:var(--c1-blue); font-size:8.8pt; }
+ul.tight li::marker{ color:var(--l-ink-muted); }
+
+.example-box{
+  font-family:var(--mono); font-size:8.4pt; line-height:1.54; background:#f1f1ee;
+  border:1px solid var(--l-grid); border-left:3px solid var(--c1-blue); border-radius:4px;
+  padding:9px 11px; color:var(--l-ink-2); margin:1px 0 4px; word-break:break-word;
+}
+
+.handover-tags{ display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 4px; }
+.handover-tags .tag{ font-size:8.2pt; padding:3px 9px; }
+
+.callout.critical{ margin:15px 0 0; padding:12px 16px 14px; }
+.callout.critical .callout-label{ font-size:9.5pt; margin-bottom:7px; }
+.callout.critical ul{ margin:0; padding-left:16px; columns:2; column-gap:25px; }
+.callout.critical ul li{ font-size:9.2pt; line-height:1.52; margin:0 0 5px; color:var(--l-ink); }
+.callout.critical ul li::marker{ color:var(--s-critical); font-weight:800; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="sheet-head">
+    <span class="kicker">One-page field reference</span>
+    <h1 class="h1">SOC SLA — WHAT THE ANALYST ACTUALLY NEEDS TO KNOW</h1>
+  </div>
+
+  <div class="sheet-grid">
+    <div class="col">
+
+      <div class="block">
+        <h3 class="h3"><span class="num">1</span>When an alert arrives — check in this order</h3>
+        <ol class="tight">
+          <li>Severity</li>
+          <li>Asset criticality</li>
+          <li>Existing active incidents on the same asset/customer</li>
+          <li>Remaining SLA time</li>
+          <li>Alert confidence</li>
+          <li>Customer-specific requirements</li>
+          <li>Related/correlated alerts</li>
+          <li>Threat context</li>
+        </ol>
+      </div>
+
+      <div class="block">
+        <h3 class="h3"><span class="num">2</span>When to escalate</h3>
+        <ul class="tight">
+          <li>It crosses the severity threshold</li>
+          <li>Scope is spreading</li>
+          <li>You're blocked past X minutes</li>
+          <li>Evidence suggests active compromise, not just anomaly</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3 class="h3"><span class="num">3</span>When to call the manager</h3>
+        <ul class="tight">
+          <li>Multiple P1s at once</li>
+          <li>You are the only qualified analyst</li>
+          <li>A customer dependency is blocking and time is running out</li>
+          <li>You suspect the severity was wrong</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3 class="h3"><span class="num">4</span>Signs the SLA is at risk</h3>
+        <ul class="tight">
+          <li>Elapsed time crosses 60–70% of the target with no update</li>
+          <li>Case is waiting on a dependency with no ETA</li>
+          <li>Queue depth is rising faster than it's clearing</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="col">
+
+      <div class="block">
+        <h3 class="h3"><span class="num">5</span>How to document a dependency</h3>
+        <div class="example-box">INC-4471 — paused 02:14, reason: awaiting customer AD admin to confirm account owner, requested via ticket #, resumed 04:02.</div>
+      </div>
+
+      <div class="block">
+        <h3 class="h3"><span class="num">6</span>When NOT to pause the timer</h3>
+        <ul class="tight">
+          <li>Don't pause just because you're busy</li>
+          <li>Don't pause without a named, contactable dependency</li>
+          <li>Don't pause retroactively after the fact</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3 class="h3"><span class="num">7</span>What evidence is required before closing</h3>
+        <ul class="tight">
+          <li>Root cause identified — or explicitly "insufficient evidence, monitoring"</li>
+          <li>Affected scope confirmed</li>
+          <li>Customer notified per SLA tier</li>
+          <li>Disposition (true positive / false positive / benign) justified in writing, not just selected from a dropdown</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3 class="h3"><span class="num">8</span>What must be in a handover</h3>
+        <div class="handover-tags">
+          <span class="tag">Case summary</span>
+          <span class="tag">Timeline</span>
+          <span class="tag">IOCs</span>
+          <span class="tag">Affected assets</span>
+          <span class="tag">Open questions</span>
+          <span class="tag">Next action</span>
+          <span class="tag">SLA remaining</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="callout critical">
+    <span class="callout-label">9 — What NOT to do</span>
+    <ul>
+      <li>Don't close without evidence</li>
+      <li>Don't use "awaiting customer" without actual customer contact</li>
+      <li>Don't downgrade severity to dodge the clock</li>
+      <li>Don't copy-paste generic investigation notes</li>
+      <li>Don't escalate with zero analysis just to hand off the clock</li>
+    </ul>
+  </div>
+
+</div>
+</body></html>

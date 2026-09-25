@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+<div class="section-unforced">
+<span class="kicker">Section 9</span>
+<h2 class="h2">SLA Pause / Stop-the-Clock</h2>
+<p class="lede">A clock measures elapsed time, not who could act on it. Stop-the-clock records that a stretch belonged to someone else's queue &mdash; the framework's most honest instrument; claimed only after the fact, the same artifact Section 7 documents under a different name.</p>
+</div>
+
+<h3 class="h3">9.1 &mdash; Six States Worth Pausing For</h3>
+<p>Six wait-states recur across SOC operations, each one blocked on someone else.</p>
+
+<table class="clean">
+<thead>
+<tr><th>Pause state</th><th>Waiting on</th><th>Ends when</th></tr>
+</thead>
+<tbody>
+<tr><td>Customer response</td><td>Named customer contact</td><td>Reply, or contracted response ceiling</td></tr>
+<tr><td>Vendor action</td><td>Vendor, under its Underpinning Contract</td><td>Vendor confirms complete</td></tr>
+<tr><td>Missing telemetry</td><td>Log-source or pipeline owner</td><td>Log arrives, or decision to proceed</td></tr>
+<tr><td>Maintenance window</td><td>Change-advisory board / infra owner</td><td>Window opens, closes, or cancels</td></tr>
+<tr><td>Account-owner validation</td><td>The alert's triggering account owner</td><td>Owner confirms or denies</td></tr>
+<tr><td>Internal team action</td><td>Named team under an internal OLA, outside the case owner's own chain</td><td>Team logs action complete</td></tr>
+</tbody>
+</table>
+
+<p>Unlike Case Study 4's clock-zero dispute, this is literal: the data hasn't arrived.</p>
+
+<p>The internal-team-action row applies only when the named team sits outside the case owner's own reporting chain; an ordinary delay from the owner's own closely-coupled team is an OLA gap, not a pause. Case Study 7's unaccepted L2 handoff is exactly that kind of delay &mdash; it belongs on a breach report as an OLA gap, not hidden behind a stopped clock.</p>
+
+<h3 class="h3">9.2 &mdash; Legitimate Pause vs. Contract-Violating Pause</h3>
+<p>A pause earns its name only when a real, contactable dependency exists when it begins, not when the analyst is busy.</p>
+
+<div class="split">
+<div class="side book">
+<h4>What Makes a Pause Legitimate</h4>
+<ol>
+<li>Contacted a named party, via the agreed channel, before logging it</li>
+<li>Reason and start time logged as the wait began</li>
+<li>A resume trigger was defined in advance</li>
+</ol>
+</div>
+<div class="side reality">
+<h4>What Makes "Pausing" Just Clock Erasure</h4>
+<ol>
+<li>Status flips to "pending" with no outreach attempted</li>
+<li>The pause appears only after breach, backdated</li>
+<li>"Pending" sits indefinitely, with no resume condition defined</li>
+</ol>
+</div>
+</div>
+
+<h3 class="h3">9.3 &mdash; The Four-Part Documentation Standard</h3>
+<p>Every state above reduces to one test; missing any part, the SOC has stopped measuring.</p>
+
+<table class="clean">
+<thead>
+<tr><th>Required element</th><th>Must contain</th><th>Absence permits</th></tr>
+</thead>
+<tbody>
+<tr><td>Timestamped reason</td><td>Exact start moment, checkable cause</td><td>A length invented after the fact</td></tr>
+<tr><td>Named owner</td><td>The specific person/team/vendor blocked on</td><td>An unfalsifiable, unnamed excuse</td></tr>
+<tr><td>Resume trigger</td><td>The exact ending event</td><td>Closure whenever convenient, not when cleared</td></tr>
+<tr><td>Resume latency</td><td>Gap between the trigger event and the resumed-timestamp, measured</td><td>A pause that outlives its own trigger &mdash; one contact attempt, no timely follow-up, unflagged</td></tr>
+</tbody>
+</table>
+
+<div class="callout warning">
+<span class="callout-label">Where pause becomes indistinguishable from gaming</span>
+Section 7 catalogs maneuvers &mdash; clock restarts, type reclassification, ticket splitting &mdash; that fake a met SLA. Missing any element above, a pause yields the same result: unproven time removed.
+</div>
+
+<h3 class="h3">9.4 &mdash; The State Machine and the Audit Trail</h3>
+<p>A pause is a state transition a system should model explicitly, per Figure 9.1's worked example.</p>
+
+<div class="figure"><img src="../../assets/mockups/sla-pause-state-machine.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 9.1</span><span class="figtext">The SLA clock's running/paused state machine with a synthetic case-log excerpt; names and timestamps are constructed, not real.</span></div></div>
+
+<p>J. Tan acknowledges at 02:14, pauses at 02:24 for "awaiting customer AD admin confirmation," and closes MET at 04:31. Elapsed time reads as a breach at two hours seventeen; the trail shows the SOC's actual work was thirty-nine minutes, the rest the administrator's. The machine enforces only the state, not the reason's truth.</p>
+
+<div class="quote-block">
+<p>Pausing the clock isn't cheating the SLA &mdash; it's the only way the SLA can ever tell the truth about who was actually waiting on whom.</p>
+</div>
+
+</div></body></html>

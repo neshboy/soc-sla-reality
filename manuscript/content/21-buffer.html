@@ -1,0 +1,27 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<span class="kicker">Engineering Margin</span>
+<h2 class="h2">The SLA Buffer</h2>
+<p class="lede">A process that just barely meets its SLA on a normal day has no margin left — the gap between a clean close and a breach is ordinary variance.</p>
+
+<h3 class="h3">Zero-Margin Planning Fails on the First Ordinary Bad Day</h3>
+<p>No engineer sizes a beam to fail at its expected load; margin absorbs normal variation. A SOC paced exactly to the SLA line has none — a shift handling one P2 can still miss a second landing minutes later, no mistake required. "Usually" is not "will."</p>
+
+<h3 class="h3">The Internal Target: Built to Absorb the Variance the Contract Never Sees</h3>
+<p>The fix is an internal target set inside the contractual number — instrumentation, not a second promise. Crossing it tells a lead to reassign within the current shift, pull from lower-priority queue work, or escalate to a lead or incident commander while it still matters; crossing the contract leaves only the report. Adding headcount is not a lever available in the moment — it is a structural roster-planning decision made ahead of time from percentile data, not a live response option.</p>
+
+<div class="callout illustrative"><span class="callout-label">Illustrative example — not a universal industry standard</span>A 30-minute SLA might carry a 20-minute internal target — a 10-minute buffer to catch slow cases first. Figures are illustrative; no standard prescribes them.</div>
+
+<h3 class="h3">Averages Look Safe; the Tail Is Where the SLA Actually Breaks</h3>
+<p>Checking a target against the mean or median is close to useless: triage-time distributions are right-skewed, and breaches happen in the tail, not at the median. Percentile-based views of time-to-triage and time-to-closure (e.g., 50th/90th/99th) can be built in SOC dashboards — including Microsoft Sentinel workbooks via KQL's percentile functions — for this reason.</p>
+
+<div class="figure"><img src="../../assets/mockups/percentile-buffer-chart.png" style="width:100%;display:block;"><div class="figcap"><span class="fignum">FIGURE 11.1</span><span class="figtext">An illustrative, synthetic 90-day time-to-triage sample (n&nbsp;&asymp;&nbsp;1,050 events), not real data, where the median (24&nbsp;min) exceeds the 20-minute target and the 99th percentile (71&nbsp;min) is more than double the 30-minute SLA.</span></div></div>
+
+<p>The median already eats four minutes of the buffer before anything goes wrong; the 99th-percentile case blows through the contract regardless of discipline, so that tail needs explicit management.</p>
+
+<h3 class="h3">How Much Buffer? A Capacity Decision, Not a Rule</h3>
+<p>There is no single correct size: margin is a cost-and-capacity trade-off decided per SOC from its own data, not a vendor deck. Too tight burns attention on cases that would have closed fine; too loose turns variance into breach.</p>
+
+<div class="callout note"><span class="callout-label">Takeaway</span>A buffer is margin sized against a SOC's own measured variance and its tolerance for holding that margin in reserve — set from percentile data, and revisited, not fixed once and forgotten.</div>
+
+</div></body></html>

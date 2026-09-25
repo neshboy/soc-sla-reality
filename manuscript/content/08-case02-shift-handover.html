@@ -1,0 +1,53 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../assets/theme.css">
+</head><body><div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 02</div>
+      <h3>P1 During Shift Handover</h3>
+    </div>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Scenario</b>Illustrative composite — not a captured incident</div>
+    <div><b>P1 Confirmed</b>05:46, 14 min before shift change</div>
+    <div><b>Handover Window</b>05:46 – 06:10 (06:00 boundary)</div>
+    <div><b>Analyst Continuity</b>Analyst A (outgoing, night) → Analyst B (incoming, day)</div>
+  </div>
+
+  <div class="case-body">
+
+    <p>Analyst A confirms a P1 at 05:46, fourteen minutes before shift change, having already correlated the alert, pulled the process tree, and opened containment with the endpoint team — that work is the case, and the SLA clock has no concept of a roster. The common failure isn't an outgoing analyst who did nothing; it's one who did the work and left, forcing the incoming analyst to reconstruct reasoning from a record that captured actions but not intent. Good handover needs a short synchronous overlap, transferring judgment, not just facts.</p>
+
+    <div class="figure">
+      <img src="../../assets/mockups/shift-handover-board.png" style="width:100%;display:block;">
+      <div class="figcap"><span class="fignum">FIGURE 6.3</span><span class="figtext">One shared case record spanning the 06:00 shift boundary, visible to both outgoing and incoming analyst (illustrative/synthetic board).</span></div>
+    </div>
+
+    <p>A 2026 UCL study of SOC handover practice (arXiv:2601.07788) found that what transfers between shifts varies analyst-to-analyst, shaped by habit more than fixed procedure — a fair description of most SOCs' actual shift change. Its draft checklist of minimum handover elements appears below.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Handover Element</th><th>What Should Be Visible to the Incoming Analyst</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Case / decision state and evidence trail</td><td>What's confirmed vs. assumed, plus supporting artifacts.</td></tr>
+        <tr><td>Active alert / case status with timestamps</td><td>Which alerts are open, acknowledged, or escalated, and when.</td></tr>
+        <tr><td>Impacted assets and containment steps taken</td><td>What's isolated or blocked already vs. still pending.</td></tr>
+        <tr><td>Open questions and dependencies</td><td>What the outgoing analyst was still waiting on.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout critical">
+      <span class="callout-label">SLA ownership does not reset at handover</span>
+      The 06:00 boundary is a staffing event, not an SLA event. The clock recognizes the alert's timestamp, not the roster: at 06:10 the case is already 24 minutes old, owned continuously, not split into two half-obligations.
+    </div>
+
+    <p>The gap this case surfaces rarely shows at 06:10. It shows around 09:00, when Analyst B — working from a record that looked complete — re-asks a question already answered, or re-runs a check already confirmed, because the open-question field didn't carry over. It only becomes visible in hindsight, as SLA time spent rediscovering ground already covered.</p>
+
+  </div>
+</div>
+
+</div></body></html>

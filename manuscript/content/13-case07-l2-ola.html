@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../assets/theme.css"></head><body><div class="flow">
+
+<div class="case">
+  <div class="case-head">
+    <div>
+      <div class="case-num">CASE 07</div>
+      <h3>The L2 Dependency<span class="illustrative-tag">Illustrative</span></h3>
+    </div>
+    <span class="pill p2">57 min vs. 30</span>
+  </div>
+
+  <div class="case-meta">
+    <div><b>Trigger</b>P2 alert triaged by L1, requires L2-level correlation</div>
+    <div><b>L1 Triage Time</b>12 minutes, handoff clean</div>
+    <div><b>L2 Acceptance Wait</b>45 minutes, ticket unopened in queue</div>
+    <div><b>Customer SLA</b>Escalate to L2 within 30 minutes</div>
+    <div><b>Open Question</b>Which team owns the resulting breach?</div>
+  </div>
+
+  <div class="case-body">
+    <p>An L1 analyst triages a P2 alert requiring L2 correlation and hands off a clean case in twelve minutes &mdash; inside the account's 30-minute SLA. L2, mid-shift on its own backlog, leaves it unaccepted for 45 minutes; 57 minutes elapse before acceptance, nearly double the target, L1 responsible for barely a fifth. The breach report shows only that number &mdash; both teams are technically right, since no process segment owned the actual gap.</p>
+
+    <table class="clean">
+      <thead>
+        <tr><th>Segment</th><th>Elapsed</th><th>Internal owner</th><th>Governed by an OLA?</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Alert open &rarr; L1 triage complete</td>
+          <td>12 min</td>
+          <td>L1</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Handoff &rarr; L2 acceptance</td>
+          <td>45 min</td>
+          <td>L2 (once accepted)</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Total to L2 acceptance</td>
+          <td>57 min</td>
+          <td>&mdash;</td>
+          <td>SLA target: 30 min</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>This is the gap an Operational Level Agreement (OLA) exists to close: an SLA is the provider's commitment to the customer; an OLA is the same kind of commitment between internal teams, facing no customer and, unlike the SLA, rarely carrying a contractual penalty, existing only to give each internal step an owner and a clock. Here, an OLA covers L1 triage but none was ever written for L2 acceptance, so that unclocked interval is exactly where time disappears under queue pressure.</p>
+
+    <div class="callout illustrative">
+      <span class="callout-label">Where the accountability gap actually lives</span>
+      The 45 unaccepted minutes are most of the breach the customer experiences, yet invisible to internal reporting since no OLA measures them.
+    </div>
+
+    <div class="callout note">
+      <span class="callout-label">Bridges to Section 10</span>
+      Section 10 shows how a customer SLA chains internal targets &mdash; triage, acceptance, incident-manager engagement, margin. This case is what happens when one link is left out.
+    </div>
+
+    <p>The honest answer to "which team owns this breach" is neither &mdash; it is the SOC's own design, which promised the customer without writing the internal agreements to keep it. <strong>A customer SLA without matching internal OLAs is a promise with no owner for the time in between.</strong></p>
+  </div>
+</div>
+
+</div></body></html>
